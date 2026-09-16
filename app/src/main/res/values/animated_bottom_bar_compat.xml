@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Compatibility attribute used by the former Dantotsu vertical-bar fork. -->
+    <attr name="abb_isVerticalBar" format="boolean" />
+</resources>
