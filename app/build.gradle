@@ -26,16 +26,10 @@ android {
     flavorDimensions += "store"
     productFlavors {
         fdroid {
-            // F-Droid specific configuration
-            dimension "store"
-            versionNameSuffix "-fdroid"
-        }
-        google {
-            // Google Play specific configuration
+            // Baseline build without Google/Firebase services
             dimension "store"
             isDefault true
-            apply plugin: 'com.google.gms.google-services'
-            apply plugin: 'com.google.firebase.crashlytics'
+            versionNameSuffix "-fdroid"
         }
     }
 
@@ -79,10 +73,6 @@ android {
 
 dependencies {
 
-//  FireBase
-    googleImplementation platform('com.google.firebase:firebase-bom:33.0.0')
-    googleImplementation 'com.google.firebase:firebase-analytics-ktx:22.0.0'
-    googleImplementation 'com.google.firebase:firebase-crashlytics-ktx:19.0.0'
 //  Core
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.browser:browser:1.8.0'

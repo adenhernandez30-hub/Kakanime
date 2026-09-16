@@ -1,0 +1,90 @@
+[35mapp/build.gradle[m[36m:[m[32m29[m[36m:[m            // Baseline build without Google/[1;31mFirebase[m services
+[35mapp/src/fdroid/java/ani/dantotsu/connections/crashlytics/CrashlyticsFactory.kt[m[36m:[m[32m1[m[36m:[mpackage ani.dantotsu.connections.[1;31mcrashlytics[m
+[35mapp/src/fdroid/java/ani/dantotsu/connections/crashlytics/CrashlyticsFactory.kt[m[36m:[m[32m3[m[36m:[mclass [1;31mCrashlytics[mFactory {
+[35mapp/src/fdroid/java/ani/dantotsu/connections/crashlytics/CrashlyticsFactory.kt[m[36m:[m[32m5[m[36m:[m        fun create[1;31mCrashlytics[m(): [1;31mCrashlytics[mInterface {
+[35mapp/src/fdroid/java/ani/dantotsu/connections/crashlytics/CrashlyticsFactory.kt[m[36m:[m[32m6[m[36m:[m            return [1;31mCrashlytics[mStub()
+[35mapp/src/google/java/ani/dantotsu/connections/crashlytics/CrashlyticsFactory.kt[m[36m:[m[32m1[m[36m:[mpackage ani.dantotsu.connections.[1;31mcrashlytics[m
+[35mapp/src/google/java/ani/dantotsu/connections/crashlytics/CrashlyticsFactory.kt[m[36m:[m[32m3[m[36m:[mclass [1;31mCrashlytics[mFactory {
+[35mapp/src/google/java/ani/dantotsu/connections/crashlytics/CrashlyticsFactory.kt[m[36m:[m[32m5[m[36m:[m        fun create[1;31mCrashlytics[m(): [1;31mCrashlytics[mInterface {
+[35mapp/src/google/java/ani/dantotsu/connections/crashlytics/CrashlyticsFactory.kt[m[36m:[m[32m6[m[36m:[m            return [1;31mFirebase[m[1;31mCrashlytics[m()
+[35mapp/src/google/java/ani/dantotsu/connections/crashlytics/FirebaseCrashlytics.kt[m[36m:[m[32m1[m[36m:[mpackage ani.dantotsu.connections.[1;31mcrashlytics[m
+[35mapp/src/google/java/ani/dantotsu/connections/crashlytics/FirebaseCrashlytics.kt[m[36m:[m[32m4[m[36m:[mimport com.google.[1;31mfirebase[m.[1;31mFirebase[mApp
+[35mapp/src/google/java/ani/dantotsu/connections/crashlytics/FirebaseCrashlytics.kt[m[36m:[m[32m5[m[36m:[mimport com.google.[1;31mfirebase[m.[1;31mcrashlytics[m.[1;31mFirebase[m[1;31mCrashlytics[m
+[35mapp/src/google/java/ani/dantotsu/connections/crashlytics/FirebaseCrashlytics.kt[m[36m:[m[32m6[m[36m:[mimport com.google.[1;31mfirebase[m.[1;31mcrashlytics[m.ktx.[1;31mcrashlytics[m
+[35mapp/src/google/java/ani/dantotsu/connections/crashlytics/FirebaseCrashlytics.kt[m[36m:[m[32m7[m[36m:[mimport com.google.[1;31mfirebase[m.ktx.[1;31mFirebase[m
+[35mapp/src/google/java/ani/dantotsu/connections/crashlytics/FirebaseCrashlytics.kt[m[36m:[m[32m9[m[36m:[mclass [1;31mFirebase[m[1;31mCrashlytics[m : [1;31mCrashlytics[mInterface {
+[35mapp/src/google/java/ani/dantotsu/connections/crashlytics/FirebaseCrashlytics.kt[m[36m:[m[32m11[m[36m:[m        [1;31mFirebase[mApp.initializeApp(context)
+[35mapp/src/google/java/ani/dantotsu/connections/crashlytics/FirebaseCrashlytics.kt[m[36m:[m[32m15[m[36m:[m        [1;31mFirebase[m[1;31mCrashlytics[m.getInstance().recordException(e)
+[35mapp/src/google/java/ani/dantotsu/connections/crashlytics/FirebaseCrashlytics.kt[m[36m:[m[32m19[m[36m:[m        [1;31mFirebase[m[1;31mCrashlytics[m.getInstance().log(message)
+[35mapp/src/google/java/ani/dantotsu/connections/crashlytics/FirebaseCrashlytics.kt[m[36m:[m[32m23[m[36m:[m        [1;31mFirebase[m.[1;31mcrashlytics[m.setUserId(id)
+[35mapp/src/google/java/ani/dantotsu/connections/crashlytics/FirebaseCrashlytics.kt[m[36m:[m[32m27[m[36m:[m        [1;31mFirebase[m[1;31mCrashlytics[m.getInstance().setCustomKey(key, value)
+[35mapp/src/google/java/ani/dantotsu/connections/crashlytics/FirebaseCrashlytics.kt[m[36m:[m[32m30[m[36m:[m    override fun set[1;31mCrashlytics[mCollectionEnabled(enabled: Boolean) {
+[35mapp/src/google/java/ani/dantotsu/connections/crashlytics/FirebaseCrashlytics.kt[m[36m:[m[32m31[m[36m:[m        [1;31mFirebase[m[1;31mCrashlytics[m.getInstance().set[1;31mCrashlytics[mCollectionEnabled(enabled)
+[35mapp/src/main/java/ani/dantotsu/App.kt[m[36m:[m[32m15[m[36m:[mimport ani.dantotsu.connections.[1;31mcrashlytics[m.[1;31mCrashlytics[mInterface
+[35mapp/src/main/java/ani/dantotsu/App.kt[m[36m:[m[32m69[m[36m:[m        val [1;31mcrashlytics[m =
+[35mapp/src/main/java/ani/dantotsu/App.kt[m[36m:[m[32m70[m[36m:[m            ani.dantotsu.connections.[1;31mcrashlytics[m.[1;31mCrashlytics[mFactory.create[1;31mCrashlytics[m()
+[35mapp/src/main/java/ani/dantotsu/App.kt[m[36m:[m[32m71[m[36m:[m        Injekt.addSingletonFactory<[1;31mCrashlytics[mInterface> { [1;31mcrashlytics[m }
+[35mapp/src/main/java/ani/dantotsu/App.kt[m[36m:[m[32m72[m[36m:[m        [1;31mcrashlytics[m.initialize(this)
+[35mapp/src/main/java/ani/dantotsu/App.kt[m[36m:[m[32m87[m[36m:[m        [1;31mcrashlytics[m.set[1;31mCrashlytics[mCollectionEnabled(!DisabledReports)
+[35mapp/src/main/java/ani/dantotsu/App.kt[m[36m:[m[32m93[m[36m:[m                [1;31mcrashlytics[m.setCustomKey("dUsername", dUsername)
+[35mapp/src/main/java/ani/dantotsu/App.kt[m[36m:[m[32m96[m[36m:[m                [1;31mcrashlytics[m.setCustomKey("aUsername", aUsername)
+[35mapp/src/main/java/ani/dantotsu/App.kt[m[36m:[m[32m99[m[36m:[m        [1;31mcrashlytics[m.setCustomKey("device Info", SettingsActivity.getDeviceInfo())
+[35mapp/src/main/java/ani/dantotsu/Functions.kt[m[36m:[m[32m94[m[36m:[mimport ani.dantotsu.connections.[1;31mcrashlytics[m.[1;31mCrashlytics[mInterface
+[35mapp/src/main/java/ani/dantotsu/Functions.kt[m[36m:[m[32m1143[m[36m:[m        Injekt.get<[1;31mCrashlytics[mInterface>().logException(e)
+[35mapp/src/main/java/ani/dantotsu/connections/crashlytics/CrashlyticsInterface.kt[m[36m:[m[32m1[m[36m:[mpackage ani.dantotsu.connections.[1;31mcrashlytics[m
+[35mapp/src/main/java/ani/dantotsu/connections/crashlytics/CrashlyticsInterface.kt[m[36m:[m[32m5[m[36m:[minterface [1;31mCrashlytics[mInterface {
+[35mapp/src/main/java/ani/dantotsu/connections/crashlytics/CrashlyticsInterface.kt[m[36m:[m[32m11[m[36m:[m    fun set[1;31mCrashlytics[mCollectionEnabled(enabled: Boolean)
+[35mapp/src/main/java/ani/dantotsu/connections/crashlytics/CrashlyticsStub.kt[m[36m:[m[32m1[m[36m:[mpackage ani.dantotsu.connections.[1;31mcrashlytics[m
+[35mapp/src/main/java/ani/dantotsu/connections/crashlytics/CrashlyticsStub.kt[m[36m:[m[32m6[m[36m:[mclass [1;31mCrashlytics[mStub : [1;31mCrashlytics[mInterface {
+[35mapp/src/main/java/ani/dantotsu/connections/crashlytics/CrashlyticsStub.kt[m[36m:[m[32m27[m[36m:[m    override fun set[1;31mCrashlytics[mCollectionEnabled(enabled: Boolean) {
+[35mapp/src/main/java/ani/dantotsu/download/DownloadCompat.kt[m[36m:[m[32m8[m[36m:[mimport ani.dantotsu.connections.[1;31mcrashlytics[m.[1;31mCrashlytics[mInterface
+[35mapp/src/main/java/ani/dantotsu/download/DownloadCompat.kt[m[36m:[m[32m69[m[36m:[m                Injekt.get<[1;31mCrashlytics[mInterface>().logException(e)
+[35mapp/src/main/java/ani/dantotsu/download/DownloadCompat.kt[m[36m:[m[32m126[m[36m:[m                Injekt.get<[1;31mCrashlytics[mInterface>().logException(e)
+[35mapp/src/main/java/ani/dantotsu/download/DownloadCompat.kt[m[36m:[m[32m189[m[36m:[m                Injekt.get<[1;31mCrashlytics[mInterface>().logException(e)
+[35mapp/src/main/java/ani/dantotsu/download/anime/AnimeDownloaderService.kt[m[36m:[m[32m23[m[36m:[mimport ani.dantotsu.connections.[1;31mcrashlytics[m.[1;31mCrashlytics[mInterface
+[35mapp/src/main/java/ani/dantotsu/download/anime/AnimeDownloaderService.kt[m[36m:[m[32m316[m[36m:[m                        Injekt.get<[1;31mCrashlytics[mInterface>().logException(
+[35mapp/src/main/java/ani/dantotsu/download/anime/AnimeDownloaderService.kt[m[36m:[m[32m369[m[36m:[m                        Injekt.get<[1;31mCrashlytics[mInterface>().logException(
+[35mapp/src/main/java/ani/dantotsu/download/anime/AnimeDownloaderService.kt[m[36m:[m[32m418[m[36m:[m                    Injekt.get<[1;31mCrashlytics[mInterface>().logException(e)
+[35mapp/src/main/java/ani/dantotsu/download/anime/OfflineAnimeFragment.kt[m[36m:[m[32m30[m[36m:[mimport ani.dantotsu.connections.[1;31mcrashlytics[m.[1;31mCrashlytics[mInterface
+[35mapp/src/main/java/ani/dantotsu/download/anime/OfflineAnimeFragment.kt[m[36m:[m[32m347[m[36m:[m            Injekt.get<[1;31mCrashlytics[mInterface>().logException(e)
+[35mapp/src/main/java/ani/dantotsu/download/anime/OfflineAnimeFragment.kt[m[36m:[m[32m408[m[36m:[m                Injekt.get<[1;31mCrashlytics[mInterface>().logException(e)
+[35mapp/src/main/java/ani/dantotsu/download/manga/MangaDownloaderService.kt[m[36m:[m[32m21[m[36m:[mimport ani.dantotsu.connections.[1;31mcrashlytics[m.[1;31mCrashlytics[mInterface
+[35mapp/src/main/java/ani/dantotsu/download/manga/MangaDownloaderService.kt[m[36m:[m[32m289[m[36m:[m            Injekt.get<[1;31mCrashlytics[mInterface>().logException(e)
+[35mapp/src/main/java/ani/dantotsu/download/manga/MangaDownloaderService.kt[m[36m:[m[32m312[m[36m:[m            Injekt.get<[1;31mCrashlytics[mInterface>().logException(e)
+[35mapp/src/main/java/ani/dantotsu/download/manga/OfflineMangaFragment.kt[m[36m:[m[32m27[m[36m:[mimport ani.dantotsu.connections.[1;31mcrashlytics[m.[1;31mCrashlytics[mInterface
+[35mapp/src/main/java/ani/dantotsu/download/manga/OfflineMangaFragment.kt[m[36m:[m[32m343[m[36m:[m            Injekt.get<[1;31mCrashlytics[mInterface>().logException(e)
+[35mapp/src/main/java/ani/dantotsu/download/manga/OfflineMangaFragment.kt[m[36m:[m[32m393[m[36m:[m                Injekt.get<[1;31mCrashlytics[mInterface>().logException(e)
+[35mapp/src/main/java/ani/dantotsu/download/novel/NovelDownloaderService.kt[m[36m:[m[32m20[m[36m:[mimport ani.dantotsu.connections.[1;31mcrashlytics[m.[1;31mCrashlytics[mInterface
+[35mapp/src/main/java/ani/dantotsu/download/novel/NovelDownloaderService.kt[m[36m:[m[32m358[m[36m:[m            Injekt.get<[1;31mCrashlytics[mInterface>().logException(e)
+[35mapp/src/main/java/ani/dantotsu/media/anime/ExoplayerView.kt[m[36m:[m[32m109[m[36m:[mimport ani.dantotsu.connections.[1;31mcrashlytics[m.[1;31mCrashlytics[mInterface
+[35mapp/src/main/java/ani/dantotsu/media/anime/ExoplayerView.kt[m[36m:[m[32m2395[m[36m:[m                Injekt.get<[1;31mCrashlytics[mInterface>().logException(error)
+[35mapp/src/main/java/ani/dantotsu/media/anime/SelectorDialogFragment.kt[m[36m:[m[32m28[m[36m:[mimport ani.dantotsu.connections.[1;31mcrashlytics[m.[1;31mCrashlytics[mInterface
+[35mapp/src/main/java/ani/dantotsu/media/anime/SelectorDialogFragment.kt[m[36m:[m[32m307[m[36m:[m                                Injekt.get<[1;31mCrashlytics[mInterface>().logException(e)
+[35mapp/src/main/java/ani/dantotsu/media/anime/SelectorDialogFragment.kt[m[36m:[m[32m407[m[36m:[m                Injekt.get<[1;31mCrashlytics[mInterface>().logException(e)
+[35mapp/src/main/java/ani/dantotsu/media/anime/SelectorDialogFragment.kt[m[36m:[m[32m540[m[36m:[m                                    Injekt.get<[1;31mCrashlytics[mInterface>().logException(e)
+[35mapp/src/main/java/ani/dantotsu/media/manga/mangareader/MangaReaderActivity.kt[m[36m:[m[32m44[m[36m:[mimport ani.dantotsu.connections.[1;31mcrashlytics[m.[1;31mCrashlytics[mInterface
+[35mapp/src/main/java/ani/dantotsu/media/manga/mangareader/MangaReaderActivity.kt[m[36m:[m[32m296[m[36m:[m                Injekt.get<[1;31mCrashlytics[mInterface>().logException(e)
+[35mapp/src/main/java/ani/dantotsu/media/manga/mangareader/MangaReaderActivity.kt[m[36m:[m[32m1092[m[36m:[m                Injekt.get<[1;31mCrashlytics[mInterface>().log("Failed to delete file $fileName")
+[35mapp/src/main/java/ani/dantotsu/media/manga/mangareader/MangaReaderActivity.kt[m[36m:[m[32m1093[m[36m:[m                Injekt.get<[1;31mCrashlytics[mInterface>().logException(e)
+[35mapp/src/main/java/ani/dantotsu/media/novel/novelreader/NovelReaderActivity.kt[m[36m:[m[32m33[m[36m:[mimport ani.dantotsu.connections.[1;31mcrashlytics[m.[1;31mCrashlytics[mInterface
+[35mapp/src/main/java/ani/dantotsu/media/novel/novelreader/NovelReaderActivity.kt[m[36m:[m[32m525[m[36m:[m                Injekt.get<[1;31mCrashlytics[mInterface>().log("Failed to delete file $fileName")
+[35mapp/src/main/java/ani/dantotsu/media/novel/novelreader/NovelReaderActivity.kt[m[36m:[m[32m526[m[36m:[m                Injekt.get<[1;31mCrashlytics[mInterface>().logException(e)
+[35mapp/src/main/java/ani/dantotsu/others/DisabledReports.kt[m[36m:[m[32m4[m[36m:[m//Setting this to false, will allow sending crash reports to Dantotsu's [1;31mFirebase[m [1;31mCrashlytics[mInterface
+[35mapp/src/main/java/ani/dantotsu/settings/InstalledAnimeExtensionsFragment.kt[m[36m:[m[32m25[m[36m:[mimport ani.dantotsu.connections.[1;31mcrashlytics[m.[1;31mCrashlytics[mInterface
+[35mapp/src/main/java/ani/dantotsu/settings/InstalledAnimeExtensionsFragment.kt[m[36m:[m[32m148[m[36m:[m                                Injekt.get<[1;31mCrashlytics[mInterface>().logException(error)
+[35mapp/src/main/java/ani/dantotsu/settings/InstalledMangaExtensionsFragment.kt[m[36m:[m[32m26[m[36m:[mimport ani.dantotsu.connections.[1;31mcrashlytics[m.[1;31mCrashlytics[mInterface
+[35mapp/src/main/java/ani/dantotsu/settings/InstalledMangaExtensionsFragment.kt[m[36m:[m[32m148[m[36m:[m                                Injekt.get<[1;31mCrashlytics[mInterface>().logException(error)
+[35mapp/src/main/java/ani/dantotsu/settings/InstalledNovelExtensionsFragment.kt[m[36m:[m[32m22[m[36m:[mimport ani.dantotsu.connections.[1;31mcrashlytics[m.[1;31mCrashlytics[mInterface
+[35mapp/src/main/java/ani/dantotsu/settings/InstalledNovelExtensionsFragment.kt[m[36m:[m[32m78[m[36m:[m                                Injekt.get<[1;31mCrashlytics[mInterface>().logException(error)
+[35mapp/src/main/java/ani/dantotsu/settings/InstallerSteps.kt[m[36m:[m[32m7[m[36m:[mimport ani.dantotsu.connections.[1;31mcrashlytics[m.[1;31mCrashlytics[mInterface
+[35mapp/src/main/java/ani/dantotsu/settings/InstallerSteps.kt[m[36m:[m[32m33[m[36m:[m        Injekt.get<[1;31mCrashlytics[mInterface>().logException(error)
+[35mapp/src/main/java/ani/dantotsu/settings/NovelExtensionsFragment.kt[m[36m:[m[32m15[m[36m:[mimport ani.dantotsu.connections.[1;31mcrashlytics[m.[1;31mCrashlytics[mInterface
+[35mapp/src/main/java/ani/dantotsu/settings/NovelExtensionsFragment.kt[m[36m:[m[32m100[m[36m:[m                        Injekt.get<[1;31mCrashlytics[mInterface>().logException(error)
+[35mapp/src/main/java/ani/dantotsu/util/Logger.kt[m[36m:[m[32m10[m[36m:[mimport ani.dantotsu.connections.[1;31mcrashlytics[m.[1;31mCrashlytics[mInterface
+[35mapp/src/main/java/ani/dantotsu/util/Logger.kt[m[36m:[m[32m43[m[36m:[m            Injekt.get<[1;31mCrashlytics[mInterface>().logException(e)
+[35mapp/src/main/java/ani/dantotsu/util/Logger.kt[m[36m:[m[32m181[m[36m:[m        Injekt.get<[1;31mCrashlytics[mInterface>().logException(e)
+[35mapp/src/main/java/eu/kanade/tachiyomi/extension/util/ExtensionLoader.kt[m[36m:[m[32m8[m[36m:[mimport ani.dantotsu.connections.[1;31mcrashlytics[m.[1;31mCrashlytics[mInterface
+[35mapp/src/main/java/eu/kanade/tachiyomi/extension/util/ExtensionLoader.kt[m[36m:[m[32m252[m[36m:[m            Injekt.get<[1;31mCrashlytics[mInterface>().logException(e)
+[35mapp/src/main/java/eu/kanade/tachiyomi/extension/util/ExtensionLoader.kt[m[36m:[m[32m356[m[36m:[m            Injekt.get<[1;31mCrashlytics[mInterface>().logException(e)
+[35mprivacy_policy.md[m[36m:[m[32m11[m[36m:[mWe use [1;31mFirebase[m [1;31mCrashlytics[m to collect crash reports and technical information about your device to improve app stability and performance. This may include:
+[35mprivacy_policy.md[m[36m:[m[32m22[m[36m:[m[1;31mFirebase[m Analytics collects anonymous usage data, including country-level geolocation information. This helps us understand how Dantotsu is being used across different regions.
