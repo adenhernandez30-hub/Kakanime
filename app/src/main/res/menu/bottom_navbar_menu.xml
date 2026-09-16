@@ -4,14 +4,4 @@
         android:id="@+id/anime"
         android:icon="@drawable/ic_round_movie_filter_24"
         android:title="@string/anime" />
-
-    <item
-        android:id="@+id/home"
-        android:icon="@drawable/ic_round_home_24"
-        android:title="@string/home" />
-
-    <item
-        android:id="@+id/manga"
-        android:icon="@drawable/ic_round_import_contacts_24"
-        android:title="@string/manga" />
 </menu>
