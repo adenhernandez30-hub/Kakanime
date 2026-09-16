@@ -244,16 +244,7 @@ class MainActivity : AppCompatActivity() {
                     }
             }
             window.navigationBarColor = ContextCompat.getColor(this, android.R.color.transparent)
-            selectedOption = if (fragment != null) {
-                when (fragment) {
-                    AnimeFragment::class.java.name -> 0
-                    HomeFragment::class.java.name -> 1
-                    MangaFragment::class.java.name -> 2
-                    else -> 1
-                }
-            } else {
-                PrefManager.getVal(PrefName.DefaultStartUpTab)
-            }
+            selectedOption = 0
             val navbar = binding.includedNavbar.navbar
             bottomBar = navbar
             navbar.visibility = View.VISIBLE
@@ -546,15 +537,10 @@ class MainActivity : AppCompatActivity() {
     private class ViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
         FragmentStateAdapter(fragmentManager, lifecycle) {
 
-        override fun getItemCount(): Int = 3
+        override fun getItemCount(): Int = 1
 
         override fun createFragment(position: Int): Fragment {
-            when (position) {
-                0 -> return AnimeFragment()
-                1 -> return if (Anilist.token != null) HomeFragment() else LoginFragment()
-                2 -> return MangaFragment()
-            }
-            return LoginFragment()
+            return AnimeFragment()
         }
     }
 
