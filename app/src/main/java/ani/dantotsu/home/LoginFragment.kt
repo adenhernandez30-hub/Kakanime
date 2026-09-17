@@ -9,10 +9,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.Fragment
 import ani.dantotsu.R
-import ani.dantotsu.connections.anilist.Anilist
 import ani.dantotsu.databinding.DialogUserAgentBinding
 import ani.dantotsu.databinding.FragmentLoginBinding
-import ani.dantotsu.openLinkInBrowser
 import ani.dantotsu.settings.saving.internal.PreferenceKeystore
 import ani.dantotsu.settings.saving.internal.PreferencePackager
 import ani.dantotsu.toast
@@ -34,10 +32,11 @@ class LoginFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.loginButton.setOnClickListener { Anilist.loginIntent(requireActivity()) }
-        binding.loginDiscord.setOnClickListener { openLinkInBrowser(getString(R.string.discord)) }
-        binding.loginGithub.setOnClickListener { openLinkInBrowser(getString(R.string.github)) }
-        binding.loginTelegram.setOnClickListener { openLinkInBrowser(getString(R.string.telegram)) }
+        // Temporary UI-only auth flow: until the KakaAnime auth backend exists,
+        // the Google button enters the existing Home screen directly.
+        binding.loginButton.setOnClickListener {
+            startMainActivity(requireActivity())
+        }
 
         val openDocumentLauncher =
             registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
@@ -116,8 +115,6 @@ class LoginFragment : Fragment() {
                 callback(null)
             }
         }.show()
-
-
     }
 
     private fun restartApp() {
@@ -125,5 +122,4 @@ class LoginFragment : Fragment() {
         requireActivity().finish()
         startActivity(intent)
     }
-
 }
