@@ -1437,7 +1437,6 @@ class ExoplayerView :
                         "dantotsu" ->
                             mutableListOf(
                                 RPC.Link(getString(R.string.view_anime), media.shareLink ?: ""),
-                                RPC.Link("Watch on Dantotsu", getString(R.string.dantotsu)),
                             )
 
                         "anilist" -> {
