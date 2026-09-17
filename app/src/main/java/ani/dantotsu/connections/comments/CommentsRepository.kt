@@ -40,6 +40,8 @@ interface CommentsRepository {
 
     suspend fun vote(commentId: Int, voteType: Int): Boolean
 
+    fun isAuthenticated(): Boolean
+
     fun isBanned(): Boolean
 
     fun isAdmin(): Boolean
@@ -90,6 +92,8 @@ object LegacyCommentsRepository : CommentsRepository {
 
     override suspend fun vote(commentId: Int, voteType: Int): Boolean =
         CommentsAPI.vote(commentId, voteType)
+
+    override fun isAuthenticated(): Boolean = CommentsAPI.authToken != null
 
     override fun isBanned(): Boolean = CommentsAPI.isBanned
 
