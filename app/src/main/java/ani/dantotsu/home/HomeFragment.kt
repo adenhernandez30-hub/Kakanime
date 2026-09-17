@@ -238,7 +238,10 @@ class HomeFragment : Fragment() {
                             requireContext(),
                             LinearLayoutManager.HORIZONTAL,
                             false
-                        )
+                        ).apply {
+                            initialPrefetchItemCount = 4
+                        }
+                        recyclerView.setItemViewCacheSize(4)
                         more.setOnClickListener { i ->
                             MediaListViewActivity.passedMedia = it
                             ContextCompat.startActivity(
@@ -517,14 +520,3 @@ class HomeFragment : Fragment() {
             }
         }
     }
-
-    override fun onResume() {
-        if (!model.loaded) Refresh.activity[1]!!.postValue(true)
-        if (_binding != null) {
-            binding.homeNotificationCount.isVisible = Anilist.unreadNotificationCount > 0
-                    && PrefManager.getVal<Boolean>(PrefName.ShowNotificationRedDot) == true
-            binding.homeNotificationCount.text = Anilist.unreadNotificationCount.toString()
-        }
-        super.onResume()
-    }
-}
