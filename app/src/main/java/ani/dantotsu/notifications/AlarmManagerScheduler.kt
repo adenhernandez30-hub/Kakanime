@@ -9,6 +9,7 @@ import ani.dantotsu.notifications.TaskScheduler.TaskType
 import ani.dantotsu.notifications.anilist.AnilistNotificationReceiver
 import ani.dantotsu.notifications.subscription.SubscriptionNotificationReceiver
 import ani.dantotsu.settings.saving.PrefManager
+import ani.dantotsu.settings.saving.PrefName
 import java.util.concurrent.TimeUnit
 
 class AlarmManagerScheduler(private val context: Context) : TaskScheduler {
