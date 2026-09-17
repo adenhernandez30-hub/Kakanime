@@ -5,7 +5,9 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import ani.dantotsu.notifications.anilist.AnilistNotificationWorker
 import ani.dantotsu.settings.saving.PrefManager
+import ani.dantotsu.settings.saving.PrefName
 import ani.dantotsu.util.Logger
 
 class BootCompletedReceiver : BroadcastReceiver() {
@@ -16,11 +18,11 @@ class BootCompletedReceiver : BroadcastReceiver() {
             Logger.init(context)
             Logger.log("Starting AniLab Subscription Service on Boot")
             if (PrefManager.getVal(PrefName.UseAlarmManager)) {
+                val anilistInterval =
+                    AnilistNotificationWorker.checkIntervals[PrefManager.getVal(PrefName.AnilistNotificationInterval)]
                 scheduler.scheduleRepeatingTask(
                     TaskScheduler.TaskType.ANILIST_NOTIFICATION,
-                    ani.dantotsu.notifications.anilist.AnilistNotificationWorker.checkIntervals[
-                        PrefManager.getVal(ani.dantotsu.settings.saving.PrefName.AnilistNotificationInterval)
-                    ]
+                    anilistInterval
                 )
             }
         }
