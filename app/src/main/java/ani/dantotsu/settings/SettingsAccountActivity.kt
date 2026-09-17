@@ -2,7 +2,6 @@ package ani.dantotsu.settings
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.HapticFeedbackConstants
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
@@ -79,7 +78,6 @@ class SettingsAccountActivity : AppCompatActivity() {
                     settingsAnilistUsername.text = Anilist.username
                     settingsAnilistAvatar.loadImage(Anilist.avatar)
                     settingsAnilistAvatar.setOnClickListener {
-                        it.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
                         val anilistLink = getString(
                             R.string.anilist_link,
                             PrefManager.getVal<String>(PrefName.AnilistUserName)
@@ -102,7 +100,6 @@ class SettingsAccountActivity : AppCompatActivity() {
                         settingsMALUsername.text = MAL.username
                         settingsMALAvatar.loadImage(MAL.avatar)
                         settingsMALAvatar.setOnClickListener {
-                            it.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
                             openLinkInBrowser(getString(R.string.myanilist_link, MAL.username))
                         }
                     } else {
@@ -133,7 +130,6 @@ class SettingsAccountActivity : AppCompatActivity() {
                     if (id != null && avatar != null) {
                         settingsDiscordAvatar.loadImage("https://cdn.discordapp.com/avatars/$id/$avatar.png")
                         settingsDiscordAvatar.setOnClickListener {
-                            it.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
                             val discordLink = getString(R.string.discord_link, id)
                             openLinkInBrowser(discordLink)
                         }
@@ -167,33 +163,23 @@ class SettingsAccountActivity : AppCompatActivity() {
                                 status = "idle"
                                 R.drawable.discord_status_idle
                             }
-
                             R.drawable.discord_status_idle -> {
                                 status = "dnd"
                                 R.drawable.discord_status_dnd
                             }
-
                             R.drawable.discord_status_dnd -> {
                                 status = "invisible"
                                 R.drawable.discord_status_invisible
                             }
-
                             R.drawable.discord_status_invisible -> {
                                 status = "online"
                                 R.drawable.discord_status_online
                             }
-
                             else -> R.drawable.discord_status_online
                         }
-
                         PrefManager.setVal(PrefName.DiscordStatus, status)
                         settingsPresenceSwitcher.setImageResource(initialStatus)
                         settingsPresenceSwitcher.startAnimation(zoomInAnimation)
-                    }
-                    settingsPresenceSwitcher.setOnLongClickListener {
-                        it.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
-                        DiscordDialogFragment().show(supportFragmentManager, "dialog")
-                        true
                     }
                 } else {
                     settingsPresenceSwitcher.visibility = View.GONE
@@ -255,11 +241,5 @@ class SettingsAccountActivity : AppCompatActivity() {
 
     fun reload() {
         snackString(getString(R.string.restart_app_extra))
-        //snackString(R.string.restart_app_extra)
-        //?.setDuration(Snackbar.LENGTH_LONG)
-        //?.setAction(R.string.do_it) {
-        //startMainActivity(this@SettingsAccountActivity)
-        //} Disabled for now. Doesn't update the ADDRESS even after this
     }
 }
-
