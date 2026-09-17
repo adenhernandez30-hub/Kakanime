@@ -25,15 +25,14 @@ import ani.dantotsu.navBarHeight
 import ani.dantotsu.openLinkInBrowser
 import ani.dantotsu.others.AppUpdater
 import ani.dantotsu.others.CustomBottomDialog
-import ani.dantotsu.pop
-import ani.dantotsu.setSafeOnClickListener
-import ani.dantotsu.settings.saving.PrefManager
-import ani.dantotsu.settings.saving.PrefName
 import ani.dantotsu.snackString
 import ani.dantotsu.startMainActivity
 import ani.dantotsu.statusBarHeight
 import ani.dantotsu.themes.ThemeManager
 import ani.dantotsu.toast
+import ani.dantotsu.setSafeOnClickListener
+import ani.dantotsu.settings.saving.PrefManager
+import ani.dantotsu.settings.saving.PrefName
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -190,16 +189,6 @@ class SettingsActivity : AppCompatActivity() {
                 }
             }
 
-            settingBuyMeCoffee.setOnClickListener {
-                lifecycleScope.launch {
-                    it.pop()
-                }
-                openLinkInBrowser(getString(R.string.coffee))
-            }
-            lifecycleScope.launch {
-                settingBuyMeCoffee.pop()
-            }
-
             loginDiscord.setOnClickListener {
                 openLinkInBrowser(getString(R.string.discord))
             }
@@ -209,7 +198,6 @@ class SettingsActivity : AppCompatActivity() {
             loginTelegram.setOnClickListener {
                 openLinkInBrowser(getString(R.string.telegram))
             }
-
 
             (settingsLogo.drawable as Animatable).start()
             val array = resources.getStringArray(R.array.tips)
@@ -229,31 +217,6 @@ class SettingsActivity : AppCompatActivity() {
                     snackString(array[(Math.random() * array.size).toInt()], context)
                 }
 
-            }
-
-            lifecycleScope.launch(Dispatchers.IO) {
-                delay(2000)
-                runOnUiThread {
-                    if (Random.nextInt(0, 100) > 69) {
-                        CustomBottomDialog.newInstance().apply {
-                            title = this@SettingsActivity.getString(R.string.enjoying_app)
-                            addView(TextView(this@SettingsActivity).apply {
-                                text = context.getString(R.string.consider_donating)
-                            })
-
-                            setNegativeButton(this@SettingsActivity.getString(R.string.no_moners)) {
-                                snackString(R.string.you_be_rich)
-                                dismiss()
-                            }
-
-                            setPositiveButton(this@SettingsActivity.getString(R.string.donate)) {
-                                settingBuyMeCoffee.performClick()
-                                dismiss()
-                            }
-                            show(supportFragmentManager, "dialog")
-                        }
-                    }
-                }
             }
         }
     }
