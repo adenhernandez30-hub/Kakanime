@@ -47,6 +47,8 @@ interface CommentsRepository {
     fun isMod(): Boolean
 
     fun currentUserId(): String
+
+    fun logout()
 }
 
 /** Compatibility implementation backed by the existing legacy API. */
@@ -96,4 +98,6 @@ object LegacyCommentsRepository : CommentsRepository {
     override fun isMod(): Boolean = CommentsAPI.isMod
 
     override fun currentUserId(): String = CommentsAPI.userId
+
+    override fun logout() = CommentsAPI.logout()
 }
