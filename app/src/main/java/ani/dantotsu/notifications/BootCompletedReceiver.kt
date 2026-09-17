@@ -5,11 +5,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import ani.dantotsu.notifications.TaskScheduler.TaskType
-import ani.dantotsu.notifications.anilist.AnilistNotificationWorker
-import ani.dantotsu.notifications.comment.CommentNotificationWorker
 import ani.dantotsu.settings.saving.PrefManager
-import ani.dantotsu.settings.saving.PrefName
 import ani.dantotsu.util.Logger
 
 class BootCompletedReceiver : BroadcastReceiver() {
@@ -18,19 +14,13 @@ class BootCompletedReceiver : BroadcastReceiver() {
             val scheduler = AlarmManagerScheduler(context)
             PrefManager.init(context)
             Logger.init(context)
-            Logger.log("Starting Dantotsu Subscription Service on Boot")
+            Logger.log("Starting AniLab Subscription Service on Boot")
             if (PrefManager.getVal(PrefName.UseAlarmManager)) {
-                val commentInterval =
-                    CommentNotificationWorker.checkIntervals[PrefManager.getVal(PrefName.CommentNotificationInterval)]
-                val anilistInterval =
-                    AnilistNotificationWorker.checkIntervals[PrefManager.getVal(PrefName.AnilistNotificationInterval)]
                 scheduler.scheduleRepeatingTask(
-                    TaskType.COMMENT_NOTIFICATION,
-                    commentInterval
-                )
-                scheduler.scheduleRepeatingTask(
-                    TaskType.ANILIST_NOTIFICATION,
-                    anilistInterval
+                    TaskScheduler.TaskType.ANILIST_NOTIFICATION,
+                    ani.dantotsu.notifications.anilist.AnilistNotificationWorker.checkIntervals[
+                        PrefManager.getVal(ani.dantotsu.settings.saving.PrefName.AnilistNotificationInterval)
+                    ]
                 )
             }
         }
