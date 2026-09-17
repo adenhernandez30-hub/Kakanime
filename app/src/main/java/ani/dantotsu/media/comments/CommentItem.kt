@@ -9,7 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import ani.dantotsu.R
 import ani.dantotsu.connections.comments.Comment
-import ani.dantotsu.connections.comments.CommentsAPI
+import ani.dantotsu.connections.comments.CommentsRepositoryProvider
 import ani.dantotsu.copyToClipboard
 import ani.dantotsu.databinding.ItemCommentsBinding
 import ani.dantotsu.getAppString
@@ -53,6 +53,7 @@ class CommentItem(
     var isReplying = false
     private var repliesVisible = false
     var MAX_DEPTH = 3
+    private val commentsRepository = CommentsRepositoryProvider.repository
 
     init {
         adapter.add(repliesSection)
@@ -66,7 +67,7 @@ class CommentItem(
             commentRepliesList.layoutManager =
                 LinearLayoutManager(commentsFragment.activity)
             commentRepliesList.adapter = adapter
-            val isUserComment = CommentsAPI.userId == comment.userId
+            val isUserComment = commentsRepository.currentUserId() == comment.userId
             val levelColor = getAvatarColor(comment.totalVotes, backgroundColor)
             markwon.setMarkdown(commentText, comment.content)
             commentEdit.visibility = if (isUserComment) View.VISIBLE else View.GONE
@@ -76,7 +77,7 @@ class CommentItem(
                 commentUserTagLayout.visibility = View.VISIBLE
                 commentUserTag.text = comment.tag.toString()
             }
-            replying(isReplying) //sets default text
+            replying(isReplying)
             editing(isEditing)
             if ((comment.replyCount ?: 0) > 0) {
                 commentTotalReplies.visibility = View.VISIBLE
@@ -151,9 +152,9 @@ class CommentItem(
                 val popup = PopupMenu(commentsFragment.requireContext(), commentInfo)
                 popup.menuInflater.inflate(R.menu.profile_details_menu, popup.menu)
                 popup.menu.findItem(R.id.commentDelete)?.isVisible =
-                    isUserComment || CommentsAPI.isAdmin || CommentsAPI.isMod
+                    isUserComment || commentsRepository.isAdmin() || commentsRepository.isMod()
                 popup.menu.findItem(R.id.commentBanUser)?.isVisible =
-                    (CommentsAPI.isAdmin || CommentsAPI.isMod) && !isUserComment
+                    (commentsRepository.isAdmin() || commentsRepository.isMod()) && !isUserComment
                 popup.menu.findItem(R.id.commentReport)?.isVisible = !isUserComment
                 popup.setOnMenuItemClickListener { item ->
                     when (item.itemId) {
@@ -163,7 +164,7 @@ class CommentItem(
                                 getAppString(R.string.report_comment_confirm)
                             ) {
                                 CoroutineScope(Dispatchers.Main + SupervisorJob()).launch {
-                                    val success = CommentsAPI.reportComment(
+                                    val success = commentsRepository.reportComment(
                                         comment.commentId,
                                         comment.username,
                                         commentsFragment.mediaName,
@@ -183,7 +184,7 @@ class CommentItem(
                                 getAppString(R.string.delete_comment_confirm)
                             ) {
                                 CoroutineScope(Dispatchers.Main + SupervisorJob()).launch {
-                                    val success = CommentsAPI.deleteComment(comment.commentId)
+                                    val success = commentsRepository.deleteComment(comment.commentId)
                                     if (success) {
                                         snackString(R.string.comment_deleted)
                                         parentSection.remove(this@CommentItem)
@@ -199,7 +200,7 @@ class CommentItem(
                                 getAppString(R.string.ban_user_confirm)
                             ) {
                                 CoroutineScope(Dispatchers.Main + SupervisorJob()).launch {
-                                    val success = CommentsAPI.banUser(comment.userId)
+                                    val success = commentsRepository.banUser(comment.userId)
                                     if (success) {
                                         snackString(R.string.user_banned)
                                     }
@@ -215,14 +216,13 @@ class CommentItem(
                 }
                 popup.show()
             }
-            //fill the icon if the user has liked the comment
             setVoteButtons(viewBinding)
             commentUpVote.setOnClickListener {
                 val voteType = if (comment.userVoteType == 1) 0 else 1
                 val previousVoteType = comment.userVoteType
                 val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
                 scope.launch {
-                    val success = CommentsAPI.vote(comment.commentId, voteType)
+                    val success = commentsRepository.vote(comment.commentId, voteType)
                     if (success) {
                         comment.userVoteType = voteType
 
@@ -240,7 +240,7 @@ class CommentItem(
                 val previousVoteType = comment.userVoteType
                 val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
                 scope.launch {
-                    val success = CommentsAPI.vote(comment.commentId, voteType)
+                    val success = commentsRepository.vote(comment.commentId, voteType)
                     if (success) {
                         comment.userVoteType = voteType
                         if (previousVoteType == 1) {
@@ -377,13 +377,6 @@ class CommentItem(
         return Pair(color, level)
     }
 
-    /**
-     * Builds the dialog for yes/no confirmation
-     * no doesn't do anything, yes calls the callback
-     * @param title the title of the dialog
-     * @param message the message of the dialog
-     * @param callback the callback to call when the user clicks yes
-     */
     private fun dialogBuilder(title: String, message: String, callback: () -> Unit) {
         commentsFragment.activity.customAlertDialog().apply {
             setTitle(title)
@@ -396,55 +389,12 @@ class CommentItem(
     }
 
     private val usernameColors: Array<String> = arrayOf(
-        "#9932cc",
-        "#a020f0",
-        "#8b008b",
-        "#7b68ee",
-        "#da70d6",
-        "#dda0dd",
-        "#ffe4b5",
-        "#f0e68c",
-        "#ffb6c1",
-        "#fa8072",
-        "#b03060",
-        "#ff1493",
-        "#ff00ff",
-        "#ff69b4",
-        "#dc143c",
-        "#8b0000",
-        "#ff0000",
-        "#a0522d",
-        "#f4a460",
-        "#b8860b",
-        "#ffa500",
-        "#d2691e",
-        "#ff6347",
-        "#808000",
-        "#ffd700",
-        "#ffff54",
-        "#8fbc8f",
-        "#3cb371",
-        "#008000",
-        "#00fa9a",
-        "#98fb98",
-        "#00ff00",
-        "#adff2f",
-        "#32cd32",
-        "#556b2f",
-        "#9acd32",
-        "#7fffd4",
-        "#2f4f4f",
-        "#5f9ea0",
-        "#87ceeb",
-        "#00bfff",
-        "#00ffff",
-        "#1e90ff",
-        "#4682b4",
-        "#0000ff",
-        "#0000cd",
-        "#00008b",
-        "#191970",
-        "#ffffff",
+        "#9932cc", "#a020f0", "#8b008b", "#7b68ee", "#da70d6", "#dda0dd", "#ffe4b5", "#f0e68c",
+        "#ffb6c1", "#fa8072", "#b03060", "#ff1493", "#ff00ff", "#ff69b4", "#dc143c", "#8b0000",
+        "#ff0000", "#a0522d", "#f4a460", "#b8860b", "#ffa500", "#d2691e", "#ff6347", "#808000",
+        "#ffd700", "#ffff54", "#8fbc8f", "#3cb371", "#008000", "#00fa9a", "#98fb98", "#00ff00",
+        "#adff2f", "#32cd32", "#556b2f", "#9acd32", "#7fffd4", "#2f4f4f", "#5f9ea0", "#87ceeb",
+        "#00bfff", "#00ffff", "#1e90ff", "#4682b4", "#0000ff", "#0000cd", "#00008b", "#191970", "#ffffff"
     )
 
 }
