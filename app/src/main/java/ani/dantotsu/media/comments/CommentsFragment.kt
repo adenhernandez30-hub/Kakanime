@@ -22,7 +22,7 @@ import ani.dantotsu.buildMarkwon
 import ani.dantotsu.connections.anilist.Anilist
 import ani.dantotsu.connections.comments.Comment
 import ani.dantotsu.connections.comments.CommentResponse
-import ani.dantotsu.connections.comments.CommentsAPI
+import ani.dantotsu.connections.comments.CommentsRepositoryProvider
 import ani.dantotsu.databinding.DialogEdittextBinding
 import ani.dantotsu.databinding.FragmentCommentsBinding
 import ani.dantotsu.loadImage
@@ -48,6 +48,7 @@ import java.util.TimeZone
 class CommentsFragment : Fragment() {
     lateinit var binding: FragmentCommentsBinding
     lateinit var activity: MediaDetailsActivity
+    private val commentsRepository = CommentsRepositoryProvider.repository
     private var interactionState = InteractionState.NONE
     private var commentWithInteraction: CommentItem? = null
     private val section = Section()
@@ -79,7 +80,6 @@ class CommentsFragment : Fragment() {
             activity.binding.commentInputLayout
         )
 
-        //get the media id from the intent
         val mediaId = arguments?.getInt("mediaId") ?: -1
         mediaName = arguments?.getString("mediaName") ?: "unknown"
         if (mediaId == -1) {
@@ -110,7 +110,7 @@ class CommentsFragment : Fragment() {
         binding.commentsList.adapter = adapter
         binding.commentsList.layoutManager = LinearLayoutManager(activity)
 
-        if (CommentsAPI.authToken != null) {
+        if (commentsRepository.isAuthenticated()) {
             lifecycleScope.launch {
                 val commentId = arguments?.getInt("commentId")
                 if (commentId != null && commentId > 0) {
@@ -221,7 +221,6 @@ class CommentsFragment : Fragment() {
                                     }
                                 }
                             } else {
-                                //snackString("No more comments") fix spam?
                                 Logger.log("No more comments")
                             }
                         }
@@ -244,7 +243,7 @@ class CommentsFragment : Fragment() {
 
                 private suspend fun fetchComments(): CommentResponse? {
                     return withContext(Dispatchers.IO) {
-                        CommentsAPI.getCommentsForId(
+                        commentsRepository.getCommentsForId(
                             mediaId,
                             pagesLoaded + 1,
                             filterTag,
@@ -253,7 +252,6 @@ class CommentsFragment : Fragment() {
                     }
                 }
 
-                //adds additional comments to the section
                 private suspend fun updateUIWithComment(comment: Comment) {
                     withContext(Dispatchers.Main) {
                         section.add(
@@ -314,7 +312,6 @@ class CommentsFragment : Fragment() {
             }
 
             activity.binding.commentLabel.setOnClickListener {
-                //alert dialog to enter a number, with a cancel and ok button
                 activity.customAlertDialog().apply {
                     val customView = DialogEdittextBinding.inflate(layoutInflater)
                     setTitle("Enter a chapter/episode number tag")
@@ -358,7 +355,7 @@ class CommentsFragment : Fragment() {
         }
 
         activity.binding.commentSend.setOnClickListener {
-            if (CommentsAPI.isBanned) {
+            if (commentsRepository.isBanned()) {
                 snackString("You are banned from commenting :(")
                 return@setOnClickListener
             }
@@ -382,15 +379,6 @@ class CommentsFragment : Fragment() {
         }
     }
 
-    enum class InteractionState {
-        NONE, EDIT, REPLY
-    }
-
-    /**
-     * Loads and displays the comments
-     * Called when the activity is created
-     * Or when the user refreshes the comments
-     */
     private suspend fun loadAndDisplayComments() {
         binding.commentsProgressBar.visibility = View.VISIBLE
         binding.commentsList.visibility = View.GONE
@@ -398,7 +386,7 @@ class CommentsFragment : Fragment() {
         section.clear()
 
         val comments = withContext(Dispatchers.IO) {
-            CommentsAPI.getCommentsForId(
+            commentsRepository.getCommentsForId(
                 mediaId,
                 tag = filterTag,
                 sort = PrefManager.getVal(PrefName.CommentSortOrder, "newest")
@@ -434,7 +422,7 @@ class CommentsFragment : Fragment() {
         section.clear()
 
         val comment = withContext(Dispatchers.IO) {
-            CommentsAPI.getSingleComment(commentId)
+            commentsRepository.getSingleComment(commentId)
         }
         if (comment != null) {
             withContext(Dispatchers.Main) {
@@ -467,10 +455,6 @@ class CommentsFragment : Fragment() {
         }
     }
 
-    /**
-     * Resets the old state of the comment input
-     * @return the old state
-     */
     private fun resetOldState(): InteractionState {
         val oldState = interactionState
         interactionState = InteractionState.NONE
@@ -499,11 +483,6 @@ class CommentsFragment : Fragment() {
         }
     }
 
-    /**
-     * Callback from the comment item to edit the comment
-     * Called every time the edit button is clicked
-     * @param comment the comment to edit
-     */
     fun editCallback(comment: CommentItem) {
         if (resetOldState() == InteractionState.EDIT) return
         commentWithInteraction = comment
@@ -515,11 +494,6 @@ class CommentsFragment : Fragment() {
         interactionState = InteractionState.EDIT
     }
 
-    /**
-     * Callback from the comment item to reply to the comment
-     * Called every time the reply button is clicked
-     * @param comment the comment to reply to
-     */
     fun replyCallback(comment: CommentItem) {
         if (resetOldState() == InteractionState.REPLY) return
         commentWithInteraction = comment
@@ -546,14 +520,10 @@ class CommentsFragment : Fragment() {
         }
     }
 
-    /**
-     * Callback from the comment item to view the replies to the comment
-     * @param comment the comment to view the replies of
-     */
     fun viewReplyCallback(comment: CommentItem) {
         lifecycleScope.launch {
             val replies = withContext(Dispatchers.IO) {
-                CommentsAPI.getRepliesFromId(comment.comment.commentId)
+                commentsRepository.getRepliesFromId(comment.comment.commentId)
             }
 
             replies?.comments?.forEach {
@@ -576,11 +546,6 @@ class CommentsFragment : Fragment() {
         }
     }
 
-
-    /**
-     * Shows the comment rules dialog
-     * Called when the user tries to comment for the first time
-     */
     private fun showCommentRulesDialog() {
         activity.customAlertDialog().apply {
             setTitle("Commenting Rules")
@@ -632,8 +597,9 @@ class CommentsFragment : Fragment() {
 
     private suspend fun handleEditComment(commentText: String) {
         val success = withContext(Dispatchers.IO) {
-            CommentsAPI.editComment(
-                commentWithInteraction?.comment?.commentId ?: return@withContext false, commentText
+            commentsRepository.editComment(
+                commentWithInteraction?.comment?.commentId ?: return@withContext false,
+                commentText
             )
         }
         if (success) {
@@ -659,14 +625,9 @@ class CommentsFragment : Fragment() {
         item.notifyChanged()
     }
 
-    /**
-     * Handles the new user-added comment
-     * @param commentText the text of the comment
-     */
-
     private suspend fun handleNewComment(commentText: String) {
         val success = withContext(Dispatchers.IO) {
-            CommentsAPI.comment(
+            commentsRepository.createComment(
                 mediaId,
                 if (interactionState == InteractionState.REPLY) commentWithInteraction?.comment?.commentId else null,
                 commentText,
