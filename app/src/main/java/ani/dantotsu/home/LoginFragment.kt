@@ -13,6 +13,7 @@ import ani.dantotsu.databinding.DialogUserAgentBinding
 import ani.dantotsu.databinding.FragmentLoginBinding
 import ani.dantotsu.settings.saving.internal.PreferenceKeystore
 import ani.dantotsu.settings.saving.internal.PreferencePackager
+import ani.dantotsu.startMainActivity
 import ani.dantotsu.toast
 import ani.dantotsu.util.Logger
 import ani.dantotsu.util.customAlertDialog
