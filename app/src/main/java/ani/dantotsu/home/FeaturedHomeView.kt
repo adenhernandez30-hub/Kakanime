@@ -32,15 +32,37 @@ class FeaturedHomeView @JvmOverloads constructor(context: Context, attrs: androi
     init {
         setPadding(0, dp(8), 0, dp(8))
         clipChildren = false
+        setWillNotDraw(false)
 
         val contentFrame = FrameLayout(context)
         image.scaleType = ImageView.ScaleType.CENTER_CROP
         contentFrame.addView(image, FrameLayout.LayoutParams(-1, -1))
+
+        // Top fade makes the banner visually blend into the Home background.
         contentFrame.addView(
             View(context).apply {
                 background = GradientDrawable(
                     GradientDrawable.Orientation.TOP_BOTTOM,
-                    intArrayOf(0x12000000, 0xB8000000.toInt(), 0xF0000000.toInt())
+                    intArrayOf(
+                        0xF0000000.toInt(),
+                        0x18000000,
+                        0x00000000
+                    )
+                )
+            },
+            FrameLayout.LayoutParams(-1, -1)
+        )
+
+        // Bottom fade keeps the text readable while avoiding a boxed/card look.
+        contentFrame.addView(
+            View(context).apply {
+                background = GradientDrawable(
+                    GradientDrawable.Orientation.TOP_BOTTOM,
+                    intArrayOf(
+                        0x00000000,
+                        0xB8000000.toInt(),
+                        0xF5000000.toInt()
+                    )
                 )
             },
             FrameLayout.LayoutParams(-1, -1)
@@ -56,7 +78,7 @@ class FeaturedHomeView @JvmOverloads constructor(context: Context, attrs: androi
             text = "FEATURED"
             textSize = 10f
             setTextColor(Color.WHITE)
-            typeface = ResourcesCompat.getFont(resources, R.font.poppins_bold)
+            typeface = ResourcesCompat.getFont(context, R.font.poppins_bold)
             setPadding(dp(9), dp(4), dp(9), dp(4))
             background = GradientDrawable().apply {
                 cornerRadius = dp(8).toFloat()
@@ -71,7 +93,7 @@ class FeaturedHomeView @JvmOverloads constructor(context: Context, attrs: androi
             textSize = 21f
             maxLines = 2
             setTextColor(Color.WHITE)
-            typeface = ResourcesCompat.getFont(resources, R.font.poppins_bold)
+            typeface = ResourcesCompat.getFont(context, R.font.poppins_bold)
         }
         content.addView(title, LinearLayout.LayoutParams(-1, -2))
 
@@ -79,7 +101,7 @@ class FeaturedHomeView @JvmOverloads constructor(context: Context, attrs: androi
             textSize = 11.5f
             maxLines = 2
             setTextColor(0xE6FFFFFF.toInt())
-            typeface = ResourcesCompat.getFont(resources, R.font.poppins)
+            typeface = ResourcesCompat.getFont(context, R.font.poppins)
         }
         content.addView(description, LinearLayout.LayoutParams(-1, -2).apply {
             topMargin = dp(4)
