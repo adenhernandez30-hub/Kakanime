@@ -97,7 +97,7 @@ object LegacyCommentsRepository : CommentsRepository {
 
     override fun isMod(): Boolean = CommentsAPI.isMod
 
-    override fun currentUserId(): String = CommentsAPI.userId
+    override fun currentUserId(): String = CommentsAPI.userId ?: ""
 
     override fun logout() = CommentsAPI.logout()
 }
