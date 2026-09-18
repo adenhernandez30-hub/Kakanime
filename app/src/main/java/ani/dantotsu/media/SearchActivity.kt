@@ -349,6 +349,12 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
+        if (intent.getBooleanExtra("openFilter", false) && (searchType == SearchType.ANIME || searchType == SearchType.MANGA)) {
+            binding.searchRecyclerView.post {
+                SearchFilterBottomDialog.newInstance().show(supportFragmentManager, "search_filter")
+            }
+        }
+
         progressAdapter.ready.observe(this) {
             if (it == true) {
                 if (!notSet) {
