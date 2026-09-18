@@ -193,24 +193,24 @@ class MainActivity : AppCompatActivity() {
         binding.root.isMotionEventSplittingEnabled = false
 
         lifecycleScope.launch {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
-                val splash = SplashScreenBinding.inflate(layoutInflater)
-                binding.root.addView(splash.root)
-                (splash.splashImage.drawable as Animatable).start()
+            val splash = SplashScreenBinding.inflate(layoutInflater)
+            binding.root.addView(splash.root)
+            (splash.splashImage.drawable as? Animatable)?.start()
 
-                delay(1200)
+            // Keep the branded splash visible briefly after the system splash,
+            // so the KakaAnime identity is visible on Android 12+ as well.
+            delay(if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) 700 else 1200)
 
-                ObjectAnimator.ofFloat(
-                    splash.root,
-                    View.TRANSLATION_Y,
-                    0f,
-                    -splash.root.height.toFloat()
-                ).apply {
-                    interpolator = AnticipateInterpolator()
-                    duration = 200L
-                    doOnEnd { binding.root.removeView(splash.root) }
-                    start()
-                }
+            ObjectAnimator.ofFloat(
+                splash.root,
+                View.ALPHA,
+                1f,
+                0f
+            ).apply {
+                interpolator = AnticipateInterpolator()
+                duration = 220L
+                doOnEnd { binding.root.removeView(splash.root) }
+                start()
             }
         }
 
