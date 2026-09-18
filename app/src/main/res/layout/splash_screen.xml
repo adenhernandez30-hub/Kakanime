@@ -4,15 +4,15 @@
     android:layout_height="match_parent"
     android:background="#020814">
 
-    <ani.dantotsu.home.SplashEffectsView
-        android:id="@+id/splashEffects"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/splash_ambient" />
+
+    <ani.dantotsu.home.SplashEffectsView
+        android:id="@+id/splashEffects"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <LinearLayout
         android:id="@+id/splashContent"
