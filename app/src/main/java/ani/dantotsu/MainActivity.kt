@@ -192,86 +192,27 @@ class MainActivity : AppCompatActivity() {
 
         binding.root.isMotionEventSplittingEnabled = false
 
-        lifecycleScope.launch {
-            val splash = SplashScreenBinding.inflate(layoutInflater)
-            binding.root.addView(splash.root)
+        // Android 12+ uses the system AnimatedVectorDrawable splash.
+        // Keep the Dantotsu-style custom fallback only for pre-S devices.
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+            lifecycleScope.launch {
+                val splash = SplashScreenBinding.inflate(layoutInflater)
+                binding.root.addView(splash.root)
+                (splash.splashImage.drawable as? android.graphics.drawable.Animatable)?.start()
 
-            val imageIn = ObjectAnimator.ofPropertyValuesHolder(
-                splash.splashImage,
-                android.animation.PropertyValuesHolder.ofFloat(View.ALPHA, 0f, 1f),
-                android.animation.PropertyValuesHolder.ofFloat(View.SCALE_X, 0.72f, 1f),
-                android.animation.PropertyValuesHolder.ofFloat(View.SCALE_Y, 0.72f, 1f)
-            ).apply {
-                duration = 520L
-                interpolator = android.view.animation.DecelerateInterpolator()
-            }
+                delay(700L)
 
-            val nameIn = ObjectAnimator.ofPropertyValuesHolder(
-                splash.splashName,
-                android.animation.PropertyValuesHolder.ofFloat(View.ALPHA, 0f, 1f),
-                android.animation.PropertyValuesHolder.ofFloat(View.TRANSLATION_Y, 18f, 0f)
-            ).apply {
-                duration = 340L
-                startDelay = 470L
-                interpolator = android.view.animation.DecelerateInterpolator()
-            }
-
-            val taglineIn = ObjectAnimator.ofPropertyValuesHolder(
-                splash.splashTagline,
-                android.animation.PropertyValuesHolder.ofFloat(View.ALPHA, 0f, 1f),
-                android.animation.PropertyValuesHolder.ofFloat(View.TRANSLATION_Y, 10f, 0f)
-            ).apply {
-                duration = 300L
-                startDelay = 820L
-            }
-
-            val dividerIn = ObjectAnimator.ofFloat(splash.splashDivider, View.ALPHA, 0f, 1f).apply {
-                duration = 200L
-                startDelay = 690L
-            }
-
-            val dividerTopIn = ObjectAnimator.ofFloat(splash.splashDividerTop, View.ALPHA, 0f, 1f).apply {
-                duration = 180L
-                startDelay = 1050L
-            }
-
-            val loadingIn = ObjectAnimator.ofFloat(splash.splashLoading, View.ALPHA, 0f, 1f).apply {
-                duration = 220L
-                startDelay = 1250L
-            }
-
-            val loadingTextIn = ObjectAnimator.ofFloat(splash.splashLoadingText, View.ALPHA, 0f, 1f).apply {
-                duration = 220L
-                startDelay = 1300L
-            }
-
-            imageIn.start()
-            nameIn.start()
-            taglineIn.start()
-            dividerIn.start()
-            dividerTopIn.start()
-            loadingIn.start()
-            loadingTextIn.start()
-
-            val loading = ObjectAnimator.ofInt(splash.splashLoading, "progress", 0, 100).apply {
-                duration = 750L
-                startDelay = 1350L
-                interpolator = android.view.animation.DecelerateInterpolator()
-                start()
-            }
-
-            delay(if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) 2350 else 2500)
-
-            ObjectAnimator.ofFloat(
-                splash.root,
-                View.ALPHA,
-                1f,
-                0f
-            ).apply {
-                interpolator = android.view.animation.AccelerateDecelerateInterpolator()
-                duration = 240L
-                doOnEnd { binding.root.removeView(splash.root) }
-                start()
+                ObjectAnimator.ofFloat(
+                    splash.root,
+                    View.TRANSLATION_Y,
+                    0f,
+                    -splash.root.height.toFloat()
+                ).apply {
+                    interpolator = AnticipateInterpolator()
+                    duration = 200L
+                    doOnEnd { binding.root.removeView(splash.root) }
+                    start()
+                }
             }
         }
 
