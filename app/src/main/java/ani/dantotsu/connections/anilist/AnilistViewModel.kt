@@ -77,6 +77,37 @@ class AnilistHomeViewModel : ViewModel() {
 
     fun getRecommendation(): LiveData<ArrayList<Media>> = recommendation
 
+    private val publicFeatured: MutableLiveData<ArrayList<Media>> =
+        MutableLiveData<ArrayList<Media>>(null)
+
+    fun getPublicFeatured(): LiveData<ArrayList<Media>> = publicFeatured
+
+    suspend fun initPublicFeatured() {
+        val (season, year) = Anilist.currentSeasons[1]
+        val result = Anilist.query.searchAniManga(
+            type = "ANIME",
+            perPage = 8,
+            sort = Anilist.sortBy[2],
+            season = season,
+            seasonYear = year,
+            hd = true,
+            adultOnly = PrefManager.getVal(PrefName.AdultOnly)
+        )?.results ?: arrayListOf()
+        publicFeatured.postValue(result as ArrayList<Media>)
+    }
+
+    fun initGuestHome() {
+        animeContinue.postValue(arrayListOf())
+        animeFav.postValue(arrayListOf())
+        animePlanned.postValue(arrayListOf())
+        mangaContinue.postValue(arrayListOf())
+        mangaFav.postValue(arrayListOf())
+        mangaPlanned.postValue(arrayListOf())
+        recommendation.postValue(arrayListOf())
+        hidden.postValue(arrayListOf())
+        userStatus.postValue(arrayListOf())
+    }
+
     private val userStatus: MutableLiveData<ArrayList<User>> =
         MutableLiveData<ArrayList<User>>(null)
 
