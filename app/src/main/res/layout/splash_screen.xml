@@ -67,5 +67,4 @@
         android:background="@drawable/splash_reference_progress"
         android:scaleX="0"
         android:transformPivotX="0dp" />
-
 </FrameLayout>
