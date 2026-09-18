@@ -536,9 +536,6 @@ class HomeFragment : Fragment() {
                     withContext(Dispatchers.Main) {
                         model.empty.postValue(empty)
                         binding.homeHiddenItemsContainer.visibility = View.GONE
-                        if (!hasAnilistSession) {
-                            binding.homeContinueWatchingContainer.visibility = View.GONE
-                        }
                     }
 
                     live.postValue(false)
