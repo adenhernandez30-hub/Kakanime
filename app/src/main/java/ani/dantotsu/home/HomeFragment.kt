@@ -126,6 +126,25 @@ class HomeFragment : Fragment() {
                 snackString(currContext()?.getString(R.string.please_reload))
             }
         }
+        listOf(
+            binding.homePreviousSeason,
+            binding.homeThisSeason,
+            binding.homeNextSeason
+        ).forEachIndexed { i, view ->
+            view.setSafeOnClickListener {
+                val (season, year) = Anilist.currentSeasons[i]
+                ContextCompat.startActivity(
+                    requireContext(),
+                    Intent(requireContext(), ani.dantotsu.media.SearchActivity::class.java)
+                        .putExtra("type", "ANIME")
+                        .putExtra("season", season)
+                        .putExtra("seasonYear", year.toString())
+                        .putExtra("search", true),
+                    null
+                )
+            }
+        }
+
         binding.homeUserAvatarContainer.setSafeOnClickListener {
             val dialogFragment =
                 SettingsDialogFragment.newInstance(SettingsDialogFragment.Companion.PageType.HOME)
