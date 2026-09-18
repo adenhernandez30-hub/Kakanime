@@ -368,13 +368,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
-            android:configChanges="orientation|screenSize|layoutDirection"
-            android:exported="true">
+            android:name=".SplashActivity"
+            android:exported="true"
+            android:theme="@style/Theme.KakaAnime.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="orientation|screenSize|layoutDirection"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.Main" />
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
