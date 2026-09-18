@@ -16,111 +16,149 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import ani.dantotsu.R
+import ani.dantotsu.blurImage
 import ani.dantotsu.connections.anilist.AnilistHomeViewModel
 import ani.dantotsu.loadImage
 import ani.dantotsu.media.Media
 import ani.dantotsu.media.MediaDetailsActivity
-import com.google.android.material.button.MaterialButton
+import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.shape.ShapeAppearanceModel
 
-class FeaturedHomeView @JvmOverloads constructor(context: Context, attrs: android.util.AttributeSet? = null) : FrameLayout(context, attrs) {
-    private val image = ImageView(context)
+class FeaturedHomeView @JvmOverloads constructor(
+    context: Context,
+    attrs: android.util.AttributeSet? = null
+) : FrameLayout(context, attrs) {
+
+    private val background = ImageView(context)
+    private val poster = ShapeableImageView(context)
     private val title = TextView(context)
     private val description = TextView(context)
+    private val status = TextView(context)
+    private val meta = TextView(context)
+    private val score = TextView(context)
     private val badge = TextView(context)
-    private val action = MaterialButton(context)
+
+    private var currentMedia: Media? = null
 
     init {
-        setPadding(0, dp(8), 0, dp(8))
         clipChildren = false
-        setWillNotDraw(false)
+        setBackgroundColor(0xFF080A10.toInt())
 
-        val contentFrame = FrameLayout(context)
-        image.scaleType = ImageView.ScaleType.CENTER_CROP
-        contentFrame.addView(image, FrameLayout.LayoutParams(-1, -1))
+        background.scaleType = ImageView.ScaleType.CENTER_CROP
+        addView(background, LayoutParams(-1, dp(330)))
 
-        // Top fade makes the banner visually blend into the Home background.
-        contentFrame.addView(
-            View(context).apply {
-                background = GradientDrawable(
-                    GradientDrawable.Orientation.TOP_BOTTOM,
-                    intArrayOf(
-                        0xF0000000.toInt(),
-                        0x18000000,
-                        0x00000000
-                    )
+        addView(View(context).apply {
+            setBackgroundColor(0x55000000)
+        }, LayoutParams(-1, dp(330)))
+
+        addView(View(context).apply {
+            background = GradientDrawable(
+                GradientDrawable.Orientation.TOP_BOTTOM,
+                intArrayOf(
+                    0xD9080A10.toInt(),
+                    0x30080A10,
+                    0xEE080A10.toInt()
                 )
-            },
-            FrameLayout.LayoutParams(-1, -1)
-        )
+            )
+        }, LayoutParams(-1, dp(330)))
 
-        // Bottom fade keeps the text readable while avoiding a boxed/card look.
-        contentFrame.addView(
-            View(context).apply {
-                background = GradientDrawable(
-                    GradientDrawable.Orientation.TOP_BOTTOM,
-                    intArrayOf(
-                        0x00000000,
-                        0xB8000000.toInt(),
-                        0xF5000000.toInt()
-                    )
-                )
-            },
-            FrameLayout.LayoutParams(-1, -1)
-        )
+        val row = LinearLayout(context).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+            setPadding(dp(28), dp(16), dp(20), dp(16))
+        }
 
-        val content = LinearLayout(context).apply {
+        poster.apply {
+            scaleType = ImageView.ScaleType.CENTER_CROP
+            shapeAppearanceModel = ShapeAppearanceModel.builder()
+                .setAllCornerSizes(dp(18).toFloat())
+                .build()
+            elevation = dp(3).toFloat()
+        }
+        row.addView(poster, LinearLayout.LayoutParams(dp(148), dp(220)).apply {
+            rightMargin = dp(18)
+        })
+
+        val info = LinearLayout(context).apply {
             orientation = LinearLayout.VERTICAL
-            gravity = Gravity.BOTTOM
-            setPadding(dp(18), dp(18), dp(18), dp(18))
+            gravity = Gravity.CENTER_VERTICAL
         }
 
         badge.apply {
             text = "FEATURED"
-            textSize = 10f
+            textSize = 9f
             setTextColor(Color.WHITE)
             typeface = ResourcesCompat.getFont(context, R.font.poppins_bold)
             setPadding(dp(9), dp(4), dp(9), dp(4))
             background = GradientDrawable().apply {
                 cornerRadius = dp(8).toFloat()
-                setColor(0xAA000000.toInt())
+                setColor(0xB8000000.toInt())
             }
         }
-        content.addView(badge, LinearLayout.LayoutParams(-2, -2).apply {
-            bottomMargin = dp(8)
+        info.addView(badge, LinearLayout.LayoutParams(-2, -2).apply {
+            bottomMargin = dp(7)
         })
 
         title.apply {
-            textSize = 21f
+            textSize = 17f
             maxLines = 2
+            ellipsize = android.text.TextUtils.TruncateAt.END
             setTextColor(Color.WHITE)
             typeface = ResourcesCompat.getFont(context, R.font.poppins_bold)
         }
-        content.addView(title, LinearLayout.LayoutParams(-1, -2))
+        info.addView(title, LinearLayout.LayoutParams(-1, -2))
 
         description.apply {
-            textSize = 11.5f
-            maxLines = 2
-            setTextColor(0xE6FFFFFF.toInt())
+            textSize = 10.5f
+            maxLines = 3
+            ellipsize = android.text.TextUtils.TruncateAt.END
+            setTextColor(0xD9FFFFFF.toInt())
             typeface = ResourcesCompat.getFont(context, R.font.poppins)
         }
-        content.addView(description, LinearLayout.LayoutParams(-1, -2).apply {
-            topMargin = dp(4)
+        info.addView(description, LinearLayout.LayoutParams(-1, -2).apply {
+            topMargin = dp(5)
         })
 
-        action.apply {
-            text = "View Anime"
-            textSize = 11f
-            minHeight = dp(38)
-            setPadding(dp(14), 0, dp(14), 0)
-            cornerRadius = dp(14)
+        status.apply {
+            textSize = 10f
+            setTextColor(0xFFE3A8FF.toInt())
+            typeface = ResourcesCompat.getFont(context, R.font.poppins_bold)
         }
-        content.addView(action, LinearLayout.LayoutParams(-2, dp(38)).apply {
-            topMargin = dp(10)
+        info.addView(status, LinearLayout.LayoutParams(-1, -2).apply {
+            topMargin = dp(7)
         })
 
-        contentFrame.addView(content, FrameLayout.LayoutParams(-1, -1))
-        addView(contentFrame, LayoutParams(-1, dp(300)))
-        post { bindModel() }
+        meta.apply {
+            textSize = 9.5f
+            maxLines = 1
+            ellipsize = android.text.TextUtils.TruncateAt.END
+            setTextColor(0xD9FFFFFF.toInt())
+            typeface = ResourcesCompat.getFont(context, R.font.poppins)
+        }
+        info.addView(meta, LinearLayout.LayoutParams(-1, -2).apply {
+            topMargin = dp(5)
+        })
+
+        score.apply {
+            textSize = 9.5f
+            setTextColor(0xFFFFD5FF.toInt())
+            typeface = ResourcesCompat.getFont(context, R.font.poppins_bold)
+            gravity = Gravity.CENTER
+            setPadding(dp(7), dp(3), dp(7), dp(3))
+            background = GradientDrawable().apply {
+                cornerRadius = dp(9).toFloat()
+                setColor(0xCC8E4BA0.toInt())
+            }
+        }
+        info.addView(score, LinearLayout.LayoutParams(-2, -2).apply {
+            topMargin = dp(7)
+        })
+
+        row.addView(info, LinearLayout.LayoutParams(0, -2, 1f))
+        addView(row, LayoutParams(-1, dp(330)))
+
+        setOnClickListener { currentMedia?.let(::open) }
+        poster.setOnClickListener { currentMedia?.let(::open) }
     }
 
     private fun bindModel() {
@@ -133,20 +171,56 @@ class FeaturedHomeView @JvmOverloads constructor(context: Context, attrs: androi
     }
 
     private fun render(media: Media) {
-        image.loadImage(media.banner ?: media.cover)
+        currentMedia = media
+        val artwork = media.banner ?: media.cover
+        background.loadImage(artwork)
+        blurImage(background, artwork)
+        poster.loadImage(media.cover ?: artwork)
+
         title.text = media.userPreferredName.ifBlank { media.nameRomaji }
-        val text = media.description?.let {
+
+        val rawDescription = media.description?.let {
             Html.fromHtml(it, Html.FROM_HTML_MODE_LEGACY).toString().trim()
         }
-        description.text = text?.takeIf { it.isNotBlank() } ?: "Discover this anime on KakaAnime."
-        val open = View.OnClickListener {
-            context.startActivity(
-                Intent(context, MediaDetailsActivity::class.java).putExtra("media", media)
-            )
+        description.text = rawDescription?.takeIf { it.isNotBlank() }
+            ?: "Discover this anime on AniLab."
+
+        status.text = when (media.status?.uppercase()) {
+            "RELEASING" -> "RELEASING"
+            "FINISHED" -> "FINISHED"
+            "NOT_YET_RELEASED" -> "UPCOMING"
+            else -> media.status?.uppercase() ?: "FEATURED"
         }
-        action.setOnClickListener(open)
-        setOnClickListener(open)
+
+        val total = media.anime?.totalEpisodes ?: 0
+        val progress = media.userProgress ?: 0
+        val episodeText = if (total > 0) {
+            progress.coerceAtLeast(0).toString() + " / " + total + " Episodes"
+        } else {
+            null
+        }
+        val genreText = media.genres.take(2).joinToString(" • ")
+        meta.text = listOfNotNull(
+            episodeText,
+            genreText.takeIf { it.isNotBlank() }
+        ).joinToString("    ")
+
+        score.text = media.meanScore?.let { (it / 10f).toString() + " ★" } ?: ""
+        score.visibility = if (media.meanScore != null) View.VISIBLE else View.GONE
     }
 
-    private fun dp(value: Int): Int = (value * resources.displayMetrics.density).toInt()
+    private fun open(media: Media) {
+        context.startActivity(
+            Intent(context, MediaDetailsActivity::class.java)
+                .putExtra("media", media)
+        )
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        post { bindModel() }
+    }
+
+    private fun dp(value: Int): Int =
+        (value * resources.displayMetrics.density).toInt()
 }
