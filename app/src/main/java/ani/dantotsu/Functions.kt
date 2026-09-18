@@ -700,6 +700,7 @@ suspend fun getSize(file: String): Double? {
 abstract class GesturesListener : GestureDetector.SimpleOnGestureListener() {
     private val handler = Handler(Looper.getMainLooper())
     private var pendingRunnable: Runnable? = null
+    // Match Dantotsu gesture timing so single taps wait for double/long press resolution.
     private val delay: Long = 200
 
     override fun onSingleTapUp(e: MotionEvent): Boolean {
