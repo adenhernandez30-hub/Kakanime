@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/anilab_splash_vector">
+    <target
+        android:name="iconGroup"
+        android:animation="@anim/anilab_splash_scale" />
+    <target
+        android:name="orbitGroup"
+        android:animation="@anim/anilab_splash_orbit" />
+    <target
+        android:name="sparkleLarge"
+        android:animation="@anim/anilab_splash_sparkle_large" />
+    <target
+        android:name="sparkleSmall"
+        android:animation="@anim/anilab_splash_sparkle_small" />
+</animated-vector>
