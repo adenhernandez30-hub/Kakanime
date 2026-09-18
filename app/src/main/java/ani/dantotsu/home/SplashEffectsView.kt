@@ -76,14 +76,21 @@ class SplashEffectsView @JvmOverloads constructor(
         paint.style = Paint.Style.STROKE
         paint.strokeWidth = dp(1.5f)
         paint.color = 0xB84BAFFF.toInt()
-        paint.alpha = 185
+        paint.alpha = 170
         ring.set(cx - dp(150f), cy - dp(72f), cx + dp(150f), cy + dp(72f))
-        canvas.drawArc(ring, 202f + rotation, 64f, false, paint)
+        canvas.drawArc(ring, 202f + rotation * 0.55f, 64f, false, paint)
 
         paint.color = 0xD06FEFFF.toInt()
         paint.alpha = 220
         ring.set(cx - dp(165f), cy - dp(78f), cx + dp(165f), cy + dp(78f))
         canvas.drawArc(ring, 18f - rotation * 0.35f, 42f, false, paint)
+
+        // A short moving light sweep, echoing the reference's diagonal flare.
+        paint.color = 0x8A8EDBFF.toInt()
+        paint.alpha = (55 + 75 * (0.5f + 0.5f * sin(phase * Math.PI * 2)).toFloat()).toInt()
+        paint.strokeWidth = dp(1f)
+        ring.set(cx - dp(210f), cy - dp(105f), cx + dp(210f), cy + dp(105f))
+        canvas.drawArc(ring, 122f + rotation * 0.25f, 18f, false, paint)
 
         // Two prominent reference-style sparkles.
         drawSpark(canvas, cx + dp(120f), cy - dp(118f), dp(11f), 0.55f + 0.45f * sin(phase * Math.PI * 2).toFloat())
