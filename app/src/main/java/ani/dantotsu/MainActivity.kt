@@ -192,32 +192,77 @@ class MainActivity : AppCompatActivity() {
 
         binding.root.isMotionEventSplittingEnabled = false
 
-        // Android 12+ uses the system AnimatedVectorDrawable splash.
-        // Keep the Dantotsu-style custom fallback only for pre-S devices.
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+        // Keep the Android system splash as the first stage, then reveal a full AniLab
+        // branded splash overlay. The overlay is shared by Android 12+ and pre-S devices
+        // so the visual treatment stays consistent without touching the launcher icon.
+        val customSplash = SplashScreenBinding.inflate(layoutInflater)
+        binding.root.addView(customSplash.root)
+
+        fun playCustomSplash() {
+            if (customSplash.root.tag == "started") return
+            customSplash.root.tag = "started"
+
+            customSplash.splashImage.alpha = 0f
+            customSplash.splashImage.scaleX = 0.86f
+            customSplash.splashImage.scaleY = 0.86f
+            customSplash.splashBrand.alpha = 0f
+            customSplash.splashBrand.translationY = 18f
+            customSplash.splashProgress.scaleX = 0f
+            customSplash.splashGlow.alpha = 0.35f
+
+            (customSplash.splashImage.drawable as? Animatable)?.start()
+
+            customSplash.splashImage.animate()
+                .alpha(1f)
+                .scaleX(1f)
+                .scaleY(1f)
+                .setDuration(620L)
+                .setInterpolator(android.view.animation.DecelerateInterpolator())
+                .start()
+
+            customSplash.splashGlow.animate()
+                .alpha(0.78f)
+                .setDuration(700L)
+                .setInterpolator(android.view.animation.AccelerateDecelerateInterpolator())
+                .start()
+
+            customSplash.splashBrand.animate()
+                .alpha(1f)
+                .translationY(0f)
+                .setStartDelay(520L)
+                .setDuration(420L)
+                .setInterpolator(android.view.animation.DecelerateInterpolator())
+                .start()
+
+            customSplash.splashProgress.animate()
+                .scaleX(1f)
+                .setStartDelay(720L)
+                .setDuration(1050L)
+                .setInterpolator(android.view.animation.DecelerateInterpolator())
+                .start()
+
             lifecycleScope.launch {
-                val splash = SplashScreenBinding.inflate(layoutInflater)
-                binding.root.addView(splash.root)
-                (splash.splashImage.drawable as? android.graphics.drawable.Animatable)?.start()
-
-                delay(700L)
-
-                ObjectAnimator.ofFloat(
-                    splash.root,
-                    View.TRANSLATION_Y,
-                    0f,
-                    -splash.root.height.toFloat()
-                ).apply {
-                    interpolator = AnticipateInterpolator()
-                    duration = 200L
-                    doOnEnd { binding.root.removeView(splash.root) }
-                    start()
-                }
+                delay(2050L)
+                customSplash.root.animate()
+                    .alpha(0f)
+                    .translationY(-customSplash.root.height.toFloat() * 0.08f)
+                    .setDuration(220L)
+                    .setInterpolator(AnticipateInterpolator())
+                    .withEndAction {
+                        binding.root.removeView(customSplash.root)
+                    }
+                    .start()
             }
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+            playCustomSplash()
+        } else {
             splashScreen.setOnExitAnimationListener { splashScreenView ->
+                // The system splash exits first; the custom AniLab composition is already
+                // underneath it and starts as soon as the system layer begins leaving.
+                playCustomSplash()
+
                 ObjectAnimator.ofFloat(
                     splashScreenView,
                     View.TRANSLATION_Y,
