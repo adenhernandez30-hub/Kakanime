@@ -122,7 +122,7 @@ class FeaturedHomeView @JvmOverloads constructor(context: Context, attrs: androi
         val text = media.description?.let {
             Html.fromHtml(it, Html.FROM_HTML_MODE_LEGACY).toString().trim()
         }
-        description.text = text?.takeIf { it.isNotBlank() } ?: "Discover this anime on KakaAnime."
+        description.text = text?.takeIf { it.isNotBlank() } ?: "Discover this anime on AniLab."
         val open = View.OnClickListener {
             context.startActivity(
                 Intent(context, MediaDetailsActivity::class.java).putExtra("media", media)
