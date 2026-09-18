@@ -550,6 +550,15 @@ class HomeFragment : Fragment() {
                     } else {
                         model.initGuestHome()
                         model.initPublicFeatured()
+                        withContext(Dispatchers.Main) {
+                            binding.homeFavAnimeContainer.visibility = View.GONE
+                            binding.homePlannedAnimeContainer.visibility = View.GONE
+                            binding.homeContinueReadingContainer.visibility = View.GONE
+                            binding.homeFavMangaContainer.visibility = View.GONE
+                            binding.homePlannedMangaContainer.visibility = View.GONE
+                            binding.homeRecommendedContainer.visibility = View.GONE
+                            binding.homeUserStatusContainer.visibility = View.GONE
+                        }
                     }
 
                     withContext(Dispatchers.Main) {
