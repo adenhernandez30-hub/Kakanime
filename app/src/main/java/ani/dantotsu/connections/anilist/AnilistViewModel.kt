@@ -95,7 +95,7 @@ class AnilistHomeViewModel : ViewModel() {
         )?.results ?: arrayListOf()
         val featured = ArrayList(result)
         publicFeatured.postValue(featured)
-        if (BuildConfig.DEBUG && featured.isNotEmpty()) {
+        if (featured.isNotEmpty()) {
             animeContinue.postValue(
                 ArrayList(
                     featured.take(5).map { media ->
