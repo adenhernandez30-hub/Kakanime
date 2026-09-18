@@ -15,6 +15,15 @@
         android:background="@drawable/splash_reference_glow"
         android:alpha="0.35" />
 
+    <View
+        android:id="@+id/splashSweep"
+        android:layout_width="320dp"
+        android:layout_height="3dp"
+        android:layout_gravity="center"
+        android:background="@drawable/splash_reference_sweep"
+        android:alpha="0"
+        android:translationX="-180dp" />
+
     <LinearLayout
         android:id="@+id/splashContent"
         android:layout_width="wrap_content"
