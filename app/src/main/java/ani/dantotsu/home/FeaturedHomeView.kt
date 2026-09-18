@@ -127,7 +127,9 @@ class FeaturedHomeView @JvmOverloads constructor(context: Context, attrs: androi
         val owner = findViewTreeLifecycleOwner() ?: return
         val storeOwner = findViewTreeViewModelStoreOwner() ?: return
         val model = ViewModelProvider(storeOwner)[AnilistHomeViewModel::class.java]
-        model.getRecommendation().observe(owner) { list -> list?.firstOrNull()?.let(::render) }
+        model.getPublicFeatured().observe(owner) { list ->
+            list?.randomOrNull()?.let(::render)
+        }
     }
 
     private fun render(media: Media) {
