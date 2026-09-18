@@ -3,17 +3,18 @@
         <shape android:shape="rectangle">
             <gradient
                 android:angle="270"
-                android:startColor="#030916"
-                android:centerColor="#06152D"
-                android:endColor="#020712" />
+                android:startColor="#01050D"
+                android:centerColor="#031127"
+                android:endColor="#01040A" />
         </shape>
     </item>
-    <item android:top="180dp" android:bottom="180dp" android:left="-80dp" android:right="-80dp">
+    <item android:top="80dp" android:bottom="80dp" android:left="-180dp" android:right="-180dp">
         <shape android:shape="oval">
             <gradient
                 android:type="radial"
-                android:gradientRadius="280dp"
-                android:startColor="#0B4D93"
+                android:gradientRadius="360dp"
+                android:startColor="#0A3F83"
+                android:centerColor="#05234D"
                 android:endColor="#00000000" />
         </shape>
     </item>
