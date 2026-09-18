@@ -480,25 +480,35 @@ class HomeFragment : Fragment() {
             if (!running && shouldRefresh) {
                 running = true
                 scope.launch {
-                    withContext(Dispatchers.IO) {
-                        // Get user data first
+                    val hasAnilistSession = withContext(Dispatchers.IO) {
                         Anilist.userid =
                             PrefManager.getNullableVal<String>(PrefName.AnilistUserId, null)
                                 ?.toIntOrNull()
                         if (Anilist.userid == null) {
-                            withContext(Dispatchers.Main) {
-                                getUserId(requireContext()) {
-                                    load()
-                                }
-                            }
-                        } else {
-                            getUserId(requireContext()) {
-                                load()
-                            }
+                            getUserId(requireContext()) { }
                         }
-                        model.loaded = true
-                        model.setListImages()
+                        Anilist.userid != null
                     }
+
+                    if (hasAnilistSession) {
+                        withContext(Dispatchers.Main) {
+                            load()
+                        }
+                        withContext(Dispatchers.IO) {
+                            model.setListImages()
+                        }
+                    } else {
+                        withContext(Dispatchers.Main) {
+                            binding.homeUserName.text = "Guest"
+                            binding.homeUserEpisodesWatched.text = "0"
+                            binding.homeUserChaptersRead.text = "0"
+                            binding.homeUserDataProgressBar.visibility = View.GONE
+                            binding.homeUserDataContainer.visibility = View.VISIBLE
+                            binding.homeUserAvatar.setImageResource(R.drawable.ic_round_person_24)
+                        }
+                    }
+
+                    model.loaded = true
 
                     var empty = true
                     val homeLayoutShow: List<Boolean> = PrefManager.getVal(PrefName.HomeLayout)
@@ -513,10 +523,15 @@ class HomeFragment : Fragment() {
                         }
                     }
 
-                    val initHomePage = async(Dispatchers.IO) { model.initHomePage() }
-                    val initUserStatus = async(Dispatchers.IO) { model.initUserStatus() }
-                    initHomePage.await()
-                    initUserStatus.await()
+                    if (hasAnilistSession) {
+                        val initHomePage = async(Dispatchers.IO) { model.initHomePage() }
+                        val initUserStatus = async(Dispatchers.IO) { model.initUserStatus() }
+                        initHomePage.await()
+                        initUserStatus.await()
+                    } else {
+                        model.initGuestHome()
+                        model.initPublicFeatured()
+                    }
 
                     withContext(Dispatchers.Main) {
                         model.empty.postValue(empty)
