@@ -14,7 +14,7 @@
         android:contentDescription="@null"
         android:scaleType="fitXY"
         android:src="@drawable/splash_reference_orbit"
-        android:alpha="0.7" />
+        android:alpha="0.72" />
 
     <View
         android:id="@+id/splashGlow"
