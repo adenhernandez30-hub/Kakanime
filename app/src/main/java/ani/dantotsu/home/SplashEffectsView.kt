@@ -27,7 +27,7 @@ class SplashEffectsView @JvmOverloads constructor(
     }
     private val ring = RectF()
     private var rotation = 0f
-    private var reveal = 0f
+    private var phase = 0f
     private var animator: ValueAnimator? = null
 
     init {
@@ -39,12 +39,12 @@ class SplashEffectsView @JvmOverloads constructor(
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         animator = ValueAnimator.ofFloat(0f, 1f).apply {
-            duration = 4200L
+            duration = 5200L
             repeatCount = ValueAnimator.INFINITE
             interpolator = LinearInterpolator()
             addUpdateListener {
-                rotation = it.animatedFraction * 360f
-                reveal = it.animatedFraction
+                phase = it.animatedFraction
+                rotation = phase * 360f
                 invalidate()
             }
             start()
@@ -63,49 +63,45 @@ class SplashEffectsView @JvmOverloads constructor(
         val w = width.toFloat()
         val h = height.toFloat()
         val cx = w / 2f
-        val cy = h / 2f - dp(18f)
-        val rx = w * 0.48f
-        val ry = h * 0.37f
+        val cy = h / 2f - dp(36f)
 
-        glowPaint.color = 0x1838AFFF
-        glowPaint.alpha = 100
-        glowPaint.setShadowLayer(dp(75f), 0f, 0f, 0x6640BFFF)
-        canvas.drawCircle(cx, cy, dp(70f), glowPaint)
+        // Concentrated blue glow behind the logo, matching the reference.
+        glowPaint.color = 0x2238AFFF
+        glowPaint.alpha = 115
+        glowPaint.setShadowLayer(dp(90f), 0f, 0f, 0x8840BFFF)
+        canvas.drawCircle(cx, cy, dp(88f), glowPaint)
         glowPaint.clearShadowLayer()
 
-        paint.strokeWidth = dp(1.1f)
-        paint.color = 0x653B8CFF.toInt()
-        paint.alpha = 150
-        ring.set(cx - rx, cy - ry, cx + rx, cy + ry)
-        canvas.drawArc(ring, 205f + rotation, 76f, false, paint)
+        // Thin orbital accents around the logo.
+        paint.style = Paint.Style.STROKE
+        paint.strokeWidth = dp(1.5f)
+        paint.color = 0xB84BAFFF.toInt()
+        paint.alpha = 185
+        ring.set(cx - dp(150f), cy - dp(72f), cx + dp(150f), cy + dp(72f))
+        canvas.drawArc(ring, 202f + rotation, 64f, false, paint)
 
-        paint.color = 0x8040BFFF.toInt()
-        paint.alpha = 105
-        ring.set(cx - rx * 0.82f, cy - ry * 0.72f, cx + rx * 0.82f, cy + ry * 0.72f)
-        canvas.drawArc(ring, 25f - rotation * 0.55f, 55f, false, paint)
+        paint.color = 0xD06FEFFF.toInt()
+        paint.alpha = 220
+        ring.set(cx - dp(165f), cy - dp(78f), cx + dp(165f), cy + dp(78f))
+        canvas.drawArc(ring, 18f - rotation * 0.35f, 42f, false, paint)
 
-        paint.color = 0xB84AC7FF.toInt()
-        paint.strokeWidth = dp(0.8f)
-        paint.alpha = 90
-        ring.set(cx - rx * 1.08f, cy - ry * 0.82f, cx + rx * 1.08f, cy + ry * 0.82f)
-        canvas.drawArc(ring, 310f + rotation * 0.35f, 34f, false, paint)
-
-        drawSpark(canvas, cx + w * 0.23f, cy - h * 0.17f, dp(5f), 0.35f + 0.65f * sin(reveal * Math.PI * 2).toFloat())
-        drawSpark(canvas, cx - w * 0.25f, cy + h * 0.16f, dp(3f), 0.45f + 0.55f * cos(reveal * Math.PI * 2).toFloat())
-        drawSpark(canvas, cx + w * 0.31f, cy + h * 0.05f, dp(2.2f), 0.25f + 0.75f * sin(reveal * Math.PI * 2 + 1.4).toFloat())
+        // Two prominent reference-style sparkles.
+        drawSpark(canvas, cx + dp(120f), cy - dp(118f), dp(11f), 0.55f + 0.45f * sin(phase * Math.PI * 2).toFloat())
+        drawSpark(canvas, cx + dp(73f), cy - dp(70f), dp(6f), 0.6f + 0.4f * cos(phase * Math.PI * 2).toFloat())
     }
 
     private fun drawSpark(canvas: Canvas, x: Float, y: Float, size: Float, alphaFactor: Float) {
-        val a = (255f * alphaFactor.coerceIn(0.08f, 1f)).toInt()
+        val a = (255f * alphaFactor.coerceIn(0.25f, 1f)).toInt()
         starPaint.color = 0xFFFFFFFF.toInt()
         starPaint.alpha = a
-        canvas.drawCircle(x, y, size * 0.24f, starPaint)
+        canvas.drawCircle(x, y, size * 0.18f, starPaint)
 
-        paint.color = 0xCC6EDBFF.toInt()
+        paint.style = Paint.Style.STROKE
+        paint.color = 0xFFFFFFFF.toInt()
         paint.alpha = a
-        paint.strokeWidth = size * 0.22f
-        canvas.drawLine(x - size, y, x + size, y, paint)
+        paint.strokeWidth = size * 0.18f
         canvas.drawLine(x, y - size, x, y + size, paint)
+        canvas.drawLine(x - size, y, x + size, y, paint)
     }
 
     private fun dp(v: Float): Float = v * resources.displayMetrics.density
