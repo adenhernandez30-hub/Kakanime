@@ -243,7 +243,7 @@ class HomeFragment : Fragment() {
                 empty.visibility = View.GONE
                 if (it != null) {
                     if (it.isNotEmpty()) {
-                        recyclerView.adapter = MediaAdaptor(0, it, requireActivity())
+                        recyclerView.adapter = if (recyclerView.id == R.id.homeWatchingRecyclerView) HomeContinueAdapter(it, requireActivity()) else MediaAdaptor(0, it, requireActivity())
                         recyclerView.layoutManager = LinearLayoutManager(
                             requireContext(),
                             LinearLayoutManager.HORIZONTAL,
