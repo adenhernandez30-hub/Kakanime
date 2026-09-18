@@ -36,6 +36,7 @@ import ani.dantotsu.media.Media
 import ani.dantotsu.media.MediaAdaptor
 import ani.dantotsu.media.MediaListViewActivity
 import ani.dantotsu.media.user.ListActivity
+import ani.dantotsu.media.SearchFilterBottomDialog
 import ani.dantotsu.navBarHeight
 import ani.dantotsu.profile.ProfileActivity
 import ani.dantotsu.setSafeOnClickListener
@@ -137,6 +138,15 @@ class HomeFragment : Fragment() {
             SearchBottomSheet.newInstance().show(
                 (it.context as androidx.appcompat.app.AppCompatActivity).supportFragmentManager,
                 "search"
+            )
+        }
+        binding.homeFilterContainer.setSafeOnClickListener {
+            ContextCompat.startActivity(
+                it.context,
+                Intent(it.context, ani.dantotsu.media.SearchActivity::class.java)
+                    .putExtra("type", "ANIME")
+                    .putExtra("openFilter", true),
+                null
             )
         }
         binding.homeUserAvatarContainer.setOnLongClickListener {
