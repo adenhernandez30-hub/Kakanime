@@ -49,6 +49,52 @@
 </com.google.android.material.card.MaterialCardView>
 </LinearLayout>
 <ani.dantotsu.home.FeaturedHomeView android:id="@+id/homeFeaturedContainer" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp"/>
+<HorizontalScrollView
+        android:id="@+id/homeSeasons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="4dp"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        android:paddingStart="2dp"
+        android:paddingEnd="2dp"
+        android:scrollbarSize="0dp">
+
+        <LinearLayout
+            android:id="@+id/homeSeasonsContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/homePreviousSeason"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="@string/previous_season"
+                android:textAppearance="@style/Suffix"
+                app:chipStrokeColor="?attr/colorPrimaryContainer" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/homeThisSeason"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="@string/this_season"
+                android:textAppearance="@style/Suffix"
+                app:chipStrokeColor="?attr/colorPrimaryContainer" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/homeNextSeason"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/next_season"
+                android:textAppearance="@style/Suffix"
+                app:chipStrokeColor="?attr/colorPrimaryContainer" />
+
+        </LinearLayout>
+    </HorizontalScrollView>
 <LinearLayout android:id="@+id/homeContinueWatchingContainer" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:visibility="gone"><LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"><TextView android:id="@+id/homeContinueWatch" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="24dp" android:padding="8dp" android:text="@string/continue_watching" android:textSize="16sp"/><ImageView android:id="@+id/homeContinueWatchMore" android:layout_width="32dp" android:layout_height="32dp" android:src="@drawable/arrow_mark"/></LinearLayout><FrameLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="250dp"><LinearLayout android:id="@+id/homeWatchingEmpty" android:layout_width="match_parent" android:layout_height="250dp" android:gravity="center" android:visibility="gone"><Button android:id="@+id/homeWatchingBrowseButton" android:layout_width="128dp" android:layout_height="wrap_content" android:text="@string/browse_anime"/></LinearLayout><ProgressBar android:id="@+id/homeWatchingProgressBar" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center"/><ani.dantotsu.FadingEdgeRecyclerView android:id="@+id/homeWatchingRecyclerView" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingStart="20dp" android:paddingEnd="20dp"/></FrameLayout></LinearLayout>
 <FrameLayout android:id="@+id/homeUserStatusContainer" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="120dp" android:visibility="gone"><ProgressBar android:id="@+id/homeUserStatusProgressBar" android:layout_width="wrap_content" android:layout_height="wrap_content"/><ani.dantotsu.FadingEdgeRecyclerView android:id="@+id/homeUserStatusRecyclerView" android:layout_width="match_parent" android:layout_height="wrap_content"/></FrameLayout>
 <LinearLayout android:id="@+id/homeHiddenItemsContainer" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:visibility="gone"><TextView android:id="@+id/homeHiddenItemsTitle" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/hidden"/><ImageView android:id="@+id/homeHiddenItemsMore" android:layout_width="1dp" android:layout_height="1dp"/><ani.dantotsu.FadingEdgeRecyclerView android:id="@+id/homeHiddenItemsRecyclerView" android:layout_width="match_parent" android:layout_height="wrap_content"/></LinearLayout>
