@@ -12,9 +12,9 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.findViewTreeLifecycleOwner
-import androidx.lifecycle.findViewTreeViewModelStoreOwner
 import ani.dantotsu.R
 import ani.dantotsu.connections.anilist.AnilistHomeViewModel
 import ani.dantotsu.loadImage
@@ -125,8 +125,8 @@ class FeaturedHomeView @JvmOverloads constructor(context: Context, attrs: androi
 
     private fun bindModel() {
         val owner = findViewTreeLifecycleOwner() ?: return
-        val storeOwner = findViewTreeViewModelStoreOwner() ?: return
-        val model = ViewModelProvider(storeOwner)[AnilistHomeViewModel::class.java]
+        val activity = context as? FragmentActivity ?: return
+        val model = ViewModelProvider(activity)[AnilistHomeViewModel::class.java]
         model.getPublicFeatured().observe(owner) { list ->
             list?.randomOrNull()?.let(::render)
         }
