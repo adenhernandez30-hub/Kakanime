@@ -13,27 +13,24 @@
         android:layout_height="340dp"
         android:layout_gravity="center"
         android:background="@drawable/splash_reference_glow"
-        android:alpha="0.78" />
-
-    <ImageView
-        android:id="@+id/splashImage"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:layout_gravity="center"
-        android:contentDescription="@string/app_name"
-        android:scaleType="fitCenter"
-        android:src="@drawable/anilab_splash"
-        android:alpha="0" />
+        android:alpha="0.35" />
 
     <LinearLayout
-        android:id="@+id/splashBrand"
+        android:id="@+id/splashContent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="286dp"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:alpha="0">
+        android:layout_gravity="center"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/splashImage"
+            android:layout_width="286dp"
+            android:layout_height="286dp"
+            android:contentDescription="@string/app_name"
+            android:scaleType="fitCenter"
+            android:src="@drawable/anilab_splash"
+            android:alpha="0" />
 
         <TextView
             android:id="@+id/splashWordmark"
@@ -45,29 +42,39 @@
             android:text="AniLab"
             android:textColor="#EFFFFF"
             android:textSize="31sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:alpha="0" />
+
+        <View
+            android:id="@+id/splashDivider"
+            android:layout_width="96dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="12dp"
+            android:background="#3979B8"
+            android:alpha="0" />
 
         <TextView
             android:id="@+id/splashTagline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="10dp"
             android:fontFamily="@font/poppins"
             android:includeFontPadding="false"
-            android:letterSpacing="0.18"
-            android:text="ANIME • WATCH • DISCOVER"
+            android:letterSpacing="0.16"
+            android:text="MORE THAN JUST ANIME"
             android:textColor="#86B8D6"
-            android:textSize="9sp" />
-    </LinearLayout>
+            android:textSize="9sp"
+            android:alpha="0" />
 
-    <View
-        android:id="@+id/splashProgress"
-        android:layout_width="180dp"
-        android:layout_height="4dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="392dp"
-        android:background="@drawable/splash_reference_progress"
-        android:scaleX="0"
-        android:transformPivotX="0dp" />
+        <View
+            android:id="@+id/splashProgress"
+            android:layout_width="180dp"
+            android:layout_height="4dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/splash_reference_progress"
+            android:scaleX="0"
+            android:transformPivotX="0dp" />
+
+    </LinearLayout>
 
 </FrameLayout>
