@@ -2,7 +2,12 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#030916">
+    android:background="#020814">
+
+    <ani.dantotsu.home.SplashEffectsView
+        android:id="@+id/splashEffects"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <View
         android:layout_width="match_parent"
@@ -21,61 +26,69 @@
 
         <ImageView
             android:id="@+id/splashImage"
-            android:layout_width="190dp"
-            android:layout_height="190dp"
+            android:layout_width="158dp"
+            android:layout_height="158dp"
             android:contentDescription="@string/app_name"
             android:scaleType="fitCenter"
             android:alpha="0"
-            android:scaleX="0.72"
-            android:scaleY="0.72"
-            android:src="@drawable/anilab_launcher" />
+            android:scaleX="0.76"
+            android:scaleY="0.76"
+            android:src="@drawable/anilab_splash_logo" />
 
         <TextView
             android:id="@+id/splashName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="4dp"
             android:fontFamily="@font/poppins_bold"
             android:text="@string/app_name"
             android:textColor="#F4F8FF"
-            android:textSize="32sp"
+            android:textSize="31sp"
             android:textStyle="bold"
             android:alpha="0"
-            android:translationY="18dp" />
+            android:translationY="16dp" />
+
+        <View
+            android:id="@+id/splashDividerTop"
+            android:layout_width="28dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="15dp"
+            android:background="#73DFFF"
+            android:alpha="0" />
 
         <TextView
             android:id="@+id/splashTagline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="12dp"
             android:fontFamily="@font/poppins"
-            android:letterSpacing="0.18"
-            android:text="@string/slogan"
+            android:letterSpacing="0.22"
+            android:text="MORE THAN JUST ANIME"
             android:textAllCaps="true"
-            android:textColor="#C8D7F2"
-            android:textSize="9sp"
+            android:textColor="#C9D8F0"
+            android:textSize="8sp"
             android:alpha="0"
-            android:translationY="10dp" />
+            android:translationY="8dp" />
 
         <View
             android:id="@+id/splashDivider"
-            android:layout_width="38dp"
+            android:layout_width="28dp"
             android:layout_height="1dp"
-            android:layout_marginTop="16dp"
-            android:background="#65DFFF"
+            android:layout_marginTop="13dp"
+            android:background="#73DFFF"
             android:alpha="0" />
 
         <ProgressBar
             android:id="@+id/splashLoading"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="128dp"
-            android:layout_height="3dp"
-            android:layout_marginTop="28dp"
+            android:layout_height="2dp"
+            android:layout_marginTop="25dp"
             android:max="100"
             android:progress="0"
             android:indeterminate="false"
-            android:progressTint="#36C8FF"
-            android:backgroundTint="#18304F"
+            android:progressTint="#39C9FF"
+            android:backgroundTint="#18355A"
             android:alpha="0" />
 
         <TextView
@@ -84,8 +97,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/poppins"
-            android:text="Loading…"
-            android:textColor="#9FB3D0"
+            android:text="Loading..."
+            android:textColor="#A6B8D3"
             android:textSize="9sp"
             android:alpha="0" />
 
