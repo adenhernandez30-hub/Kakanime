@@ -20,125 +20,91 @@ import ani.dantotsu.connections.anilist.AnilistHomeViewModel
 import ani.dantotsu.loadImage
 import ani.dantotsu.media.Media
 import ani.dantotsu.media.MediaDetailsActivity
-import com.google.android.material.imageview.ShapeableImageView
-import com.google.android.material.shape.ShapeAppearanceModel
+import com.google.android.material.button.MaterialButton
 
-class FeaturedHomeView @JvmOverloads constructor(
-    context: Context,
-    attrs: android.util.AttributeSet? = null
-) : FrameLayout(context, attrs) {
-
-    private val background = ImageView(context)
-    private val poster = ShapeableImageView(context)
+class FeaturedHomeView @JvmOverloads constructor(context: Context, attrs: android.util.AttributeSet? = null) : FrameLayout(context, attrs) {
+    private val image = ImageView(context)
     private val title = TextView(context)
     private val description = TextView(context)
-    private val status = TextView(context)
-    private val meta = TextView(context)
-    private val score = TextView(context)
-
-    private var currentMedia: Media? = null
+    private val badge = TextView(context)
+    private val action = MaterialButton(context)
 
     init {
+        setPadding(0, dp(8), 0, dp(8))
         clipChildren = false
-        setBackgroundColor(0xFF080A10.toInt())
+        setWillNotDraw(false)
 
-        // Dantotsu-style: sharp banner behind the content, with a dark blend
-        // instead of the heavy blurred-card treatment.
-        background.scaleType = ImageView.ScaleType.CENTER_CROP
-        addView(background, LayoutParams(-1, dp(300)))
+        val contentFrame = FrameLayout(context)
+        image.scaleType = ImageView.ScaleType.CENTER_CROP
+        contentFrame.addView(image, FrameLayout.LayoutParams(-1, -1))
 
-        addView(View(context).apply {
-            background = GradientDrawable(
-                GradientDrawable.Orientation.TOP_BOTTOM,
-                intArrayOf(
-                    0xA0080A10.toInt(),
-                    0x18080A10,
-                    0xE8080A10.toInt()
+        contentFrame.addView(
+            View(context).apply {
+                background = GradientDrawable(
+                    GradientDrawable.Orientation.TOP_BOTTOM,
+                    intArrayOf(0xF0000000.toInt(), 0x18000000, 0x00000000)
                 )
-            )
-        }, LayoutParams(-1, dp(300)))
+            },
+            FrameLayout.LayoutParams(-1, -1)
+        )
 
-        val row = LinearLayout(context).apply {
-            orientation = LinearLayout.HORIZONTAL
-            gravity = Gravity.CENTER_VERTICAL
-            setPadding(dp(24), dp(12), dp(20), dp(12))
-        }
+        contentFrame.addView(
+            View(context).apply {
+                background = GradientDrawable(
+                    GradientDrawable.Orientation.TOP_BOTTOM,
+                    intArrayOf(0x00000000, 0xB8000000.toInt(), 0xF5000000.toInt())
+                )
+            },
+            FrameLayout.LayoutParams(-1, -1)
+        )
 
-        poster.apply {
-            scaleType = ImageView.ScaleType.CENTER_CROP
-            shapeAppearanceModel = ShapeAppearanceModel.builder()
-                .setAllCornerSizes(dp(16).toFloat())
-                .build()
-        }
-        row.addView(poster, LinearLayout.LayoutParams(dp(120), dp(180)).apply {
-            rightMargin = dp(18)
-        })
-
-        val info = LinearLayout(context).apply {
+        val content = LinearLayout(context).apply {
             orientation = LinearLayout.VERTICAL
-            gravity = Gravity.CENTER_VERTICAL
+            gravity = Gravity.BOTTOM
+            setPadding(dp(18), dp(18), dp(18), dp(18))
         }
+
+        badge.apply {
+            text = "FEATURED"
+            textSize = 10f
+            setTextColor(Color.WHITE)
+            typeface = ResourcesCompat.getFont(context, R.font.poppins_bold)
+            setPadding(dp(9), dp(4), dp(9), dp(4))
+            background = GradientDrawable().apply {
+                cornerRadius = dp(8).toFloat()
+                setColor(0xAA000000.toInt())
+            }
+        }
+        content.addView(badge, LinearLayout.LayoutParams(-2, -2).apply { bottomMargin = dp(8) })
 
         title.apply {
             textSize = 21f
             maxLines = 2
-            ellipsize = android.text.TextUtils.TruncateAt.END
             setTextColor(Color.WHITE)
             typeface = ResourcesCompat.getFont(context, R.font.poppins_bold)
         }
-        info.addView(title, LinearLayout.LayoutParams(-1, -2))
+        content.addView(title, LinearLayout.LayoutParams(-1, -2))
 
         description.apply {
             textSize = 11.5f
-            maxLines = 3
-            ellipsize = android.text.TextUtils.TruncateAt.END
-            setTextColor(0xE0FFFFFF.toInt())
+            maxLines = 2
+            setTextColor(0xE6FFFFFF.toInt())
             typeface = ResourcesCompat.getFont(context, R.font.poppins)
         }
-        info.addView(description, LinearLayout.LayoutParams(-1, -2).apply {
-            topMargin = dp(6)
-        })
+        content.addView(description, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(4) })
 
-        status.apply {
-            textSize = 13f
-            setTextColor(0xFFE2A7FF.toInt())
-            typeface = ResourcesCompat.getFont(context, R.font.poppins_bold)
+        action.apply {
+            text = "View Anime"
+            textSize = 11f
+            minHeight = dp(38)
+            setPadding(dp(14), 0, dp(14), 0)
+            cornerRadius = dp(14)
         }
-        info.addView(status, LinearLayout.LayoutParams(-1, -2).apply {
-            topMargin = dp(9)
-        })
+        content.addView(action, LinearLayout.LayoutParams(-2, dp(38)).apply { topMargin = dp(10) })
 
-        meta.apply {
-            textSize = 11.5f
-            maxLines = 1
-            ellipsize = android.text.TextUtils.TruncateAt.END
-            setTextColor(0xE0FFFFFF.toInt())
-            typeface = ResourcesCompat.getFont(context, R.font.poppins)
-        }
-        info.addView(meta, LinearLayout.LayoutParams(-1, -2).apply {
-            topMargin = dp(7)
-        })
-
-        score.apply {
-            textSize = 10f
-            setTextColor(0xFF28142D.toInt())
-            typeface = ResourcesCompat.getFont(context, R.font.poppins_bold)
-            gravity = Gravity.CENTER
-            setPadding(dp(8), dp(4), dp(8), dp(4))
-            background = GradientDrawable().apply {
-                cornerRadius = dp(10).toFloat()
-                setColor(0xFFE0A8FF.toInt())
-            }
-        }
-        info.addView(score, LinearLayout.LayoutParams(-2, -2).apply {
-            topMargin = dp(9)
-        })
-
-        row.addView(info, LinearLayout.LayoutParams(0, -2, 1f))
-        addView(row, LayoutParams(-1, dp(300)))
-
-        setOnClickListener { currentMedia?.let(::open) }
-        poster.setOnClickListener { currentMedia?.let(::open) }
+        contentFrame.addView(content, FrameLayout.LayoutParams(-1, -1))
+        addView(contentFrame, LayoutParams(-1, dp(300)))
+        post { bindModel() }
     }
 
     private fun bindModel() {
@@ -151,55 +117,20 @@ class FeaturedHomeView @JvmOverloads constructor(
     }
 
     private fun render(media: Media) {
-        currentMedia = media
-        val artwork = media.banner ?: media.cover
-        background.loadImage(artwork)
-        poster.loadImage(media.cover ?: artwork)
-
+        image.loadImage(media.banner ?: media.cover)
         title.text = media.userPreferredName.ifBlank { media.nameRomaji }
-
-        val rawDescription = media.description?.let {
+        val text = media.description?.let {
             Html.fromHtml(it, Html.FROM_HTML_MODE_LEGACY).toString().trim()
         }
-        description.text = rawDescription?.takeIf { it.isNotBlank() }
-            ?: "Discover this anime on AniLab."
-
-        status.text = when (media.status?.uppercase()) {
-            "RELEASING" -> "RELEASING"
-            "FINISHED" -> "FINISHED"
-            "NOT_YET_RELEASED" -> "UPCOMING"
-            else -> media.status?.uppercase() ?: "FEATURED"
+        description.text = text?.takeIf { it.isNotBlank() } ?: "Discover this anime on KakaAnime."
+        val open = View.OnClickListener {
+            context.startActivity(
+                Intent(context, MediaDetailsActivity::class.java).putExtra("media", media)
+            )
         }
-
-        val total = media.anime?.totalEpisodes ?: 0
-        val progress = media.userProgress ?: 0
-        val episodeText = if (total > 0) {
-            "$progress / $total Episodes"
-        } else {
-            null
-        }
-        val genreText = media.genres.take(2).joinToString(" • ")
-        meta.text = listOfNotNull(
-            episodeText,
-            genreText.takeIf { it.isNotBlank() }
-        ).joinToString("    ")
-
-        score.text = media.meanScore?.let { "${it / 10f} ★" } ?: ""
-        score.visibility = if (media.meanScore != null) View.VISIBLE else View.GONE
+        action.setOnClickListener(open)
+        setOnClickListener(open)
     }
 
-    private fun open(media: Media) {
-        context.startActivity(
-            Intent(context, MediaDetailsActivity::class.java)
-                .putExtra("media", media)
-        )
-    }
-
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        post { bindModel() }
-    }
-
-    private fun dp(value: Int): Int =
-        (value * resources.displayMetrics.density).toInt()
+    private fun dp(value: Int): Int = (value * resources.displayMetrics.density).toInt()
 }
