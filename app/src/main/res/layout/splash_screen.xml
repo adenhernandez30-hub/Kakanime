@@ -33,7 +33,7 @@
             android:alpha="0"
             android:scaleX="0.82"
             android:scaleY="0.82"
-            android:src="@drawable/anilab_splash_logo" />
+            android:src="@drawable/anilab_launcher" />
 
         <TextView
             android:id="@+id/splashName"
