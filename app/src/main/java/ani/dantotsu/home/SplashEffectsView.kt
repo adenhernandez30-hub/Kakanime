@@ -68,7 +68,7 @@ class SplashEffectsView @JvmOverloads constructor(
         // Concentrated blue glow behind the logo, matching the reference.
         glowPaint.color = 0x2238AFFF
         glowPaint.alpha = 115
-        glowPaint.setShadowLayer(dp(90f), 0f, 0f, 0x8840BFFF)
+        glowPaint.setShadowLayer(dp(90f), 0f, 0f, 0x8840BFFF.toInt())
         canvas.drawCircle(cx, cy, dp(88f), glowPaint)
         glowPaint.clearShadowLayer()
 
