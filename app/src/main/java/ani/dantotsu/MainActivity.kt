@@ -195,11 +195,66 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             val splash = SplashScreenBinding.inflate(layoutInflater)
             binding.root.addView(splash.root)
-            (splash.splashImage.drawable as? Animatable)?.start()
 
-            // Keep the branded splash visible briefly after the system splash,
-            // so the KakaAnime identity is visible on Android 12+ as well.
-            delay(if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) 700 else 1200)
+            val imageIn = ObjectAnimator.ofPropertyValuesHolder(
+                splash.splashImage,
+                android.animation.PropertyValuesHolder.ofFloat(View.ALPHA, 0f, 1f),
+                android.animation.PropertyValuesHolder.ofFloat(View.SCALE_X, 0.72f, 1f),
+                android.animation.PropertyValuesHolder.ofFloat(View.SCALE_Y, 0.72f, 1f)
+            ).apply {
+                duration = 550L
+                interpolator = android.view.animation.OvershootInterpolator()
+            }
+
+            val nameIn = ObjectAnimator.ofPropertyValuesHolder(
+                splash.splashName,
+                android.animation.PropertyValuesHolder.ofFloat(View.ALPHA, 0f, 1f),
+                android.animation.PropertyValuesHolder.ofFloat(View.TRANSLATION_Y, 18f, 0f)
+            ).apply {
+                duration = 360L
+                startDelay = 420L
+                interpolator = android.view.animation.DecelerateInterpolator()
+            }
+
+            val taglineIn = ObjectAnimator.ofPropertyValuesHolder(
+                splash.splashTagline,
+                android.animation.PropertyValuesHolder.ofFloat(View.ALPHA, 0f, 1f),
+                android.animation.PropertyValuesHolder.ofFloat(View.TRANSLATION_Y, 10f, 0f)
+            ).apply {
+                duration = 300L
+                startDelay = 650L
+            }
+
+            val dividerIn = ObjectAnimator.ofFloat(splash.splashDivider, View.ALPHA, 0f, 1f).apply {
+                duration = 220L
+                startDelay = 820L
+            }
+
+            val loadingIn = ObjectAnimator.ofFloat(splash.splashLoading, View.ALPHA, 0f, 1f).apply {
+                duration = 220L
+                startDelay = 900L
+            }
+
+            val loadingTextIn = ObjectAnimator.ofFloat(splash.splashLoadingText, View.ALPHA, 0f, 1f).apply {
+                duration = 220L
+                startDelay = 950L
+            }
+
+            imageIn.start()
+            nameIn.start()
+            taglineIn.start()
+            dividerIn.start()
+            loadingIn.start()
+            loadingTextIn.start()
+
+            val loading = ObjectAnimator.ofInt(splash.splashLoading, "progress", 0, 100).apply {
+                duration = 750L
+                startDelay = 980L
+                interpolator = android.view.animation.DecelerateInterpolator()
+                start()
+            }
+
+            delay(if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) 1850 else 2100)
 
             ObjectAnimator.ofFloat(
                 splash.root,
@@ -207,8 +262,8 @@ class MainActivity : AppCompatActivity() {
                 1f,
                 0f
             ).apply {
-                interpolator = AnticipateInterpolator()
-                duration = 220L
+                interpolator = android.view.animation.AccelerateDecelerateInterpolator()
+                duration = 240L
                 doOnEnd { binding.root.removeView(splash.root) }
                 start()
             }
