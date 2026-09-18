@@ -206,8 +206,6 @@ class MainActivity : AppCompatActivity() {
             customSplash.splashImage.scaleX = 0.86f
             customSplash.splashImage.scaleY = 0.86f
             customSplash.splashWordmark.alpha = 0f
-            customSplash.splashDivider.alpha = 0f
-            customSplash.splashTagline.alpha = 0f
             customSplash.splashProgress.scaleX = 0f
             customSplash.splashGlow.alpha = 0.35f
             customSplash.splashSweep.alpha = 0f
@@ -234,19 +232,6 @@ class MainActivity : AppCompatActivity() {
                 .translationY(0f)
                 .setStartDelay(520L)
                 .setDuration(420L)
-                .setInterpolator(android.view.animation.DecelerateInterpolator())
-                .start()
-
-            customSplash.splashDivider.animate()
-                .alpha(1f)
-                .setStartDelay(760L)
-                .setDuration(260L)
-                .start()
-
-            customSplash.splashTagline.animate()
-                .alpha(1f)
-                .setStartDelay(820L)
-                .setDuration(360L)
                 .setInterpolator(android.view.animation.DecelerateInterpolator())
                 .start()
 
