@@ -20,10 +20,11 @@
         </item>
         <item name="snackbarTextViewStyle">@string/MySnackBarText</item>
         <item name="popupMenuStyle">@style/MyPopup</item>
-        <item name="android:windowSplashScreenAnimationDuration" tools:targetApi="s">700</item>
+        <item name="android:windowSplashScreenAnimationDuration" tools:targetApi="s">820</item>
         <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="s">
-            @drawable/anilab_launcher
+            @drawable/anilab_splash
         </item>
+        <item name="android:windowSplashScreenBackground" tools:targetApi="s">#020817</item>
         <item name="android:windowLayoutInDisplayCutoutMode" tools:targetApi="o_mr1">shortEdges
         </item>
     </style>
