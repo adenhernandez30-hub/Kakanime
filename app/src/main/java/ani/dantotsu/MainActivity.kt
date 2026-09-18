@@ -202,8 +202,8 @@ class MainActivity : AppCompatActivity() {
                 android.animation.PropertyValuesHolder.ofFloat(View.SCALE_X, 0.72f, 1f),
                 android.animation.PropertyValuesHolder.ofFloat(View.SCALE_Y, 0.72f, 1f)
             ).apply {
-                duration = 550L
-                interpolator = android.view.animation.OvershootInterpolator()
+                duration = 520L
+                interpolator = android.view.animation.DecelerateInterpolator()
             }
 
             val nameIn = ObjectAnimator.ofPropertyValuesHolder(
@@ -211,8 +211,8 @@ class MainActivity : AppCompatActivity() {
                 android.animation.PropertyValuesHolder.ofFloat(View.ALPHA, 0f, 1f),
                 android.animation.PropertyValuesHolder.ofFloat(View.TRANSLATION_Y, 18f, 0f)
             ).apply {
-                duration = 360L
-                startDelay = 420L
+                duration = 340L
+                startDelay = 470L
                 interpolator = android.view.animation.DecelerateInterpolator()
             }
 
@@ -222,39 +222,45 @@ class MainActivity : AppCompatActivity() {
                 android.animation.PropertyValuesHolder.ofFloat(View.TRANSLATION_Y, 10f, 0f)
             ).apply {
                 duration = 300L
-                startDelay = 650L
+                startDelay = 820L
             }
 
             val dividerIn = ObjectAnimator.ofFloat(splash.splashDivider, View.ALPHA, 0f, 1f).apply {
-                duration = 220L
-                startDelay = 820L
+                duration = 200L
+                startDelay = 690L
+            }
+
+            val dividerTopIn = ObjectAnimator.ofFloat(splash.splashDividerTop, View.ALPHA, 0f, 1f).apply {
+                duration = 180L
+                startDelay = 1050L
             }
 
             val loadingIn = ObjectAnimator.ofFloat(splash.splashLoading, View.ALPHA, 0f, 1f).apply {
                 duration = 220L
-                startDelay = 900L
+                startDelay = 1250L
             }
 
             val loadingTextIn = ObjectAnimator.ofFloat(splash.splashLoadingText, View.ALPHA, 0f, 1f).apply {
                 duration = 220L
-                startDelay = 950L
+                startDelay = 1300L
             }
 
             imageIn.start()
             nameIn.start()
             taglineIn.start()
             dividerIn.start()
+            dividerTopIn.start()
             loadingIn.start()
             loadingTextIn.start()
 
             val loading = ObjectAnimator.ofInt(splash.splashLoading, "progress", 0, 100).apply {
                 duration = 750L
-                startDelay = 980L
+                startDelay = 1350L
                 interpolator = android.view.animation.DecelerateInterpolator()
                 start()
             }
 
-            delay(if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) 1850 else 2100)
+            delay(if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) 2350 else 2500)
 
             ObjectAnimator.ofFloat(
                 splash.root,
