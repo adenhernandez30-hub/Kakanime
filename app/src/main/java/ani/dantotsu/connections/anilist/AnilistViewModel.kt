@@ -93,7 +93,7 @@ class AnilistHomeViewModel : ViewModel() {
             hd = true,
             adultOnly = PrefManager.getVal(PrefName.AdultOnly)
         )?.results ?: arrayListOf()
-        publicFeatured.postValue(result as ArrayList<Media>)
+        publicFeatured.postValue(ArrayList(result))
     }
 
     fun initGuestHome() {
