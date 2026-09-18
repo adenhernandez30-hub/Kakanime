@@ -170,11 +170,11 @@ private fun StarField(modifier: Modifier) {
             0.57f to 0.11f, 0.71f to 0.22f, 0.90f to 0.14f, 0.14f to 0.61f,
             0.32f to 0.78f, 0.69f to 0.68f, 0.84f to 0.51f, 0.93f to 0.77f
         )
-        stars.forEachIndexed { index, (x, y) ->
+        stars.forEachIndexed { index, pair ->
             drawCircle(
                 color = Color(0xFF9DE3FF).copy(alpha = 0.35f + (index % 3) * 0.16f),
                 radius = if (index % 4 == 0) 2.4f else 1.2f,
-                center = Offset(size.width * x, size.height * y)
+                center = Offset(size.width * pair.first, size.height * pair.second)
             )
         }
     }
