@@ -209,9 +209,17 @@ class MainActivity : AppCompatActivity() {
             customSplash.splashProgress.scaleX = 0f
             customSplash.splashGlow.alpha = 0.35f
             customSplash.splashSweep.alpha = 0f
-            customSplash.splashSweep.translationX = -180f
+            customSplash.splashSweep.translationX = -420f
 
             (customSplash.splashImage.drawable as? Animatable)?.start()
+
+            customSplash.splashOrbit.rotation = -3f
+            customSplash.splashOrbit.animate()
+                .rotation(5f)
+                .setStartDelay(180L)
+                .setDuration(1100L)
+                .setInterpolator(android.view.animation.AccelerateDecelerateInterpolator())
+                .start()
 
             customSplash.splashImage.animate()
                 .alpha(1f)
@@ -237,7 +245,7 @@ class MainActivity : AppCompatActivity() {
 
             customSplash.splashSweep.animate()
                 .alpha(0.85f)
-                .translationX(180f)
+                .translationX(420f)
                 .setStartDelay(420L)
                 .setDuration(760L)
                 .setInterpolator(android.view.animation.AccelerateDecelerateInterpolator())
