@@ -93,7 +93,20 @@ class AnilistHomeViewModel : ViewModel() {
             hd = true,
             adultOnly = PrefManager.getVal(PrefName.AdultOnly)
         )?.results ?: arrayListOf()
-        publicFeatured.postValue(ArrayList(result))
+        val featured = ArrayList(result)
+        publicFeatured.postValue(featured)
+        if (BuildConfig.DEBUG && featured.isNotEmpty()) {
+            animeContinue.postValue(
+                ArrayList(
+                    featured.take(5).map { media ->
+                        media.copy(
+                            userProgress = if ((media.anime?.totalEpisodes ?: 0) > 3) 3 else 1,
+                            cameFromContinue = true
+                        )
+                    }
+                )
+            )
+        }
     }
 
     fun initGuestHome() {
