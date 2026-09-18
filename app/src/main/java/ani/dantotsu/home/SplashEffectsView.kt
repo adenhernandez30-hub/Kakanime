@@ -22,6 +22,9 @@ class SplashEffectsView @JvmOverloads constructor(
     private val starPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.FILL
     }
+    private val glowPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.FILL
+    }
     private val ring = RectF()
     private var rotation = 0f
     private var reveal = 0f
@@ -64,8 +67,14 @@ class SplashEffectsView @JvmOverloads constructor(
         val rx = w * 0.48f
         val ry = h * 0.37f
 
+        glowPaint.color = 0x1838AFFF
+        glowPaint.alpha = 100
+        glowPaint.setShadowLayer(dp(75f), 0f, 0f, 0x6640BFFF)
+        canvas.drawCircle(cx, cy, dp(70f), glowPaint)
+        glowPaint.clearShadowLayer()
+
         paint.strokeWidth = dp(1.1f)
-        paint.color = 0x653B8CFF
+        paint.color = 0x653B8CFF.toInt()
         paint.alpha = 150
         ring.set(cx - rx, cy - ry, cx + rx, cy + ry)
         canvas.drawArc(ring, 205f + rotation, 76f, false, paint)
@@ -91,6 +100,7 @@ class SplashEffectsView @JvmOverloads constructor(
         starPaint.color = 0xFFFFFFFF.toInt()
         starPaint.alpha = a
         canvas.drawCircle(x, y, size * 0.24f, starPaint)
+
         paint.color = 0xCC6EDBFF.toInt()
         paint.alpha = a
         paint.strokeWidth = size * 0.22f
