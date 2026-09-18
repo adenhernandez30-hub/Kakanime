@@ -698,7 +698,8 @@ suspend fun getSize(file: String): Double? {
 
 
 abstract class GesturesListener : GestureDetector.SimpleOnGestureListener() {
-    private var timer: Timer? = null //at class level;
+    private val handler = Handler(Looper.getMainLooper())
+    private var pendingRunnable: Runnable? = null
     private val delay: Long = 200
 
     override fun onSingleTapUp(e: MotionEvent): Boolean {
@@ -728,31 +729,26 @@ abstract class GesturesListener : GestureDetector.SimpleOnGestureListener() {
     }
 
     private fun processSingleClickEvent(e: MotionEvent) {
-        val handler = Handler(Looper.getMainLooper())
-        val mRunnable = Runnable {
+        pendingRunnable?.let { handler.removeCallbacks(it) }
+        val runnable = Runnable {
             onSingleClick(e)
         }
-        timer = Timer().apply {
-            schedule(object : TimerTask() {
-                override fun run() {
-                    handler.post(mRunnable)
-                }
-            }, delay)
-        }
+        pendingRunnable = runnable
+        handler.postDelayed(runnable, delay)
     }
 
     private fun processDoubleClickEvent(e: MotionEvent) {
-        timer?.apply {
-            cancel()
-            purge()
+        pendingRunnable?.let {
+            handler.removeCallbacks(it)
+            pendingRunnable = null
         }
         onDoubleClick(e)
     }
 
     private fun processLongClickEvent(e: MotionEvent) {
-        timer?.apply {
-            cancel()
-            purge()
+        pendingRunnable?.let {
+            handler.removeCallbacks(it)
+            pendingRunnable = null
         }
         onLongClick(e)
     }
