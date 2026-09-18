@@ -16,7 +16,6 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import ani.dantotsu.R
-import ani.dantotsu.blurImage
 import ani.dantotsu.connections.anilist.AnilistHomeViewModel
 import ani.dantotsu.loadImage
 import ani.dantotsu.media.Media
@@ -36,7 +35,6 @@ class FeaturedHomeView @JvmOverloads constructor(
     private val status = TextView(context)
     private val meta = TextView(context)
     private val score = TextView(context)
-    private val badge = TextView(context)
 
     private var currentMedia: Media? = null
 
@@ -44,38 +42,35 @@ class FeaturedHomeView @JvmOverloads constructor(
         clipChildren = false
         setBackgroundColor(0xFF080A10.toInt())
 
+        // Dantotsu-style: sharp banner behind the content, with a dark blend
+        // instead of the heavy blurred-card treatment.
         background.scaleType = ImageView.ScaleType.CENTER_CROP
-        addView(background, LayoutParams(-1, dp(330)))
-
-        addView(View(context).apply {
-            setBackgroundColor(0x55000000)
-        }, LayoutParams(-1, dp(330)))
+        addView(background, LayoutParams(-1, dp(300)))
 
         addView(View(context).apply {
             background = GradientDrawable(
                 GradientDrawable.Orientation.TOP_BOTTOM,
                 intArrayOf(
-                    0xD9080A10.toInt(),
-                    0x30080A10,
-                    0xEE080A10.toInt()
+                    0xA0080A10.toInt(),
+                    0x18080A10,
+                    0xE8080A10.toInt()
                 )
             )
-        }, LayoutParams(-1, dp(330)))
+        }, LayoutParams(-1, dp(300)))
 
         val row = LinearLayout(context).apply {
             orientation = LinearLayout.HORIZONTAL
             gravity = Gravity.CENTER_VERTICAL
-            setPadding(dp(28), dp(16), dp(20), dp(16))
+            setPadding(dp(24), dp(12), dp(20), dp(12))
         }
 
         poster.apply {
             scaleType = ImageView.ScaleType.CENTER_CROP
             shapeAppearanceModel = ShapeAppearanceModel.builder()
-                .setAllCornerSizes(dp(18).toFloat())
+                .setAllCornerSizes(dp(16).toFloat())
                 .build()
-            elevation = dp(3).toFloat()
         }
-        row.addView(poster, LinearLayout.LayoutParams(dp(148), dp(220)).apply {
+        row.addView(poster, LinearLayout.LayoutParams(dp(120), dp(180)).apply {
             rightMargin = dp(18)
         })
 
@@ -84,23 +79,8 @@ class FeaturedHomeView @JvmOverloads constructor(
             gravity = Gravity.CENTER_VERTICAL
         }
 
-        badge.apply {
-            text = "FEATURED"
-            textSize = 9f
-            setTextColor(Color.WHITE)
-            typeface = ResourcesCompat.getFont(context, R.font.poppins_bold)
-            setPadding(dp(9), dp(4), dp(9), dp(4))
-            background = GradientDrawable().apply {
-                cornerRadius = dp(8).toFloat()
-                setColor(0xB8000000.toInt())
-            }
-        }
-        info.addView(badge, LinearLayout.LayoutParams(-2, -2).apply {
-            bottomMargin = dp(7)
-        })
-
         title.apply {
-            textSize = 17f
+            textSize = 21f
             maxLines = 2
             ellipsize = android.text.TextUtils.TruncateAt.END
             setTextColor(Color.WHITE)
@@ -109,53 +89,53 @@ class FeaturedHomeView @JvmOverloads constructor(
         info.addView(title, LinearLayout.LayoutParams(-1, -2))
 
         description.apply {
-            textSize = 10.5f
+            textSize = 11.5f
             maxLines = 3
             ellipsize = android.text.TextUtils.TruncateAt.END
-            setTextColor(0xD9FFFFFF.toInt())
+            setTextColor(0xE0FFFFFF.toInt())
             typeface = ResourcesCompat.getFont(context, R.font.poppins)
         }
         info.addView(description, LinearLayout.LayoutParams(-1, -2).apply {
-            topMargin = dp(5)
+            topMargin = dp(6)
         })
 
         status.apply {
-            textSize = 10f
-            setTextColor(0xFFE3A8FF.toInt())
+            textSize = 13f
+            setTextColor(0xFFE2A7FF.toInt())
             typeface = ResourcesCompat.getFont(context, R.font.poppins_bold)
         }
         info.addView(status, LinearLayout.LayoutParams(-1, -2).apply {
-            topMargin = dp(7)
+            topMargin = dp(9)
         })
 
         meta.apply {
-            textSize = 9.5f
+            textSize = 11.5f
             maxLines = 1
             ellipsize = android.text.TextUtils.TruncateAt.END
-            setTextColor(0xD9FFFFFF.toInt())
+            setTextColor(0xE0FFFFFF.toInt())
             typeface = ResourcesCompat.getFont(context, R.font.poppins)
         }
         info.addView(meta, LinearLayout.LayoutParams(-1, -2).apply {
-            topMargin = dp(5)
-        })
-
-        score.apply {
-            textSize = 9.5f
-            setTextColor(0xFFFFD5FF.toInt())
-            typeface = ResourcesCompat.getFont(context, R.font.poppins_bold)
-            gravity = Gravity.CENTER
-            setPadding(dp(7), dp(3), dp(7), dp(3))
-            background = GradientDrawable().apply {
-                cornerRadius = dp(9).toFloat()
-                setColor(0xCC8E4BA0.toInt())
-            }
-        }
-        info.addView(score, LinearLayout.LayoutParams(-2, -2).apply {
             topMargin = dp(7)
         })
 
+        score.apply {
+            textSize = 10f
+            setTextColor(0xFF28142D.toInt())
+            typeface = ResourcesCompat.getFont(context, R.font.poppins_bold)
+            gravity = Gravity.CENTER
+            setPadding(dp(8), dp(4), dp(8), dp(4))
+            background = GradientDrawable().apply {
+                cornerRadius = dp(10).toFloat()
+                setColor(0xFFE0A8FF.toInt())
+            }
+        }
+        info.addView(score, LinearLayout.LayoutParams(-2, -2).apply {
+            topMargin = dp(9)
+        })
+
         row.addView(info, LinearLayout.LayoutParams(0, -2, 1f))
-        addView(row, LayoutParams(-1, dp(330)))
+        addView(row, LayoutParams(-1, dp(300)))
 
         setOnClickListener { currentMedia?.let(::open) }
         poster.setOnClickListener { currentMedia?.let(::open) }
@@ -174,7 +154,6 @@ class FeaturedHomeView @JvmOverloads constructor(
         currentMedia = media
         val artwork = media.banner ?: media.cover
         background.loadImage(artwork)
-        blurImage(background, artwork)
         poster.loadImage(media.cover ?: artwork)
 
         title.text = media.userPreferredName.ifBlank { media.nameRomaji }
@@ -195,7 +174,7 @@ class FeaturedHomeView @JvmOverloads constructor(
         val total = media.anime?.totalEpisodes ?: 0
         val progress = media.userProgress ?: 0
         val episodeText = if (total > 0) {
-            progress.coerceAtLeast(0).toString() + " / " + total + " Episodes"
+            "$progress / $total Episodes"
         } else {
             null
         }
@@ -205,7 +184,7 @@ class FeaturedHomeView @JvmOverloads constructor(
             genreText.takeIf { it.isNotBlank() }
         ).joinToString("    ")
 
-        score.text = media.meanScore?.let { (it / 10f).toString() + " ★" } ?: ""
+        score.text = media.meanScore?.let { "${it / 10f} ★" } ?: ""
         score.visibility = if (media.meanScore != null) View.VISIBLE else View.GONE
     }
 
