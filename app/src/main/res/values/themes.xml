@@ -376,4 +376,14 @@
         <item name="appWidgetPadding">16dp</item>
     </style>
 
+
+    <style name="Theme.KakaAnime.Splash" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:fontFamily">sans</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:statusBarColor">#020A16</item>
+        <item name="android:navigationBarColor">#020A16</item>
+        <item name="android:windowBackground">#020A16</item>
+        <item name="android:windowActionModeOverlay">true</item>
+    </style>
+
 </resources>
