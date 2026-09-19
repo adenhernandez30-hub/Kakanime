@@ -84,21 +84,21 @@ class SettingsActivity : AppCompatActivity() {
                 arrayListOf(
                     Settings(
                         type = 1,
-                        name = getString(R.string.accounts),
-                        desc = getString(R.string.accounts_desc),
-                        icon = R.drawable.ic_round_person_24,
-                        onClick = {
-                            startActivity(Intent(context, SettingsAccountActivity::class.java))
-                        },
-                        isActivity = true
-                    ),
-                    Settings(
-                        type = 1,
                         name = getString(R.string.theme),
                         desc = getString(R.string.theme_desc),
                         icon = R.drawable.ic_palette,
                         onClick = {
                             startActivity(Intent(context, SettingsThemeActivity::class.java))
+                        },
+                        isActivity = true
+                    ),
+                    Settings(
+                        type = 1,
+                        name = getString(R.string.accounts),
+                        desc = getString(R.string.accounts_desc),
+                        icon = R.drawable.ic_round_person_24,
+                        onClick = {
+                            startActivity(Intent(context, SettingsAccountActivity::class.java))
                         },
                         isActivity = true
                     ),
@@ -129,6 +129,16 @@ class SettingsActivity : AppCompatActivity() {
                         icon = R.drawable.ic_round_import_contacts_24,
                         onClick = {
                             startActivity(Intent(context, SettingsMangaActivity::class.java))
+                        },
+                        isActivity = true
+                    ),
+                    Settings(
+                        type = 1,
+                        name = getString(R.string.app_icon),
+                        desc = getString(R.string.app_icon_desc),
+                        icon = R.drawable.ic_launcher_outline,
+                        onClick = {
+                            startActivity(Intent(context, AppIconActivity::class.java))
                         },
                         isActivity = true
                     ),
