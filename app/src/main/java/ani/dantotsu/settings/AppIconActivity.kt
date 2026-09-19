@@ -11,6 +11,7 @@ import ani.dantotsu.initActivity
 import ani.dantotsu.navBarHeight
 import ani.dantotsu.statusBarHeight
 
+/** Uses activity-alias components so the launcher icon can change without rebuilding the APK. */
 class AppIconActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAppIconBinding
