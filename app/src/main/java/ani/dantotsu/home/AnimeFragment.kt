@@ -236,7 +236,6 @@ class AnimeFragment : Fragment() {
                                     viewPager = animePageAdapter.trendingViewPager
                                 )
                             )
-                            animePageAdapter.updateAvatar()
                         }
                     }
                 }
@@ -247,7 +246,6 @@ class AnimeFragment : Fragment() {
 
 
         fun load() = scope.launch(Dispatchers.Main) {
-            animePageAdapter.updateAvatar()
         }
 
         animePageAdapter.onSeasonClick = { i ->
@@ -320,7 +318,6 @@ class AnimeFragment : Fragment() {
             binding.root.requestLayout()
         }
         if (this::animePageAdapter.isInitialized && _binding != null) {
-            animePageAdapter.updateNotificationCount()
         }
         super.onResume()
     }
