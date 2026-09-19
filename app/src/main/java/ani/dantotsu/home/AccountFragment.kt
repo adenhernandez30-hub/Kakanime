@@ -32,14 +32,14 @@ class AccountFragment : Fragment() {
             bottomMargin = navBarHeight
         }
 
-        binding.accountName.text = Anilist.username.ifBlank { "AniLab User" }
+        binding.accountName.text = Anilist.username?.ifBlank { "AniLab User" } ?: "AniLab User"
         binding.accountBio.text = "Watch anime, together."
         binding.accountEpisodesValue.text = (Anilist.episodesWatched).toString()
-        binding.accountAnimeValue.text = "${Anilist.episodesWatched / 12}"
+        binding.accountAnimeValue.text = "${(Anilist.episodesWatched ?: 0) / 12}"
         binding.accountFavoritesValue.text = "24"
         binding.accountDiamondsValue.text = "1,320"
-        binding.accountAvatar.loadImage(Anilist.avatar)
-        binding.accountBanner.loadImage(Anilist.bg.ifBlank { Anilist.avatar })
+        binding.accountAvatar.loadImage(Anilist.avatar ?: "")
+        binding.accountBanner.loadImage(Anilist.bg?.takeIf { it.isNotBlank() } ?: Anilist.avatar.orEmpty())
 
         binding.accountEditProfile.setOnClickListener {
             EditProfileBottomSheet().show(parentFragmentManager, "edit_profile")

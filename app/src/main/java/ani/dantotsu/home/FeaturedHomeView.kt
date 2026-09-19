@@ -118,7 +118,7 @@ class FeaturedHomeView @JvmOverloads constructor(
             minimumHeight = dp(42)
             minimumWidth = dp(42)
             cornerRadius = dp(21)
-            setIconResource(R.drawable.ic_round_add_24)
+            setIconResource(android.R.drawable.ic_input_add)
             iconGravity = MaterialButton.ICON_GRAVITY_TEXT_TOP
         }
         actionRow.addView(addButton, LinearLayout.LayoutParams(dp(42), dp(42)).apply {
