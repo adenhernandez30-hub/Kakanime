@@ -1108,6 +1108,6 @@ Non quae tempore quo provident laudantium qui illo dolor vel quia dolor et exerc
     <string name="app_icon_blue">Blue</string>
     <string name="app_icon_dark">Dark</string>
     <string name="app_icon_mono">Monochrome</string>
-    <string name="selected">Selected</string>
+    
     <string name="back">Back</string>
 </resources>
