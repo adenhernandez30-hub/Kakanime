@@ -9,69 +9,6 @@
     android:layout_marginEnd="-16dp"
     android:orientation="vertical">
 
-    <include layout="@layout/layout_trending" />
-
-    <HorizontalScrollView
-        android:id="@+id/animeSeasons"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:clipToPadding="false"
-        android:fillViewport="true"
-        android:paddingStart="2dp"
-        android:paddingEnd="2dp"
-        android:scrollbarSize="0dp">
-
-        <LinearLayout
-            android:id="@+id/animeSeasonsCont"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/animeThisSeason"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:text="@string/this_season"
-                android:textAppearance="@style/Suffix"
-                app:chipStrokeColor="?attr/colorPrimaryContainer"
-                app:layout_constraintBaseline_toBaselineOf="@+id/animeNextSeason"
-                app:layout_constraintEnd_toStartOf="@+id/animeNextSeason"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/animeNextSeason"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:text="@string/next_season"
-                android:textAppearance="@style/Suffix"
-                app:chipStrokeColor="?attr/colorPrimaryContainer" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/animePreviousSeason"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:text="@string/previous_season"
-                android:textAppearance="@style/Suffix"
-                app:chipStrokeColor="?attr/colorPrimaryContainer"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
-        </LinearLayout>
-
-    </HorizontalScrollView>
-
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/animeListContainer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clipToPadding="false"
-        android:paddingStart="24dp"
-        android:paddingEnd="24dp">
-
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/animeGenre"
             android:layout_width="match_parent"
@@ -122,6 +59,75 @@
                     android:background="?attr/colorPrimary" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
+
+
+
+    <include layout="@layout/layout_trending" />
+
+    <HorizontalScrollView
+        android:id="@+id/animeSeasons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        android:paddingStart="2dp"
+        android:paddingEnd="2dp"
+        android:scrollbarSize="0dp">
+
+        <LinearLayout
+            android:id="@+id/animeSeasonsCont"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/animeThisSeason"
+                android:minHeight="48dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="@string/this_season"
+                android:textAppearance="@style/Suffix"
+                app:chipStrokeColor="?attr/colorPrimaryContainer"
+                app:layout_constraintBaseline_toBaselineOf="@+id/animeNextSeason"
+                app:layout_constraintEnd_toStartOf="@+id/animeNextSeason"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/animeNextSeason"
+                android:minHeight="48dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="@string/next_season"
+                android:textAppearance="@style/Suffix"
+                app:chipStrokeColor="?attr/colorPrimaryContainer" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/animePreviousSeason"
+                android:minHeight="48dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="@string/previous_season"
+                android:textAppearance="@style/Suffix"
+                app:chipStrokeColor="?attr/colorPrimaryContainer"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/animeListContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:visibility="gone"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp">
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/animeCalendar"
