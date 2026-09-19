@@ -1,0 +1,24 @@
+<resources>
+    <style name="AniLabProfileStat" parent="">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginVertical">6dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:paddingVertical">4dp</item>
+    </style>
+    <style name="AniLabProfileStatValue" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/poppins_semi_bold</item>
+        <item name="android:textColor">@color/anilab_cyan</item>
+    </style>
+    <style name="AniLabProfileStatLabel" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/poppins_semi_bold</item>
+        <item name="android:textColor">@color/anilab_muted</item>
+        <item name="android:textSize">11sp</item>
+    </style>
+</resources>

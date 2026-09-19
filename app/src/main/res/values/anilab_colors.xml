@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="anilab_navy">#020817</color>
+    <color name="anilab_surface">#0A1626</color>
+    <color name="anilab_surface_alt">#0F2035</color>
+    <color name="anilab_cyan">#28C7F5</color>
+    <color name="anilab_ice">#DCEBFA</color>
+    <color name="anilab_text">#F2F7FC</color>
+    <color name="anilab_muted">#91A7BD</color>
+    <color name="anilab_outline">#28445F</color>
+    <color name="anilab_success">#55D6A5</color>
+</resources>

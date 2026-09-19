@@ -5,47 +5,40 @@
     android:id="@+id/settingsLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="24dp"
+    android:layout_marginTop="12dp"
+    android:background="@drawable/anilab_continue_surface"
     android:gravity="center_vertical"
-    android:orientation="horizontal">
-
+    android:minHeight="68dp"
+    android:orientation="horizontal"
+    android:paddingHorizontal="16dp">
     <ImageView
         android:id="@+id/settingsIcon"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_gravity="center"
-        android:layout_marginVertical="24dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginEnd="20dp"
         app:srcCompat="@drawable/ic_circle_add"
-        app:tint="?attr/colorPrimary"
+        app:tint="@color/anilab_cyan"
         tools:ignore="ContentDescription" />
-
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:minHeight="44sp"
         android:orientation="vertical">
-
         <TextView
             android:id="@+id/settingsTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_bold"
-            android:text="@string/name"
-            android:textColor="?attr/colorOnSurface"
-            android:textSize="16sp" />
-
+            android:textColor="@color/anilab_text"
+            android:textSize="15sp" />
         <TextView
             android:id="@+id/settingsDesc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingRight="28dp"
-            android:alpha="0.66"
+            android:alpha="0.72"
             android:fontFamily="@font/poppins_semi_bold"
-            android:text="@string/slogan"
-            android:textColor="?attr/colorOnSurfaceVariant" />
-
+            android:textColor="@color/anilab_muted"
+            android:textSize="12sp" />
         <LinearLayout
             android:id="@+id/attachView"
             android:layout_width="match_parent"
@@ -55,16 +48,13 @@
             android:visibility="gone"
             tools:ignore="RtlSymmetry" />
     </LinearLayout>
-
     <ImageView
         android:id="@+id/settingsIconRight"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_marginVertical="24dp"
         android:rotation="180"
         android:visibility="gone"
         app:srcCompat="@drawable/ic_round_arrow_back_ios_new_24"
-        app:tint="?attr/colorPrimary"
-        tools:ignore="ContentDescription"
-        tools:visibility="visible" />
+        app:tint="@color/anilab_cyan"
+        tools:ignore="ContentDescription" />
 </LinearLayout>
