@@ -21,13 +21,22 @@ import ani.dantotsu.loadImage
 import ani.dantotsu.media.Media
 import ani.dantotsu.media.MediaDetailsActivity
 import com.google.android.material.button.MaterialButton
+import kotlin.math.max
 
-class FeaturedHomeView @JvmOverloads constructor(context: Context, attrs: android.util.AttributeSet? = null) : FrameLayout(context, attrs) {
+class FeaturedHomeView @JvmOverloads constructor(
+    context: Context,
+    attrs: android.util.AttributeSet? = null,
+) : FrameLayout(context, attrs) {
     private val image = ImageView(context)
     private val title = TextView(context)
     private val description = TextView(context)
-    private val badge = TextView(context)
-    private val action = MaterialButton(context)
+    private val metadata = TextView(context)
+    private val watchNow = MaterialButton(context)
+    private val addButton = MaterialButton(context)
+    private val indicatorRow = LinearLayout(context)
+
+    private var featured = emptyList<Media>()
+    private var index = 0
 
     init {
         setPadding(0, dp(8), 0, dp(8))
@@ -42,7 +51,7 @@ class FeaturedHomeView @JvmOverloads constructor(context: Context, attrs: androi
             View(context).apply {
                 background = GradientDrawable(
                     GradientDrawable.Orientation.TOP_BOTTOM,
-                    intArrayOf(0xF0000000.toInt(), 0x18000000, 0x00000000)
+                    intArrayOf(0xEE04142D.toInt(), 0x44000000, 0x00000000)
                 )
             },
             FrameLayout.LayoutParams(-1, -1)
@@ -52,7 +61,7 @@ class FeaturedHomeView @JvmOverloads constructor(context: Context, attrs: androi
             View(context).apply {
                 background = GradientDrawable(
                     GradientDrawable.Orientation.TOP_BOTTOM,
-                    intArrayOf(0x00000000, 0xB8000000.toInt(), 0xF5000000.toInt())
+                    intArrayOf(0x00000000, 0xBD020A1A.toInt(), 0xF5030812.toInt())
                 )
             },
             FrameLayout.LayoutParams(-1, -1)
@@ -64,21 +73,8 @@ class FeaturedHomeView @JvmOverloads constructor(context: Context, attrs: androi
             setPadding(dp(18), dp(18), dp(18), dp(18))
         }
 
-        badge.apply {
-            text = "FEATURED"
-            textSize = 10f
-            setTextColor(Color.WHITE)
-            typeface = ResourcesCompat.getFont(context, R.font.poppins_bold)
-            setPadding(dp(9), dp(4), dp(9), dp(4))
-            background = GradientDrawable().apply {
-                cornerRadius = dp(8).toFloat()
-                setColor(0xAA000000.toInt())
-            }
-        }
-        content.addView(badge, LinearLayout.LayoutParams(-2, -2).apply { bottomMargin = dp(8) })
-
         title.apply {
-            textSize = 21f
+            textSize = 28f
             maxLines = 2
             setTextColor(Color.WHITE)
             typeface = ResourcesCompat.getFont(context, R.font.poppins_bold)
@@ -86,24 +82,56 @@ class FeaturedHomeView @JvmOverloads constructor(context: Context, attrs: androi
         content.addView(title, LinearLayout.LayoutParams(-1, -2))
 
         description.apply {
-            textSize = 11.5f
+            textSize = 12f
             maxLines = 2
             setTextColor(0xE6FFFFFF.toInt())
             typeface = ResourcesCompat.getFont(context, R.font.poppins)
         }
-        content.addView(description, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(4) })
+        content.addView(description, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(6) })
 
-        action.apply {
-            text = "View Anime"
+        metadata.apply {
             textSize = 11f
-            minHeight = dp(38)
-            setPadding(dp(14), 0, dp(14), 0)
-            cornerRadius = dp(14)
+            setTextColor(0xCCFFFFFF.toInt())
+            typeface = ResourcesCompat.getFont(context, R.font.poppins_semi_bold)
         }
-        content.addView(action, LinearLayout.LayoutParams(-2, dp(38)).apply { topMargin = dp(10) })
+        content.addView(metadata, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(8) })
+
+        val actionRow = LinearLayout(context).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+        }
+
+        watchNow.apply {
+            text = "Watch Now"
+            textSize = 12f
+            minHeight = dp(42)
+            setPadding(dp(16), 0, dp(16), 0)
+            cornerRadius = dp(20)
+            setIconResource(R.drawable.ic_round_play_arrow_24)
+            iconGravity = MaterialButton.ICON_GRAVITY_TEXT_START
+        }
+        actionRow.addView(watchNow, LinearLayout.LayoutParams(-2, dp(42)))
+
+        addButton.apply {
+            text = ""
+            minHeight = dp(42)
+            minimumHeight = dp(42)
+            minimumWidth = dp(42)
+            cornerRadius = dp(21)
+            setIconResource(R.drawable.ic_round_add_24)
+            iconGravity = MaterialButton.ICON_GRAVITY_TEXT_TOP
+        }
+        actionRow.addView(addButton, LinearLayout.LayoutParams(dp(42), dp(42)).apply {
+            marginStart = dp(10)
+        })
+
+        content.addView(actionRow, LinearLayout.LayoutParams(-2, -2).apply { topMargin = dp(10) })
+
+        indicatorRow.orientation = LinearLayout.HORIZONTAL
+        content.addView(indicatorRow, LinearLayout.LayoutParams(-2, -2).apply { topMargin = dp(12) })
 
         contentFrame.addView(content, FrameLayout.LayoutParams(-1, -1))
-        addView(contentFrame, LayoutParams(-1, dp(300)))
+        addView(contentFrame, LayoutParams(-1, dp(340)))
         post { bindModel() }
     }
 
@@ -112,24 +140,49 @@ class FeaturedHomeView @JvmOverloads constructor(context: Context, attrs: androi
         val activity = context as? FragmentActivity ?: return
         val model = ViewModelProvider(activity)[AnilistHomeViewModel::class.java]
         model.getPublicFeatured().observe(owner) { list ->
-            list?.randomOrNull()?.let(::render)
+            if (!list.isNullOrEmpty()) {
+                featured = list
+                index = 0
+                renderCurrent()
+            }
         }
     }
 
-    private fun render(media: Media) {
+    private fun renderCurrent() {
+        val media = featured.getOrNull(index) ?: return
         image.loadImage(media.banner ?: media.cover)
         title.text = media.userPreferredName.ifBlank { media.nameRomaji }
         val text = media.description?.let {
             Html.fromHtml(it, Html.FROM_HTML_MODE_LEGACY).toString().trim()
         }
         description.text = text?.takeIf { it.isNotBlank() } ?: "Discover this anime on AniLab."
+
+        val type = media.format?.replace('_', ' ')?.replaceFirstChar { it.titlecase() } ?: "Anime"
+        val genres = media.genres?.take(3)?.joinToString(" • ").orEmpty()
+        metadata.text = listOf(type, genres).filter { it.isNotBlank() }.joinToString(" • ")
+
         val open = View.OnClickListener {
             context.startActivity(
                 Intent(context, MediaDetailsActivity::class.java).putExtra("media", media)
             )
         }
-        action.setOnClickListener(open)
+        watchNow.setOnClickListener(open)
+        addButton.setOnClickListener(open)
         setOnClickListener(open)
+
+        indicatorRow.removeAllViews()
+        val dots = max(1, minOf(5, featured.size))
+        repeat(dots) { position ->
+            indicatorRow.addView(View(context).apply {
+                background = GradientDrawable().apply {
+                    shape = GradientDrawable.RECTANGLE
+                    cornerRadius = dp(3).toFloat()
+                    setColor(if (position == index % dots) Color.WHITE else 0x66FFFFFF)
+                }
+            }, LinearLayout.LayoutParams(if (position == index % dots) dp(20) else dp(10), dp(4)).apply {
+                marginEnd = dp(6)
+            })
+        }
     }
 
     private fun dp(value: Int): Int = (value * resources.displayMetrics.density).toInt()

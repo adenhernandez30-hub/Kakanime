@@ -40,10 +40,13 @@ import ani.dantotsu.databinding.ActivityMainBinding
 import ani.dantotsu.databinding.DialogUserAgentBinding
 import ani.dantotsu.databinding.SplashScreenBinding
 import ani.dantotsu.home.AnimeFragment
+import ani.dantotsu.home.AccountFragment
 import ani.dantotsu.home.HomeFragment
 import ani.dantotsu.home.LoginFragment
 import ani.dantotsu.home.MangaFragment
 import ani.dantotsu.home.NoInternet
+import ani.dantotsu.home.ScheduleFragment
+import ani.dantotsu.home.SocialFragment
 import ani.dantotsu.media.MediaDetailsActivity
 import ani.dantotsu.notifications.TaskScheduler
 import ani.dantotsu.others.CustomBottomDialog
@@ -604,10 +607,16 @@ class MainActivity : AppCompatActivity() {
     private class ViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
         FragmentStateAdapter(fragmentManager, lifecycle) {
 
-        override fun getItemCount(): Int = 1
+        override fun getItemCount(): Int = 5
 
         override fun createFragment(position: Int): Fragment {
-            return HomeFragment()
+            return when (position) {
+                0 -> HomeFragment()
+                1 -> ScheduleFragment()
+                2 -> SocialFragment()
+                3 -> AnimeFragment()
+                else -> AccountFragment()
+            }
         }
     }
 

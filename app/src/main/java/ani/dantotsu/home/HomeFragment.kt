@@ -347,7 +347,7 @@ class HomeFragment : Fragment() {
             getString(R.string.continue_reading)
         )
         binding.homeReadingBrowseButton.setOnClickListener {
-            bottomBar.selectTabAt(2)
+            bottomBar.selectTabAt(3)
         }
 
         initRecyclerView(
@@ -372,7 +372,7 @@ class HomeFragment : Fragment() {
             getString(R.string.planned_manga)
         )
         binding.homePlannedMangaBrowseButton.setOnClickListener {
-            bottomBar.selectTabAt(2)
+            bottomBar.selectTabAt(3)
         }
 
         initRecyclerView(
