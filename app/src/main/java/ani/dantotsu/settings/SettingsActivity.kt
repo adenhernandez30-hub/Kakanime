@@ -258,5 +258,8 @@ class SettingsActivity : AppCompatActivity() {
     override fun onResume() {
         ThemeManager(this).applyTheme()
         super.onResume()
+
+        // Replay the AniLab logo animation whenever Settings becomes visible.
+        (binding.settingsLogo.drawable as? Animatable)?.start()
     }
 }
