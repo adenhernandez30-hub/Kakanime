@@ -3,7 +3,6 @@ package ani.dantotsu.home
 import android.content.Intent
 import android.os.Handler
 import android.os.Looper
-import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
-import androidx.core.view.updatePadding
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,7 +19,7 @@ import ani.dantotsu.MediaPageTransformer
 import ani.dantotsu.R
 import ani.dantotsu.connections.anilist.Anilist
 import ani.dantotsu.databinding.ItemAnimePageBinding
-import ani.dantotsu.databinding.LayoutTrendingBinding
+import ani.dantotsu.databinding.LayoutAnimeTrendingBinding
 import ani.dantotsu.getAppString
 import ani.dantotsu.getThemeColor
 import ani.dantotsu.loadImage
@@ -31,22 +29,19 @@ import ani.dantotsu.media.Media
 import ani.dantotsu.media.MediaAdaptor
 import ani.dantotsu.media.MediaListViewActivity
 import ani.dantotsu.media.SearchActivity
-import ani.dantotsu.profile.ProfileActivity
 import ani.dantotsu.px
 import ani.dantotsu.setSafeOnClickListener
 import ani.dantotsu.setSlideIn
 import ani.dantotsu.setSlideUp
-import ani.dantotsu.settings.SettingsDialogFragment
 import ani.dantotsu.settings.saving.PrefManager
 import ani.dantotsu.settings.saving.PrefName
-import ani.dantotsu.statusBarHeight
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.textfield.TextInputLayout
 
 class AnimePageAdapter : RecyclerView.Adapter<AnimePageAdapter.AnimePageViewHolder>() {
     val ready = MutableLiveData(false)
     lateinit var binding: ItemAnimePageBinding
-    private lateinit var trendingBinding: LayoutTrendingBinding
+    private lateinit var trendingBinding: LayoutAnimeTrendingBinding
     private var trendHandler: Handler? = null
     private lateinit var trendRun: Runnable
     var trendingViewPager: ViewPager2? = null
@@ -59,7 +54,7 @@ class AnimePageAdapter : RecyclerView.Adapter<AnimePageAdapter.AnimePageViewHold
 
     override fun onBindViewHolder(holder: AnimePageViewHolder, position: Int) {
         binding = holder.binding
-        trendingBinding = LayoutTrendingBinding.bind(binding.root)
+        trendingBinding = LayoutAnimeTrendingBinding.bind(binding.root)
         trendingViewPager = trendingBinding.trendingViewPager
 
         val textInputLayout = holder.itemView.findViewById<TextInputLayout>(R.id.searchBar)
@@ -73,16 +68,12 @@ class AnimePageAdapter : RecyclerView.Adapter<AnimePageAdapter.AnimePageViewHold
         textInputLayout.boxBackgroundColor = (color and 0x00FFFFFF) or 0x28000000
         materialCardView.setCardBackgroundColor((color and 0x00FFFFFF) or 0x28000000)
 
-        trendingBinding.titleContainer.updatePadding(top = statusBarHeight)
-
         if (PrefManager.getVal(PrefName.SmallView)) trendingBinding.trendingContainer.updateLayoutParams<ViewGroup.MarginLayoutParams> {
             bottomMargin = (-108f).px
         }
 
-        updateAvatar()
-
-        trendingBinding.searchBar.hint = binding.root.context.getString(R.string.search)
-        trendingBinding.searchBarText.setOnClickListener {
+        binding.searchBar.hint = binding.root.context.getString(R.string.search)
+        binding.searchBarText.setOnClickListener {
             val context = binding.root.context
             if (PrefManager.getVal(PrefName.AniMangaSearchDirect) && Anilist.token != null) {
                 ContextCompat.startActivity(
@@ -98,28 +89,19 @@ class AnimePageAdapter : RecyclerView.Adapter<AnimePageAdapter.AnimePageViewHold
             }
         }
 
-        trendingBinding.userAvatar.setSafeOnClickListener {
-            val dialogFragment =
-                SettingsDialogFragment.newInstance(SettingsDialogFragment.Companion.PageType.ANIME)
-            dialogFragment.show((it.context as AppCompatActivity).supportFragmentManager, "dialog")
-        }
-        trendingBinding.userAvatar.setOnLongClickListener { view ->
-            view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+        binding.userAvatar.setSafeOnClickListener {
             ContextCompat.startActivity(
-                view.context,
-                Intent(view.context, ProfileActivity::class.java)
-                    .putExtra("userId", Anilist.userid), null
+                it.context,
+                Intent(it.context, SearchActivity::class.java)
+                    .putExtra("type", "ANIME")
+                    .putExtra("openFilter", true),
+                null
             )
-            false
         }
 
-        trendingBinding.searchBar.setEndIconOnClickListener {
-            trendingBinding.searchBar.performClick()
+        binding.searchBar.setEndIconOnClickListener {
+            binding.searchBar.performClick()
         }
-
-        trendingBinding.notificationCount.isVisible = Anilist.unreadNotificationCount > 0
-                && PrefManager.getVal<Boolean>(PrefName.ShowNotificationRedDot) == true
-        trendingBinding.notificationCount.text = Anilist.unreadNotificationCount.toString()
 
         listOf(
             binding.animePreviousSeason,
@@ -196,7 +178,6 @@ class AnimePageAdapter : RecyclerView.Adapter<AnimePageAdapter.AnimePageViewHold
 
         trendingBinding.trendingViewPager.layoutAnimation =
             LayoutAnimationController(setSlideIn(), 0.25f)
-        trendingBinding.titleContainer.startAnimation(setSlideUp())
         binding.animeListContainer.layoutAnimation =
             LayoutAnimationController(setSlideIn(), 0.25f)
         binding.animeSeasonsCont.layoutAnimation =
@@ -298,21 +279,6 @@ class AnimePageAdapter : RecyclerView.Adapter<AnimePageAdapter.AnimePageViewHold
         more.startAnimation(setSlideUp())
         recyclerView.layoutAnimation =
             LayoutAnimationController(setSlideIn(), 0.25f)
-    }
-
-    fun updateAvatar() {
-        if (Anilist.avatar != null && ready.value == true) {
-            trendingBinding.userAvatar.loadImage(Anilist.avatar)
-            trendingBinding.userAvatar.imageTintList = null
-        }
-    }
-
-    fun updateNotificationCount() {
-        if (this::binding.isInitialized) {
-            trendingBinding.notificationCount.isVisible = Anilist.unreadNotificationCount > 0
-                    && PrefManager.getVal<Boolean>(PrefName.ShowNotificationRedDot) == true
-            trendingBinding.notificationCount.text = Anilist.unreadNotificationCount.toString()
-        }
     }
 
     inner class AnimePageViewHolder(val binding: ItemAnimePageBinding) :
