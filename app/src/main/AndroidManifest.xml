@@ -375,7 +375,7 @@
             android:name=".launcher.Blue"
             android:enabled="true"
             android:exported="true"
-            android:icon="@drawable/anilab_launcher"
+            android:icon="@mipmap/anilab_launcher"
             android:targetActivity=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
