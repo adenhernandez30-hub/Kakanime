@@ -5,17 +5,17 @@
     android:id="@+id/settingsLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="24dp"
+    android:minHeight="72dp"
     android:gravity="center_vertical"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:paddingVertical="10dp">
 
     <ImageView
         android:id="@+id/settingsIcon"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_gravity="center"
-        android:layout_marginVertical="24dp"
-        android:layout_marginEnd="24dp"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="28dp"
         app:srcCompat="@drawable/ic_circle_add"
         app:tint="?attr/colorPrimary"
         tools:ignore="ContentDescription" />
@@ -24,7 +24,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:minHeight="44sp"
+        android:gravity="center_vertical"
         android:orientation="vertical">
 
         <TextView
@@ -34,37 +34,33 @@
             android:fontFamily="@font/poppins_bold"
             android:text="@string/name"
             android:textColor="?attr/colorOnSurface"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/settingsDesc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingRight="28dp"
-            android:alpha="0.66"
-            android:fontFamily="@font/poppins_semi_bold"
-            android:text="@string/slogan"
-            android:textColor="?attr/colorOnSurfaceVariant" />
+            android:visibility="gone"
+            tools:text="@string/slogan" />
 
         <LinearLayout
             android:id="@+id/attachView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:orientation="vertical"
-            android:visibility="gone"
-            tools:ignore="RtlSymmetry" />
+            android:visibility="gone" />
     </LinearLayout>
 
     <ImageView
         android:id="@+id/settingsIconRight"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginVertical="24dp"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
         android:rotation="180"
         android:visibility="gone"
         app:srcCompat="@drawable/ic_round_arrow_back_ios_new_24"
-        app:tint="?attr/colorPrimary"
-        tools:ignore="ContentDescription"
-        tools:visibility="visible" />
+        app:tint="?attr/colorOnSurface"
+        tools:visibility="visible"
+        tools:ignore="ContentDescription" />
+
 </LinearLayout>
