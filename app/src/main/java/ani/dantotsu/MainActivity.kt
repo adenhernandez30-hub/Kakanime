@@ -84,6 +84,10 @@ import java.io.Serializable
 
 
 class MainActivity : AppCompatActivity() {
+    companion object {
+        const val EXTRA_SKIP_STARTUP_SPLASH = "extra_skip_startup_splash"
+    }
+
     private lateinit var binding: ActivityMainBinding
     private lateinit var incognitoLiveData: SharedPreferenceBooleanLiveData
     private val scope = lifecycleScope
@@ -195,107 +199,105 @@ class MainActivity : AppCompatActivity() {
 
         binding.root.isMotionEventSplittingEnabled = false
 
-        // Keep the Android system splash as the first stage, then reveal a full AniLab
-        // branded splash overlay. The overlay is shared by Android 12+ and pre-S devices
-        // so the visual treatment stays consistent without touching the launcher icon.
-        val customSplash = SplashScreenBinding.inflate(layoutInflater)
-        binding.root.addView(customSplash.root)
+        val skipStartupSplash = intent.getBooleanExtra(EXTRA_SKIP_STARTUP_SPLASH, false)
+        if (!skipStartupSplash) {
+            val customSplash = SplashScreenBinding.inflate(layoutInflater)
+            binding.root.addView(customSplash.root)
 
-        fun playCustomSplash() {
-            if (customSplash.root.tag == "started") return
-            customSplash.root.tag = "started"
+            fun playCustomSplash() {
+                if (customSplash.root.tag == "started") return
+                customSplash.root.tag = "started"
 
-            customSplash.splashImage.alpha = 0f
-            customSplash.splashImage.scaleX = 0.86f
-            customSplash.splashImage.scaleY = 0.86f
-            customSplash.splashWordmark.alpha = 0f
-            customSplash.splashProgress.scaleX = 0f
-            customSplash.splashGlow.alpha = 0.35f
-            customSplash.splashSweep.alpha = 0f
-            customSplash.splashSweep.translationX = -420f
+                customSplash.splashImage.alpha = 0f
+                customSplash.splashImage.scaleX = 0.86f
+                customSplash.splashImage.scaleY = 0.86f
+                customSplash.splashWordmark.alpha = 0f
+                customSplash.splashProgress.scaleX = 0f
+                customSplash.splashGlow.alpha = 0.35f
+                customSplash.splashSweep.alpha = 0f
+                customSplash.splashSweep.translationX = -420f
 
-            (customSplash.splashImage.drawable as? Animatable)?.start()
+                (customSplash.splashImage.drawable as? Animatable)?.start()
 
-            customSplash.splashOrbit.rotation = -3f
-            customSplash.splashOrbit.animate()
-                .rotation(5f)
-                .setStartDelay(180L)
-                .setDuration(1100L)
-                .setInterpolator(android.view.animation.AccelerateDecelerateInterpolator())
-                .start()
+                customSplash.splashOrbit.rotation = -3f
+                customSplash.splashOrbit.animate()
+                    .rotation(5f)
+                    .setStartDelay(180L)
+                    .setDuration(1100L)
+                    .setInterpolator(android.view.animation.AccelerateDecelerateInterpolator())
+                    .start()
 
-            customSplash.splashImage.animate()
-                .alpha(1f)
-                .scaleX(1f)
-                .scaleY(1f)
-                .setDuration(620L)
-                .setInterpolator(android.view.animation.DecelerateInterpolator())
-                .start()
+                customSplash.splashImage.animate()
+                    .alpha(1f)
+                    .scaleX(1f)
+                    .scaleY(1f)
+                    .setDuration(620L)
+                    .setInterpolator(android.view.animation.DecelerateInterpolator())
+                    .start()
 
-            customSplash.splashGlow.animate()
-                .alpha(0.78f)
-                .setDuration(700L)
-                .setInterpolator(android.view.animation.AccelerateDecelerateInterpolator())
-                .start()
+                customSplash.splashGlow.animate()
+                    .alpha(0.78f)
+                    .setDuration(700L)
+                    .setInterpolator(android.view.animation.AccelerateDecelerateInterpolator())
+                    .start()
 
-            customSplash.splashWordmark.animate()
-                .alpha(1f)
-                .translationY(0f)
-                .setStartDelay(520L)
-                .setDuration(420L)
-                .setInterpolator(android.view.animation.DecelerateInterpolator())
-                .start()
+                customSplash.splashWordmark.animate()
+                    .alpha(1f)
+                    .translationY(0f)
+                    .setStartDelay(520L)
+                    .setDuration(420L)
+                    .setInterpolator(android.view.animation.DecelerateInterpolator())
+                    .start()
 
-            customSplash.splashSweep.animate()
-                .alpha(0.85f)
-                .translationX(420f)
-                .setStartDelay(420L)
-                .setDuration(760L)
-                .setInterpolator(android.view.animation.AccelerateDecelerateInterpolator())
-                .withEndAction {
-                    customSplash.splashSweep.alpha = 0f
-                }
-                .start()
-
-            customSplash.splashProgress.animate()
-                .scaleX(1f)
-                .setStartDelay(720L)
-                .setDuration(1050L)
-                .setInterpolator(android.view.animation.DecelerateInterpolator())
-                .start()
-
-            lifecycleScope.launch {
-                delay(2050L)
-                customSplash.root.animate()
-                    .alpha(0f)
-                    .translationY(-customSplash.root.height.toFloat() * 0.08f)
-                    .setDuration(220L)
-                    .setInterpolator(AnticipateInterpolator())
+                customSplash.splashSweep.animate()
+                    .alpha(0.85f)
+                    .translationX(420f)
+                    .setStartDelay(420L)
+                    .setDuration(760L)
+                    .setInterpolator(android.view.animation.AccelerateDecelerateInterpolator())
                     .withEndAction {
-                        binding.root.removeView(customSplash.root)
+                        customSplash.splashSweep.alpha = 0f
                     }
                     .start()
+
+                customSplash.splashProgress.animate()
+                    .scaleX(1f)
+                    .setStartDelay(720L)
+                    .setDuration(1050L)
+                    .setInterpolator(android.view.animation.DecelerateInterpolator())
+                    .start()
+
+                lifecycleScope.launch {
+                    delay(2050L)
+                    customSplash.root.animate()
+                        .alpha(0f)
+                        .translationY(-customSplash.root.height.toFloat() * 0.08f)
+                        .setDuration(220L)
+                        .setInterpolator(AnticipateInterpolator())
+                        .withEndAction {
+                            binding.root.removeView(customSplash.root)
+                        }
+                        .start()
+                }
             }
-        }
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
-            playCustomSplash()
-        } else {
-            splashScreen.setOnExitAnimationListener { splashScreenView ->
-                // The system splash exits first; the custom AniLab composition is already
-                // underneath it and starts as soon as the system layer begins leaving.
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
                 playCustomSplash()
+            } else {
+                splashScreen.setOnExitAnimationListener { splashScreenView ->
+                    playCustomSplash()
 
-                ObjectAnimator.ofFloat(
-                    splashScreenView,
-                    View.TRANSLATION_Y,
-                    0f,
-                    -splashScreenView.height.toFloat()
-                ).apply {
-                    interpolator = AnticipateInterpolator()
-                    duration = 200L
-                    doOnEnd { splashScreenView.remove() }
-                    start()
+                    ObjectAnimator.ofFloat(
+                        splashScreenView,
+                        View.TRANSLATION_Y,
+                        0f,
+                        -splashScreenView.height.toFloat()
+                    ).apply {
+                        interpolator = AnticipateInterpolator()
+                        duration = 200L
+                        doOnEnd { splashScreenView.remove() }
+                        start()
+                    }
                 }
             }
         }
