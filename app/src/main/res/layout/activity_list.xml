@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/anilab_navy"
     tools:context=".media.user.ListActivity">
 
     <ProgressBar
@@ -11,13 +12,14 @@
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/anilab_cyan" />
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/listAppBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorSurface"
+        android:background="@color/anilab_navy"
         android:theme="@style/Theme.Dantotsu.AppBarOverlay">
 
         <LinearLayout
@@ -29,69 +31,68 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingVertical="6dp">
 
                 <TextView
                     android:id="@+id/listTitle"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="20dp"
                     android:layout_weight="1"
                     android:ellipsize="end"
                     android:fontFamily="@font/poppins_bold"
                     android:gravity="center|start"
                     android:singleLine="true"
-                    android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
-                    android:textColor="?attr/colorOnBackground"
-                    android:textSize="14sp"
-                    tools:text="@string/app_name" />
+                    android:textColor="@color/anilab_text"
+                    android:textSize="18sp" />
 
                 <ImageButton
                     android:id="@+id/search"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:background="?android:attr/selectableItemBackground"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/search"
                     app:srcCompat="@drawable/ic_round_search_24"
-                    app:tint="?attr/colorOnBackground" />
+                    app:tint="@color/anilab_text" />
 
                 <ImageButton
                     android:id="@+id/listed"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:background="?android:attr/selectableItemBackground"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/listed_in_library"
                     app:srcCompat="@drawable/ic_round_library_books_24"
-                    app:tint="?attr/colorOnBackground" />
+                    app:tint="@color/anilab_text" />
 
                 <ImageButton
                     android:id="@+id/random"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:background="?android:attr/selectableItemBackground"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/random_selection"
                     app:srcCompat="@drawable/ic_shuffle_24"
-                    app:tint="?attr/colorOnBackground" />
+                    app:tint="@color/anilab_text" />
 
                 <ImageButton
                     android:id="@+id/filter"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:background="?android:attr/selectableItemBackground"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/filter"
                     app:srcCompat="@drawable/ic_round_filter_alt_24"
-                    app:tint="?attr/colorOnBackground" />
+                    app:tint="@color/anilab_text" />
 
                 <ImageButton
                     android:id="@+id/listSort"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_marginEnd="4dp"
-                    android:background="?android:attr/selectableItemBackground"
+                    android:layout_marginEnd="8dp"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/sort_by"
                     app:srcCompat="@drawable/ic_round_sort_24"
-                    app:tint="?attr/colorOnBackground" />
-
+                    app:tint="@color/anilab_text" />
             </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -99,41 +100,33 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:layout_gravity="bottom"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginHorizontal="16dp"
                 android:transitionName="@string/search"
-                app:boxBackgroundColor="?android:attr/colorBackground"
-                app:hintTextColor="?attr/colorOnBackground"
-                app:boxStrokeColor="?attr/colorOnBackground"
-                app:cursorColor="?attr/colorOnBackground"
+                app:boxBackgroundColor="@color/anilab_surface"
+                app:hintTextColor="@color/anilab_muted"
+                app:boxStrokeColor="@color/anilab_outline"
+                app:cursorColor="@color/anilab_cyan"
                 app:boxBackgroundMode="outline"
-                app:boxCornerRadiusBottomEnd="28dp"
-                app:boxCornerRadiusBottomStart="28dp"
-                app:boxCornerRadiusTopEnd="28dp"
-                app:boxCornerRadiusTopStart="28dp"
+                app:boxCornerRadiusBottomEnd="18dp"
+                app:boxCornerRadiusBottomStart="18dp"
+                app:boxCornerRadiusTopEnd="18dp"
+                app:boxCornerRadiusTopStart="18dp"
                 app:endIconDrawable="@drawable/ic_round_search_24"
-                app:endIconTint="?attr/colorOnBackground"
+                app:endIconTint="@color/anilab_cyan"
                 android:visibility="gone"
-                tools:visibility="visible"
-                app:hintAnimationEnabled="true">
-
+                tools:visibility="visible">
                 <AutoCompleteTextView
                     android:id="@+id/searchViewText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:layout_marginBottom="8dp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/poppins_bold"
                     android:hint="@string/search"
                     android:imeOptions="actionSearch"
                     android:inputType="textPersonName"
                     android:padding="8dp"
-                    android:paddingBottom="4dp"
-                    android:selectAllOnFocus="true"
+                    android:textColor="@color/anilab_text"
+                    android:textColorHint="@color/anilab_muted"
                     android:textSize="14sp"
-                    tools:ignore="LabelFor,TextContrastCheck" />
+                    tools:ignore="LabelFor" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
@@ -141,7 +134,8 @@
             android:id="@+id/listTabLayout"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            app:tabContentStart="32dp"
+            android:background="@color/anilab_surface"
+            app:tabContentStart="20dp"
             app:tabMode="scrollable"
             app:tabPaddingEnd="16dp"
             app:tabPaddingStart="16dp"
@@ -153,6 +147,6 @@
         android:id="@+id/listViewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/anilab_navy"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
