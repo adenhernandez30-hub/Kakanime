@@ -388,7 +388,7 @@
             android:enabled="false"
             android:exported="true"
             android:icon="@drawable/ic_launcher_dark"
-            android:targetActivity=".SplashActivity">
+            android:targetActivity=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -400,7 +400,7 @@
             android:enabled="false"
             android:exported="true"
             android:icon="@drawable/ic_launcher_mono"
-            android:targetActivity=".SplashActivity">
+            android:targetActivity=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
