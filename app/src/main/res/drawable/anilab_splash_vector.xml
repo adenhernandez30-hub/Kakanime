@@ -9,8 +9,8 @@
         android:name="iconGroup"
         android:pivotX="54"
         android:pivotY="54"
-        android:scaleX="0.82"
-        android:scaleY="0.82">
+        android:scaleX="1.0"
+        android:scaleY="1.0">
 
         <path
             android:name="aBase"
