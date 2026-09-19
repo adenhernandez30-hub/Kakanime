@@ -6,75 +6,63 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    android:orientation="horizontal">
-
+    android:background="@color/anilab_navy">
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="start|center_vertical"
-        app:cardBackgroundColor="@color/nav_bg"
-        app:cardCornerRadius="24dp"
-        app:strokeColor="@color/transparent">
-
+        android:backgroundTint="@color/anilab_surface"
+        app:cardCornerRadius="18dp"
+        app:cardElevation="0dp">
         <ImageView
             android:id="@+id/notificationBannerImage"
             android:layout_width="match_parent"
             android:layout_height="153dp"
             android:scaleType="centerCrop"
-            tools:ignore="ContentDescription"
-            tools:srcCompat="@tools:sample/backgrounds/scenic" />
-
+            tools:ignore="ContentDescription" />
         <ImageView
             android:id="@+id/notificationGradiant"
             android:layout_width="match_parent"
             android:layout_height="153dp"
-            app:srcCompat="@drawable/linear_gradient_nav"
+            android:src="@drawable/linear_gradient_nav"
             tools:ignore="ContentDescription" />
-
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/notificationCoverContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
             android:layout_margin="16dp"
-            android:backgroundTint="@color/transparent"
-            app:cardCornerRadius="16dp"
-            app:strokeColor="@color/transparent">
-
+            android:backgroundTint="@color/anilab_surface_alt"
+            app:cardCornerRadius="14dp"
+            app:strokeColor="@color/anilab_cyan"
+            app:strokeWidth="1dp">
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/notificationCover"
                 android:layout_width="108dp"
                 android:layout_height="160dp"
                 android:scaleType="centerCrop"
                 app:shapeAppearanceOverlay="@style/roundedImageView"
-                tools:ignore="ContentDescription,ImageContrastCheck"
-                tools:srcCompat="@tools:sample/backgrounds/scenic"
-                tools:tint="@color/transparent" />
-
+                tools:ignore="ContentDescription,ImageContrastCheck" />
         </com.google.android.material.card.MaterialCardView>
-
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/notificationCoverUserContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
             android:layout_marginStart="23dp"
-            android:backgroundTint="@color/transparent"
+            android:backgroundTint="@color/anilab_surface_alt"
             android:visibility="gone"
             app:cardCornerRadius="64dp"
-            app:strokeColor="@color/transparent">
-
+            app:strokeColor="@color/anilab_cyan"
+            app:strokeWidth="1dp">
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/notificationCoverUser"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 android:layout_gravity="center"
                 app:srcCompat="@drawable/ic_round_add_circle_24"
-                tools:ignore="ContentDescription,ImageContrastCheck"
-                tools:tint="@color/transparent" />
-
+                tools:ignore="ContentDescription,ImageContrastImage" />
         </com.google.android.material.card.MaterialCardView>
-
         <LinearLayout
             android:id="@+id/notificationTextContainer"
             android:layout_width="match_parent"
@@ -85,7 +73,6 @@
             android:layout_marginBottom="4dp"
             android:orientation="vertical"
             android:padding="8dp">
-
             <TextView
                 android:id="@+id/notificationText"
                 android:layout_width="wrap_content"
@@ -93,22 +80,18 @@
                 android:ellipsize="end"
                 android:fontFamily="@font/poppins_bold"
                 android:maxLines="4"
-                android:textSize="14dp"
-                android:transitionName="mediaTitle"
-                tools:ignore="SpUsage"
-                tools:text="@string/slogan" />
-
+                android:textColor="@color/anilab_text"
+                android:textSize="14sp"
+                android:transitionName="mediaTitle" />
             <TextView
                 android:id="@+id/notificationDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:alpha="0.66"
+                android:alpha="0.72"
                 android:fontFamily="@font/poppins_semi_bold"
-                android:text="Wed,06 March 2024, 7:00PM"
-                android:textSize="10sp"
-                tools:ignore="HardcodedText,SmallSp" />
+                android:textColor="@color/anilab_muted"
+                android:textSize="10sp" />
         </LinearLayout>
-
     </androidx.cardview.widget.CardView>
 </FrameLayout>

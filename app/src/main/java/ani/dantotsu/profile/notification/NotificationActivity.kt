@@ -29,7 +29,7 @@ class NotificationActivity : AppCompatActivity() {
     lateinit var binding: ActivityNotificationBinding
     private var selected: Int = 0
     lateinit var navBar: AnimatedBottomBar
-    private val CommentsEnabled = PrefManager.getVal<Int>(PrefName.CommentsEnabled) == 1
+    private val commentsEnabled = PrefManager.getVal<Int>(PrefName.CommentsEnabled) == 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +37,7 @@ class NotificationActivity : AppCompatActivity() {
         initActivity(this)
         binding = ActivityNotificationBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.notificationTitle.text = getString(R.string.notifications)
+        binding.notificationTitle.text = "Notifications"
         binding.notificationToolbar.updateLayoutParams<ViewGroup.MarginLayoutParams> {
             topMargin = statusBarHeight
         }
@@ -47,14 +47,11 @@ class NotificationActivity : AppCompatActivity() {
         }
 
         val tabs = mutableListOf(
-            Pair(R.drawable.ic_round_person_24, "User"),
+            Pair(R.drawable.ic_round_person_24, "Friends"),
             Pair(R.drawable.ic_round_movie_filter_24, "Media"),
-            Pair(R.drawable.ic_round_notifications_active_24, "Subs")
+            Pair(R.drawable.ic_round_notifications_active_24, "System")
         )
-        if (CommentsEnabled) {
-            tabs.add(Pair(R.drawable.ic_round_comment_24, "Comments"))
-        }
-
+        if (commentsEnabled) tabs.add(Pair(R.drawable.ic_round_comment_24, "Mentions"))
         tabs.forEach { (icon, title) -> navBar.addTab(navBar.createTab(icon, title)) }
 
         binding.notificationBack.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
@@ -62,7 +59,7 @@ class NotificationActivity : AppCompatActivity() {
         if (getOne != -1) navBar.isVisible = false
         binding.notificationViewPager.isUserInputEnabled = false
         binding.notificationViewPager.adapter =
-            ViewPagerAdapter(supportFragmentManager, lifecycle, getOne, CommentsEnabled)
+            ViewPagerAdapter(supportFragmentManager, lifecycle, getOne, commentsEnabled)
         binding.notificationViewPager.setCurrentItem(selected, false)
         navBar.selectTabAt(selected)
         navBar.setOnTabSelectListener(object : AnimatedBottomBar.OnTabSelectListener {
@@ -80,19 +77,16 @@ class NotificationActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (this::navBar.isInitialized) {
-            navBar.selectTabAt(selected)
-        }
+        if (this::navBar.isInitialized) navBar.selectTabAt(selected)
     }
 
     private class ViewPagerAdapter(
         fragmentManager: FragmentManager,
         lifecycle: Lifecycle,
-        val id: Int = -1,
-        val commentsEnabled: Boolean
+        private val id: Int,
+        private val commentsEnabled: Boolean
     ) : FragmentStateAdapter(fragmentManager, lifecycle) {
         override fun getItemCount(): Int = if (id != -1) 1 else if (commentsEnabled) 4 else 3
-
         override fun createFragment(position: Int): Fragment = when (position) {
             0 -> newInstance(if (id != -1) ONE else USER, id)
             1 -> newInstance(MEDIA)
