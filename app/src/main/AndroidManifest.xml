@@ -381,7 +381,6 @@
             android:enabled="true"
             android:exported="true"
             android:icon="@drawable/ic_launcher_blue"
-            android:roundIcon="@drawable/ic_launcher_blue"
             android:targetActivity=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -394,7 +393,6 @@
             android:enabled="false"
             android:exported="true"
             android:icon="@drawable/ic_launcher_dark"
-            android:roundIcon="@drawable/ic_launcher_dark"
             android:targetActivity=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -407,7 +405,6 @@
             android:enabled="false"
             android:exported="true"
             android:icon="@drawable/ic_launcher_mono"
-            android:roundIcon="@drawable/ic_launcher_mono"
             android:targetActivity=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
