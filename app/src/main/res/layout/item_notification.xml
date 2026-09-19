@@ -61,7 +61,7 @@
                 android:layout_height="64dp"
                 android:layout_gravity="center"
                 app:srcCompat="@drawable/ic_round_add_circle_24"
-                tools:ignore="ContentDescription,ImageContrastImage" />
+                tools:ignore="ContentDescription,ImageContrastCheck" />
         </com.google.android.material.card.MaterialCardView>
         <LinearLayout
             android:id="@+id/notificationTextContainer"

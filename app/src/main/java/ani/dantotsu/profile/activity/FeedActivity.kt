@@ -3,6 +3,7 @@ package ani.dantotsu.profile.activity
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -28,7 +29,13 @@ class FeedActivity : androidx.appcompat.app.AppCompatActivity() {
         initActivity(this)
         binding = ActivityNotificationBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        window.statusBarColor = ContextCompat.getColor(this, R.color.anilab_navy)
+        window.navigationBarColor = ContextCompat.getColor(this, R.color.anilab_navy)
+        binding.root.setBackgroundColor(ContextCompat.getColor(this, R.color.anilab_navy))
+        binding.notificationToolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.anilab_navy))
         binding.notificationTitle.text = "Social"
+        binding.notificationTitle.setTextColor(ContextCompat.getColor(this, R.color.anilab_text))
         binding.notificationToolbar.updateLayoutParams<ViewGroup.MarginLayoutParams> {
             topMargin = statusBarHeight
         }
@@ -46,18 +53,12 @@ class FeedActivity : androidx.appcompat.app.AppCompatActivity() {
         val getOne = intent.getIntExtra("activityId", -1)
         if (getOne != -1) navBar.visibility = View.GONE
         binding.notificationViewPager.isUserInputEnabled = false
-        binding.notificationViewPager.adapter =
-            ViewPagerAdapter(supportFragmentManager, lifecycle, getOne)
+        binding.notificationViewPager.adapter = ViewPagerAdapter(supportFragmentManager, lifecycle, getOne)
         binding.notificationViewPager.setOffscreenPageLimit(4)
         binding.notificationViewPager.setCurrentItem(selected, false)
         navBar.selectTabAt(selected)
         navBar.setOnTabSelectListener(object : AnimatedBottomBar.OnTabSelectListener {
-            override fun onTabSelected(
-                lastIndex: Int,
-                lastTab: AnimatedBottomBar.Tab?,
-                newIndex: Int,
-                newTab: AnimatedBottomBar.Tab
-            ) {
+            override fun onTabSelected(lastIndex: Int, lastTab: AnimatedBottomBar.Tab?, newIndex: Int, newTab: AnimatedBottomBar.Tab) {
                 selected = newIndex
                 binding.notificationViewPager.setCurrentItem(selected, false)
             }
@@ -75,12 +76,8 @@ class FeedActivity : androidx.appcompat.app.AppCompatActivity() {
         private val activityId: Int
     ) : FragmentStateAdapter(fragmentManager, lifecycle) {
         override fun getItemCount(): Int = if (activityId != -1) 1 else 2
-
         override fun createFragment(position: Int): Fragment = when (position) {
-            0 -> ActivityFragment.newInstance(
-                if (activityId != -1) ActivityType.ONE else ActivityType.USER,
-                activityId = activityId
-            )
+            0 -> ActivityFragment.newInstance(if (activityId != -1) ActivityType.ONE else ActivityType.USER, activityId = activityId)
             else -> ActivityFragment.newInstance(ActivityType.GLOBAL)
         }
     }

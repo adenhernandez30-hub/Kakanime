@@ -3,6 +3,7 @@ package ani.dantotsu.profile.notification
 import android.os.Bundle
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
@@ -37,14 +38,17 @@ class NotificationActivity : AppCompatActivity() {
         initActivity(this)
         binding = ActivityNotificationBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val navy = ContextCompat.getColor(this, R.color.anilab_navy)
+        window.statusBarColor = navy
+        window.navigationBarColor = navy
+        binding.root.setBackgroundColor(navy)
+        binding.notificationToolbar.setBackgroundColor(navy)
         binding.notificationTitle.text = "Notifications"
-        binding.notificationToolbar.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-            topMargin = statusBarHeight
-        }
+        binding.notificationTitle.setTextColor(ContextCompat.getColor(this, R.color.anilab_text))
+        binding.notificationToolbar.updateLayoutParams<ViewGroup.MarginLayoutParams> { topMargin = statusBarHeight }
         navBar = binding.notificationNavBar
-        binding.root.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-            bottomMargin = navBarHeight
-        }
+        binding.root.updateLayoutParams<ViewGroup.MarginLayoutParams> { bottomMargin = navBarHeight }
 
         val tabs = mutableListOf(
             Pair(R.drawable.ic_round_person_24, "Friends"),
@@ -58,17 +62,11 @@ class NotificationActivity : AppCompatActivity() {
         val getOne = intent.getIntExtra("activityId", -1)
         if (getOne != -1) navBar.isVisible = false
         binding.notificationViewPager.isUserInputEnabled = false
-        binding.notificationViewPager.adapter =
-            ViewPagerAdapter(supportFragmentManager, lifecycle, getOne, commentsEnabled)
+        binding.notificationViewPager.adapter = ViewPagerAdapter(supportFragmentManager, lifecycle, getOne, commentsEnabled)
         binding.notificationViewPager.setCurrentItem(selected, false)
         navBar.selectTabAt(selected)
         navBar.setOnTabSelectListener(object : AnimatedBottomBar.OnTabSelectListener {
-            override fun onTabSelected(
-                lastIndex: Int,
-                lastTab: AnimatedBottomBar.Tab?,
-                newIndex: Int,
-                newTab: AnimatedBottomBar.Tab
-            ) {
+            override fun onTabSelected(lastIndex: Int, lastTab: AnimatedBottomBar.Tab?, newIndex: Int, newTab: AnimatedBottomBar.Tab) {
                 selected = newIndex
                 binding.notificationViewPager.setCurrentItem(selected, false)
             }
