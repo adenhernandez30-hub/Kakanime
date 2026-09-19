@@ -380,10 +380,13 @@
     <style name="Theme.KakaAnime.Splash" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:fontFamily">sans</item>
         <item name="android:windowLightStatusBar">false</item>
-        <item name="android:statusBarColor">#020A16</item>
-        <item name="android:navigationBarColor">#020A16</item>
-        <item name="android:windowBackground">#020A16</item>
+        <item name="android:statusBarColor">#020817</item>
+        <item name="android:navigationBarColor">#020817</item>
+        <item name="android:windowBackground">#020817</item>
         <item name="android:windowActionModeOverlay">true</item>
+        <item name="android:windowSplashScreenAnimationDuration" tools:targetApi="s">820</item>
+        <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="s">@drawable/anilab_splash</item>
+        <item name="android:windowSplashScreenBackground" tools:targetApi="s">#020817</item>
     </style>
 
 </resources>
