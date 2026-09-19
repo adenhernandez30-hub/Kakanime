@@ -1,6 +1,7 @@
 package ani.dantotsu
 
 import android.animation.AnimatorSet
+import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
 import android.content.Intent
 import android.graphics.drawable.Animatable
@@ -8,7 +9,6 @@ import android.os.Bundle
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.animation.addListener
 import ani.dantotsu.databinding.SplashScreenBinding
 
 class SplashActivity : AppCompatActivity() {
@@ -119,7 +119,11 @@ class SplashActivity : AppCompatActivity() {
                 sweepMove,
                 progressIn
             )
-            addListener(onEnd = { launchMain() })
+            addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: android.animation.Animator) {
+                    launchMain()
+                }
+            })
             start()
         }
     }
@@ -133,6 +137,7 @@ class SplashActivity : AppCompatActivity() {
                 true
             )
         )
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         finish()
     }
 }
