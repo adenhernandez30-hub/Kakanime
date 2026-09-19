@@ -369,13 +369,51 @@
         </activity>
         <activity
             android:name=".SplashActivity"
+            android:exported="false"
+            android:theme="@style/Theme.KakaAnime.Splash" />
+
+        <activity
+            android:name=".settings.AppIconActivity"
+            android:parentActivityName=".settings.SettingsActivity" />
+
+        <activity-alias
+            android:name=".launcher.Blue"
+            android:enabled="true"
             android:exported="true"
-            android:theme="@style/Theme.KakaAnime.Splash">
+            android:icon="@drawable/ic_launcher_blue"
+            android:roundIcon="@drawable/ic_launcher_blue"
+            android:targetActivity=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".launcher.Dark"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@drawable/ic_launcher_dark"
+            android:roundIcon="@drawable/ic_launcher_dark"
+            android:targetActivity=".SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".launcher.Mono"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@drawable/ic_launcher_mono"
+            android:roundIcon="@drawable/ic_launcher_mono"
+            android:targetActivity=".SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
 
         <activity
             android:name=".MainActivity"
