@@ -62,7 +62,24 @@
 
 
 
-    <include layout="@layout/layout_trending" />
+    <LinearLayout android:id="@+id/animeSearchRow" android:layout_width="match_parent" android:layout_height="56dp" android:layout_marginStart="32dp" android:layout_marginTop="12dp" android:layout_marginEnd="32dp" android:gravity="center_vertical" android:orientation="horizontal">
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/searchBar" style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="0dp" android:layout_height="56dp" android:layout_marginEnd="8dp" android:layout_weight="1"
+            android:textColorHint="@color/bg_opp" android:transitionName="@string/search"
+            app:boxBackgroundColor="?attr/colorPrimaryContainer" app:boxCornerRadiusBottomEnd="28dp" app:boxCornerRadiusBottomStart="28dp"
+            app:boxCornerRadiusTopEnd="28dp" app:boxCornerRadiusTopStart="28dp" app:boxStrokeColor="@color/text_input_layout_stroke_color"
+            app:endIconDrawable="@drawable/ic_round_search_24" app:endIconTint="@color/bg_opp" app:hintAnimationEnabled="true">
+            <AutoCompleteTextView android:id="@+id/searchBarText" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:focusable="false" android:fontFamily="@font/poppins_bold" android:inputType="none" android:padding="8dp"
+                android:textColor="?android:attr/textColorSecondary" android:textSize="14sp" tools:ignore="LabelFor,TextContrastCheck" />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.card.MaterialCardView android:id="@+id/userAvatarContainer" android:layout_width="52dp" android:layout_height="52dp" android:backgroundTint="@color/nav_bg_inv" app:cardCornerRadius="26dp">
+            <com.google.android.material.imageview.ShapeableImageView android:id="@+id/userAvatar" android:layout_width="52dp" android:layout_height="52dp" android:scaleType="center" app:srcCompat="@drawable/ic_round_filter_list_24" tools:ignore="ContentDescription,ImageContrastCheck" />
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+
+    <include layout="@layout/layout_anime_trending" />
 
     <HorizontalScrollView
         android:id="@+id/animeSeasons"
