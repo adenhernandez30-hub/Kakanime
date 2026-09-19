@@ -1102,4 +1102,12 @@ Non quae tempore quo provident laudantium qui illo dolor vel quia dolor et exerc
     <string name="failed_to_load">Failed to load</string>
     <string name="studios">Studios</string>
 
+    <string name="app_icon">App Icon</string>
+    <string name="app_icon_desc">Choose your AniLab launcher icon</string>
+    <string name="app_icon_choose">Choose the icon you want to use on your home screen.</string>
+    <string name="app_icon_blue">Blue</string>
+    <string name="app_icon_dark">Dark</string>
+    <string name="app_icon_mono">Monochrome</string>
+    <string name="selected">Selected</string>
+    <string name="back">Back</string>
 </resources>
