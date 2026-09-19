@@ -4,7 +4,6 @@ import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.Configuration
-import android.graphics.drawable.Animatable
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Build
@@ -38,7 +37,6 @@ import ani.dantotsu.connections.anilist.Anilist
 import ani.dantotsu.connections.anilist.AnilistHomeViewModel
 import ani.dantotsu.databinding.ActivityMainBinding
 import ani.dantotsu.databinding.DialogUserAgentBinding
-import ani.dantotsu.databinding.SplashScreenBinding
 import ani.dantotsu.home.AnimeFragment
 import ani.dantotsu.home.HomeFragment
 import ani.dantotsu.home.LoginFragment
@@ -192,52 +190,31 @@ class MainActivity : AppCompatActivity() {
 
         binding.root.isMotionEventSplittingEnabled = false
 
-        // Keep the Android system splash as the first stage, then reveal a full AniLab
-        // branded splash overlay. The overlay is shared by Android 12+ and pre-S devices
-        // so the visual treatment stays consistent without touching the launcher icon.
-        val customSplash = SplashScreenBinding.inflate(layoutInflater)
-        binding.root.addView(customSplash.root)
-
-        fun playCustomSplash() {
-            if (customSplash.root.tag == "started") return
-            customSplash.root.tag = "started"
-
-            customSplash.splashImage.alpha = 0f
-            customSplash.splashImage.scaleX = 0.86f
-            customSplash.splashImage.scaleY = 0.86f
-
-            (customSplash.splashImage.drawable as? Animatable)?.start()
-
-            customSplash.splashImage.animate()
-                .alpha(1f)
-                .scaleX(1f)
-                .scaleY(1f)
-                .setDuration(620L)
-                .setInterpolator(android.view.animation.DecelerateInterpolator())
-                .start()
+        // Match the Saikou/Dantotsu splash architecture: Android 12+ uses the
+        // animated system splash directly, while older Android versions get the same
+        // animated vector in the app content. This avoids a second splash layer and
+        // keeps the full AniLab animation intact.
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+            val splash = SplashScreenBinding.inflate(layoutInflater)
+            binding.root.addView(splash.root)
+            (splash.splashImage.drawable as? android.graphics.drawable.Animatable)?.start()
 
             lifecycleScope.launch {
-                delay(1200L)
-                customSplash.root.animate()
-                    .alpha(0f)
-                    .translationY(-customSplash.root.height.toFloat() * 0.08f)
-                    .setDuration(220L)
-                    .setInterpolator(AnticipateInterpolator())
-                    .withEndAction {
-                        binding.root.removeView(customSplash.root)
-                    }
-                    .start()
+                delay(2000L)
+                ObjectAnimator.ofFloat(
+                    splash.root,
+                    View.TRANSLATION_Y,
+                    0f,
+                    -splash.root.height.toFloat()
+                ).apply {
+                    interpolator = AnticipateInterpolator()
+                    duration = 200L
+                    doOnEnd { binding.root.removeView(splash.root) }
+                    start()
+                }
             }
-        }
-
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
-            playCustomSplash()
         } else {
             splashScreen.setOnExitAnimationListener { splashScreenView ->
-                // The system splash exits first; the custom AniLab composition is already
-                // underneath it and starts as soon as the system layer begins leaving.
-                playCustomSplash()
-
                 ObjectAnimator.ofFloat(
                     splashScreenView,
                     View.TRANSLATION_Y,
@@ -251,7 +228,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
 
         binding.root.doOnAttach {
             initActivity(this)
