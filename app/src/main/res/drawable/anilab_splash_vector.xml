@@ -27,15 +27,24 @@
             android:fillColor="#0756FF"
             android:pathData="M54,16C57.8,16 60.8,18.5 62.5,21.7L78.6,55.5C80.2,58.9 77.8,62.8 74,62.8H63.2L69.9,78.5C71.3,81.7 68.9,85.4 65.4,85.4C63.3,85.4 61.4,84.2 60.4,82.3L54,69.9V16Z" />
 
-        <path
-            android:name="playDark"
-            android:fillColor="#07152F"
-            android:pathData="M48.7,44.8L63.6,53.3C67,55.2 67,60.1 63.6,62L48.7,70.6C45.4,72.5 41.3,70.1 41.3,66.3V49C41.3,45.2 45.4,42.9 48.7,44.8Z" />
+        <group
+            android:name="playGroup"
+            android:pivotX="54"
+            android:pivotY="58"
+            android:scaleX="0.72"
+            android:scaleY="0.72"
+            android:rotation="-10">
 
-        <path
-            android:name="playLight"
-            android:fillColor="#EFFFFF"
-            android:pathData="M49.4,48.5L60.4,54.8C62,55.7 62,58.1 60.4,59L49.4,65.3C47.8,66.2 45.8,65 45.8,63.1V50.7C45.8,48.8 47.8,47.6 49.4,48.5Z" />
+            <path
+                android:name="playDark"
+                android:fillColor="#07152F"
+                android:pathData="M48.7,44.8L63.6,53.3C67,55.2 67,60.1 63.6,62L48.7,70.6C45.4,72.5 41.3,70.1 41.3,66.3V49C41.3,45.2 45.4,42.9 48.7,44.8Z" />
+
+            <path
+                android:name="playLight"
+                android:fillColor="#EFFFFF"
+                android:pathData="M49.4,48.5L60.4,54.8C62,55.7 62,58.1 60.4,59L49.4,65.3C47.8,66.2 45.8,65 45.8,63.1V50.7C45.8,48.8 47.8,47.6 49.4,48.5Z" />
+        </group>
 
         <group
             android:name="orbitGroup"
