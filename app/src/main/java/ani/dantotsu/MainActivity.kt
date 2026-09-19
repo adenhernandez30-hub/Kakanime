@@ -205,21 +205,8 @@ class MainActivity : AppCompatActivity() {
             customSplash.splashImage.alpha = 0f
             customSplash.splashImage.scaleX = 0.86f
             customSplash.splashImage.scaleY = 0.86f
-            customSplash.splashWordmark.alpha = 0f
-            customSplash.splashProgress.scaleX = 0f
-            customSplash.splashGlow.alpha = 0.35f
-            customSplash.splashSweep.alpha = 0f
-            customSplash.splashSweep.translationX = -420f
 
             (customSplash.splashImage.drawable as? Animatable)?.start()
-
-            customSplash.splashOrbit.rotation = -3f
-            customSplash.splashOrbit.animate()
-                .rotation(5f)
-                .setStartDelay(180L)
-                .setDuration(1100L)
-                .setInterpolator(android.view.animation.AccelerateDecelerateInterpolator())
-                .start()
 
             customSplash.splashImage.animate()
                 .alpha(1f)
@@ -229,40 +216,8 @@ class MainActivity : AppCompatActivity() {
                 .setInterpolator(android.view.animation.DecelerateInterpolator())
                 .start()
 
-            customSplash.splashGlow.animate()
-                .alpha(0.78f)
-                .setDuration(700L)
-                .setInterpolator(android.view.animation.AccelerateDecelerateInterpolator())
-                .start()
-
-            customSplash.splashWordmark.animate()
-                .alpha(1f)
-                .translationY(0f)
-                .setStartDelay(520L)
-                .setDuration(420L)
-                .setInterpolator(android.view.animation.DecelerateInterpolator())
-                .start()
-
-            customSplash.splashSweep.animate()
-                .alpha(0.85f)
-                .translationX(420f)
-                .setStartDelay(420L)
-                .setDuration(760L)
-                .setInterpolator(android.view.animation.AccelerateDecelerateInterpolator())
-                .withEndAction {
-                    customSplash.splashSweep.alpha = 0f
-                }
-                .start()
-
-            customSplash.splashProgress.animate()
-                .scaleX(1f)
-                .setStartDelay(720L)
-                .setDuration(1050L)
-                .setInterpolator(android.view.animation.DecelerateInterpolator())
-                .start()
-
             lifecycleScope.launch {
-                delay(2050L)
+                delay(1200L)
                 customSplash.root.animate()
                     .alpha(0f)
                     .translationY(-customSplash.root.height.toFloat() * 0.08f)
