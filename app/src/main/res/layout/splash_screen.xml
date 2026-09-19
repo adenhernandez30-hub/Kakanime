@@ -11,5 +11,5 @@
         android:layout_height="224dp"
         android:layout_gravity="center"
         android:contentDescription="@string/app_name"
-        app:srcCompat="@drawable/anilab_splash" />
+        app:srcCompat="@drawable/anilab_launcher" />
 </FrameLayout>
