@@ -46,15 +46,20 @@ class HomeContinueAdapter(
         binding.homeContinueThumbnail.loadImage(thumbnail)
         binding.homeContinueTitle.text = media.userPreferredName
         binding.homeContinueEpisodeBadge.text = "EP $nextEpisode"
-        binding.homeContinueProgressText.text = if (total > 0) {
-            "Episode $progress / $total"
+        val progressPercent = if (total > 0) {
+            ((progress * 100f) / total).toInt().coerceIn(0, 100)
         } else {
-            "Episode $progress"
+            0
+        }
+
+        binding.homeContinueProgressText.text = if (total > 0) {
+            "Episode $nextEpisode • $progressPercent%"
+        } else {
+            "Episode $nextEpisode"
         }
 
         binding.homeContinueProgress.max = 100
-        binding.homeContinueProgress.progress =
-            if (total > 0) ((progress * 100f) / total).toInt().coerceIn(0, 100) else 0
+        binding.homeContinueProgress.progress = progressPercent
 
         val open = {
             ContextCompat.startActivity(
