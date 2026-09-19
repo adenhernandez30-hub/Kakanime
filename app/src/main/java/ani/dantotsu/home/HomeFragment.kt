@@ -36,7 +36,6 @@ import ani.dantotsu.media.Media
 import ani.dantotsu.media.MediaAdaptor
 import ani.dantotsu.media.MediaListViewActivity
 import ani.dantotsu.media.user.ListActivity
-import ani.dantotsu.media.SearchFilterBottomDialog
 import ani.dantotsu.navBarHeight
 import ani.dantotsu.profile.ProfileActivity
 import ani.dantotsu.setSafeOnClickListener
@@ -126,25 +125,6 @@ class HomeFragment : Fragment() {
                 snackString(currContext()?.getString(R.string.please_reload))
             }
         }
-        listOf(
-            binding.homePreviousSeason,
-            binding.homeThisSeason,
-            binding.homeNextSeason
-        ).forEachIndexed { i, view ->
-            view.setSafeOnClickListener {
-                val (season, year) = Anilist.currentSeasons[i]
-                ContextCompat.startActivity(
-                    requireContext(),
-                    Intent(requireContext(), ani.dantotsu.media.SearchActivity::class.java)
-                        .putExtra("type", "ANIME")
-                        .putExtra("season", season)
-                        .putExtra("seasonYear", year.toString())
-                        .putExtra("search", true),
-                    null
-                )
-            }
-        }
-
         binding.homeUserAvatarContainer.setSafeOnClickListener {
             val dialogFragment =
                 SettingsDialogFragment.newInstance(SettingsDialogFragment.Companion.PageType.HOME)
@@ -157,15 +137,6 @@ class HomeFragment : Fragment() {
             SearchBottomSheet.newInstance().show(
                 (it.context as androidx.appcompat.app.AppCompatActivity).supportFragmentManager,
                 "search"
-            )
-        }
-        binding.homeFilterContainer.setSafeOnClickListener {
-            ContextCompat.startActivity(
-                it.context,
-                Intent(it.context, ani.dantotsu.media.SearchActivity::class.java)
-                    .putExtra("type", "ANIME")
-                    .putExtra("openFilter", true),
-                null
             )
         }
         binding.homeUserAvatarContainer.setOnLongClickListener {
@@ -262,7 +233,7 @@ class HomeFragment : Fragment() {
                 empty.visibility = View.GONE
                 if (it != null) {
                     if (it.isNotEmpty()) {
-                        recyclerView.adapter = if (recyclerView.id == R.id.homeWatchingRecyclerView) HomeContinueAdapter(it, requireActivity()) else MediaAdaptor(0, it, requireActivity())
+                        recyclerView.adapter = MediaAdaptor(0, it, requireActivity())
                         recyclerView.layoutManager = LinearLayoutManager(
                             requireContext(),
                             LinearLayoutManager.HORIZONTAL,
@@ -499,35 +470,25 @@ class HomeFragment : Fragment() {
             if (!running && shouldRefresh) {
                 running = true
                 scope.launch {
-                    val hasAnilistSession = withContext(Dispatchers.IO) {
+                    withContext(Dispatchers.IO) {
+                        // Get user data first
                         Anilist.userid =
                             PrefManager.getNullableVal<String>(PrefName.AnilistUserId, null)
                                 ?.toIntOrNull()
                         if (Anilist.userid == null) {
-                            getUserId(requireContext()) { }
+                            withContext(Dispatchers.Main) {
+                                getUserId(requireContext()) {
+                                    load()
+                                }
+                            }
+                        } else {
+                            getUserId(requireContext()) {
+                                load()
+                            }
                         }
-                        Anilist.userid != null
+                        model.loaded = true
+                        model.setListImages()
                     }
-
-                    if (hasAnilistSession) {
-                        withContext(Dispatchers.Main) {
-                            load()
-                        }
-                        withContext(Dispatchers.IO) {
-                            model.setListImages()
-                        }
-                    } else {
-                        withContext(Dispatchers.Main) {
-                            binding.homeUserName.text = "Guest"
-                            binding.homeUserEpisodesWatched.text = "0"
-                            binding.homeUserChaptersRead.text = "0"
-                            binding.homeUserDataProgressBar.visibility = View.GONE
-                            binding.homeUserDataContainer.visibility = View.VISIBLE
-                            binding.homeUserAvatar.setImageResource(R.drawable.ic_round_person_24)
-                        }
-                    }
-
-                    model.loaded = true
 
                     var empty = true
                     val homeLayoutShow: List<Boolean> = PrefManager.getVal(PrefName.HomeLayout)
@@ -542,24 +503,10 @@ class HomeFragment : Fragment() {
                         }
                     }
 
-                    if (hasAnilistSession) {
-                        val initHomePage = async(Dispatchers.IO) { model.initHomePage() }
-                        val initUserStatus = async(Dispatchers.IO) { model.initUserStatus() }
-                        initHomePage.await()
-                        initUserStatus.await()
-                    } else {
-                        model.initGuestHome()
-                        model.initPublicFeatured()
-                        withContext(Dispatchers.Main) {
-                            binding.homeFavAnimeContainer.visibility = View.GONE
-                            binding.homePlannedAnimeContainer.visibility = View.GONE
-                            binding.homeContinueReadingContainer.visibility = View.GONE
-                            binding.homeFavMangaContainer.visibility = View.GONE
-                            binding.homePlannedMangaContainer.visibility = View.GONE
-                            binding.homeRecommendedContainer.visibility = View.GONE
-                            binding.homeUserStatusContainer.visibility = View.GONE
-                        }
-                    }
+                    val initHomePage = async(Dispatchers.IO) { model.initHomePage() }
+                    val initUserStatus = async(Dispatchers.IO) { model.initUserStatus() }
+                    initHomePage.await()
+                    initUserStatus.await()
 
                     withContext(Dispatchers.Main) {
                         model.empty.postValue(empty)
