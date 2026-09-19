@@ -1,78 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/splashRoot"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/splash_reference_background"
-    android:clickable="true"
-    android:focusable="true">
+    android:background="#020817">
 
     <ImageView
-        android:id="@+id/splashOrbit"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:contentDescription="@null"
-        android:scaleType="fitXY"
-        android:src="@drawable/splash_reference_orbit"
-        android:alpha="0.72" />
-
-    <View
-        android:id="@+id/splashGlow"
-        android:layout_width="360dp"
-        android:layout_height="360dp"
+        android:id="@+id/splashImage"
+        android:layout_width="224dp"
+        android:layout_height="224dp"
         android:layout_gravity="center"
-        android:background="@drawable/splash_reference_glow"
-        android:alpha="0.35" />
-
-    <LinearLayout
-        android:id="@+id/splashContent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
-
-        <ImageView
-            android:id="@+id/splashImage"
-            android:layout_width="330dp"
-            android:layout_height="330dp"
-            android:contentDescription="@string/app_name"
-            android:scaleType="fitCenter"
-            android:src="@drawable/anilab_splash"
-            android:alpha="0" />
-
-        <TextView
-            android:id="@+id/splashWordmark"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="-8dp"
-            android:includeFontPadding="false"
-            android:letterSpacing="0.02"
-            android:text="AniLab"
-            android:textColor="#EFFFFF"
-            android:textSize="34sp"
-            android:textStyle="bold"
-            android:alpha="0" />
-    </LinearLayout>
-
-    <View
-        android:id="@+id/splashSweep"
-        android:layout_width="3dp"
-        android:layout_height="300dp"
-        android:layout_gravity="center"
-        android:background="@drawable/splash_reference_sweep"
-        android:rotation="-65"
-        android:translationX="-420dp"
-        android:alpha="0" />
-
-    <View
-        android:id="@+id/splashProgress"
-        android:layout_width="190dp"
-        android:layout_height="3dp"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="180dp"
-        android:background="@drawable/splash_reference_progress"
-        android:scaleX="0"
-        android:transformPivotX="0dp" />
-
+        android:contentDescription="@string/app_name"
+        app:srcCompat="@drawable/anilab_splash" />
 </FrameLayout>
