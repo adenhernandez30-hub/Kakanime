@@ -5,15 +5,6 @@
         android:name="iconGroup"
         android:animation="@anim/anilab_splash_scale" />
     <target
-        android:name="orbitGroup"
-        android:animation="@anim/anilab_splash_orbit" />
-    <target
         android:name="playGroup"
         android:animation="@anim/anilab_splash_play" />
-    <target
-        android:name="sparkleLarge"
-        android:animation="@anim/anilab_splash_sparkle_large" />
-    <target
-        android:name="sparkleSmall"
-        android:animation="@anim/anilab_splash_sparkle_small" />
 </animated-vector>
