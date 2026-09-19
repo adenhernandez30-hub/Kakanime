@@ -367,12 +367,7 @@
                 <data android:pathPrefix="/user" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".SplashActivity"
-            android:exported="false"
-            android:theme="@style/Theme.KakaAnime.Splash" />
-
-        <activity
+            <activity
             android:name=".settings.AppIconActivity"
             android:parentActivityName=".settings.SettingsActivity" />
 
@@ -381,7 +376,7 @@
             android:enabled="true"
             android:exported="true"
             android:icon="@drawable/ic_launcher_blue"
-            android:targetActivity=".SplashActivity">
+            android:targetActivity=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
