@@ -22,7 +22,6 @@ import ani.dantotsu.copyToClipboard
 import ani.dantotsu.databinding.ActivitySettingsBinding
 import ani.dantotsu.initActivity
 import ani.dantotsu.navBarHeight
-import ani.dantotsu.openLinkInBrowser
 import ani.dantotsu.others.AppUpdater
 import ani.dantotsu.others.CustomBottomDialog
 import ani.dantotsu.snackString
@@ -197,16 +196,6 @@ class SettingsActivity : AppCompatActivity() {
                     }
                     true
                 }
-            }
-
-            loginDiscord.setOnClickListener {
-                openLinkInBrowser(getString(R.string.discord))
-            }
-            loginGithub.setOnClickListener {
-                openLinkInBrowser(getString(R.string.github))
-            }
-            loginTelegram.setOnClickListener {
-                openLinkInBrowser(getString(R.string.telegram))
             }
 
             (settingsLogo.drawable as Animatable).start()
